@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -25,4 +26,13 @@ public class Restaurant {
     private double minOrderAmount;
     private double deliveryFee;
     private Boolean acceptingOrders;
+
+    @OneToMany(mappedBy = "Restaurant")
+    private List<RestaurantOwner> restaurantOwners;
+
+    @OneToMany(mappedBy = "Restaurant")
+    private List<MenuItem> menuItems;
+
+    @OneToMany(mappedBy = "Restaurant")
+    private List<ComboMeal> comboMeals;
 }
