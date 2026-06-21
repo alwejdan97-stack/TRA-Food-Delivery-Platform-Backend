@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "menuItem")
+@Table
 public class MenuItem extends BaseEntity{
     private String name;
     private String description;

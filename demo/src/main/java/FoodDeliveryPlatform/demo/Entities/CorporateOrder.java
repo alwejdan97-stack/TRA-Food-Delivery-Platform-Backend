@@ -13,7 +13,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "corporateOrder")
+@Table
 public class CorporateOrder extends BaseEntity{
     private String corporateCode;
     private String companyName;

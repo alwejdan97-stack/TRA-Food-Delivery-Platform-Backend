@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "comboMeal")
+@Table
 public class ComboMeal extends BaseEntity{
     private String comboName;
     private String description;

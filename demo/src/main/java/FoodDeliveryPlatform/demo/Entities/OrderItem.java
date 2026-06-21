@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "orderItem")
+@Table
 public class OrderItem extends BaseEntity{
     private Integer quantity;
     private Double unitPrice;

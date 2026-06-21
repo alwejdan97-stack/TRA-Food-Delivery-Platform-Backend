@@ -14,7 +14,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "delivery")
+@Table
 public class Delivery extends BaseEntity{
     private String trackingCode;
     private Boolean status;

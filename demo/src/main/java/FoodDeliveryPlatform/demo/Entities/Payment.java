@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "payment")
+@Table
 public class Payment extends BaseEntity{
     private String paymentMethod;
     private String status;

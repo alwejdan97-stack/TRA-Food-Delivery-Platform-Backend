@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "customerReviews")
+@Table
 public class Review extends BaseEntity{
     private String targetType;
     private String rating;

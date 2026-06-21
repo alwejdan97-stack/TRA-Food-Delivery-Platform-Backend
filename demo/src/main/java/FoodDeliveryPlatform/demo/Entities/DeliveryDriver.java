@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "deliveryDriver")
+@Table
 public class DeliveryDriver extends BaseEntity{
     private String firstName;
     private String lastName;

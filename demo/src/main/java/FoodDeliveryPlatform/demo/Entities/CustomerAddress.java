@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "customerAddress")
+@Table
 public class CustomerAddress extends BaseEntity{
     private String street;
     private String city;

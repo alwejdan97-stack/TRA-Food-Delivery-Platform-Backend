@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "restaurantOwner")
+@Table
 public class RestaurantOwner extends BaseEntity{
     private String firstName;
     private String lastName;
