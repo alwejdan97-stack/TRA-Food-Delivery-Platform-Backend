@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Entity
 @AllArgsConstructor
@@ -19,4 +21,10 @@ public class OrderItem {
     private double unitPrice;
     private double totalPrice;
     private String specialInstructions;
+
+    @OneToMany(mappedBy = "OrderItem")
+    private List<CorporateOrder> corporateOrders;
+
+    @OneToMany(mappedBy = "OrderItem")
+    private List<MenuItem> menuItems;
 }
