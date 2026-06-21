@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Data
@@ -22,4 +23,7 @@ public class Payment {
     private double amount;
     private String transactionRef;
     private LocalDateTime processedAt;
+
+    @OneToOne
+    private List<Order> orders;
 }
