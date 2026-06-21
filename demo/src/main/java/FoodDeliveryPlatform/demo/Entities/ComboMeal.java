@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Entity
 @AllArgsConstructor
@@ -19,4 +21,11 @@ public class ComboMeal {
     private String description;
     private double totalPrice;
     private Boolean isAvailable;
+
+    @ManyToOne
+    @Column(name = "restaurantID")
+    private List<Restaurant> restaurants;
+
+    @ManyToMany
+    private List<MenuItem> menuItems;
 }
