@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Entity
 @NoArgsConstructor
@@ -21,4 +23,11 @@ public class MenuItem {
     private Boolean isAvailable;
     private Boolean isVegetarian;
     private double calories;
+
+    @ManyToOne
+    @Column(name = "restaurantID")
+    private List<Restaurant> restaurants;
+
+    @OneToMany(mappedBy = "MenuItem")
+    private List<OrderItem> orderItems;
 }
