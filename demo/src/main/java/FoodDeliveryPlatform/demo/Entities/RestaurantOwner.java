@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Entity
 @AllArgsConstructor
@@ -21,4 +23,7 @@ public class RestaurantOwner {
     private String phone;
     private String passwordHash;
     private String businessLicenseCode;
+
+    @OneToMany(mappedBy = "RestaurantOwner")
+    private List<Restaurant> restaurants;
 }
