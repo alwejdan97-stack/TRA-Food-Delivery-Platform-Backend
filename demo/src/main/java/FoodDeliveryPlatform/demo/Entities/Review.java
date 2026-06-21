@@ -28,10 +28,10 @@ public class Review {
     private List<Customer> customers;
 
     @ManyToOne
-    @Column(name = "restaurantID" ,nullable = false)
-    private List<Restaurant>
+    @JoinColumn (name = "restaurantID" ,nullable = false)
+    private List<Restaurant> restaurants;
 
     @ManyToOne
-    @Column(name = "deliverDriverID",nullable = false)
+    @JoinColumn (name = "deliverDriverID",nullable = false)
     private List<DeliveryDriver> deliveryDrivers;
 }
