@@ -17,7 +17,6 @@ public class Review extends BaseEntity{
     private String targetType;
     private String rating;
     private String comment;
-    private LocalDateTime createdAt;
 
     @ManyToOne
     @Column(name = "customerID")
