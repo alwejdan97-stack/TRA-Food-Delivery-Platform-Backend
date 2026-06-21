@@ -12,21 +12,18 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "DeliveryDriver")
-public class DeliveryDriver {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long driverId;
-
+public class DeliveryDriver extends BaseEntity{
     private String firstName;
     private String lastName;
+    @Column(unique = true,nullable = true)
     private String email;
     private String phone;
     private String passwordHash;
     private String driverCode;
     private String vehicleType;
     private String vehiclePlate;
-    private double currentLat;
-    private double currentLng;
+    private Double currentLat;
+    private Double currentLng;
     private Boolean isOnline;
 
     @OneToMany(mappedBy = "DeliveryDriver")

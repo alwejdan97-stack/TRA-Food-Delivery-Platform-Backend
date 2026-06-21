@@ -12,17 +12,13 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "MenuItem")
-public class MenuItem {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
+public class MenuItem extends BaseEntity{
     private String name;
     private String description;
-    private double price;
+    private Double price;
     private Boolean isAvailable;
     private Boolean isVegetarian;
-    private double calories;
+    private Double calories;
 
     @ManyToOne
     @Column(name = "restaurantID")

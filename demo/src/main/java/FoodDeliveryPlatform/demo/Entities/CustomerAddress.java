@@ -12,11 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "CustomerAddress")
-public class CustomerAddress {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long addressId;
-
+public class CustomerAddress extends BaseEntity{
     private String street;
     private String city;
     private String building;

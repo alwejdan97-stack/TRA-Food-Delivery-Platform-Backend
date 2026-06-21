@@ -12,11 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "RestaurantOwner")
-public class RestaurantOwner {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
+public class RestaurantOwner extends BaseEntity{
     private String firstName;
     private String lastName;
     private String email;

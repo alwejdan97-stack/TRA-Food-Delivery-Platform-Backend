@@ -14,17 +14,13 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "CorporateOrder")
-public class CorporateOrder {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
+public class CorporateOrder extends BaseEntity{
     private String corporateCode;
     private String companyName;
-    private double costCenter;
+    private Double costCenter;
     private LocalDate orderDate;
     private Boolean status;
-    private double totalAmount;
+    private Double totalAmount;
 
     @ManyToOne
     @Column(name="restaurantID")

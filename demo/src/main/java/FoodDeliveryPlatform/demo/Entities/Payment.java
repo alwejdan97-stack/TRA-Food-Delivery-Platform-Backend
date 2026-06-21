@@ -14,13 +14,10 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "Payment")
-public class Payment {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+public class Payment extends BaseEntity{
     private String paymentMethod;
     private String status;
-    private double amount;
+    private Double amount;
     private String transactionRef;
     private LocalDateTime processedAt;
 

@@ -12,15 +12,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "ComboMeal")
-public class ComboMeal {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
+public class ComboMeal extends BaseEntity{
     private String comboName;
     private String description;
-    private double totalPrice;
-    private Boolean isAvailable;
+    private Double totalPrice;
 
     @ManyToOne
     @Column(name = "restaurantID")

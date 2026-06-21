@@ -13,18 +13,14 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "Order")
-public class Order {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
+public class Order extends BaseEntity{
     private String orderCode;
     private LocalDate orderDate;
     private Boolean status;
-    private double subtotal;
-    private double deliveryFee;
-    private double discountAmount;
-    private double totalAmount;
+    private Double subtotal;
+    private Double deliveryFee;
+    private Double discountAmount;
+    private Double totalAmount;
     private String deliveryNotes;
 
     @ManyToOne

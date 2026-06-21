@@ -12,14 +12,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "OrderItem")
-public class OrderItem {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
-    private int quantity;
-    private double unitPrice;
-    private double totalPrice;
+public class OrderItem extends BaseEntity{
+    private Integer quantity;
+    private Double unitPrice;
+    private Double totalPrice;
     private String specialInstructions;
 
     @OneToMany(mappedBy = "OrderItem")

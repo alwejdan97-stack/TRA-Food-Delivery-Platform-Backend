@@ -13,18 +13,14 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "Restaurant")
-public class Restaurant {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long restaurantId;
-
+public class Restaurant extends BaseEntity{
     private String name;
     private String description;
     private String cuisineType;
     private LocalTime openingTime;
     private LocalTime closingTime;
-    private double minOrderAmount;
-    private double deliveryFee;
+    private Double minOrderAmount;
+    private Double deliveryFee;
     private Boolean acceptingOrders;
 
     @OneToMany(mappedBy = "Restaurant")

@@ -15,10 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "Delivery")
-public class Delivery {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+public class Delivery extends BaseEntity{
     private String trackingCode;
     private Boolean status;
     private LocalDateTime assignedAt;

@@ -13,20 +13,16 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "Customer")
-public class Customer {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long customerId;
-
+public class Customer extends BaseEntity{
     private String firstName;
     private String lastName;
 
-    @Column(unique = true,nullable = false)
+    @Column(unique = true, nullable = true)
     private String email;
 
     private String phone;
     private String passwordHash;
-    private int loyaltyPoints;
+    private Integer loyaltyPoints;
     private String customerCode;
 
     @OneToMany(mappedBy = "Customer")
