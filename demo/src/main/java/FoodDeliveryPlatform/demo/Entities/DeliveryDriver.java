@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Entity
 @AllArgsConstructor
@@ -26,4 +28,7 @@ public class DeliveryDriver {
     private double currentLat;
     private double currentLng;
     private Boolean isOnline;
+
+    @OneToMany(mappedBy = "DeliveryDriver")
+    private List<Delivery> deliveries;
 }
