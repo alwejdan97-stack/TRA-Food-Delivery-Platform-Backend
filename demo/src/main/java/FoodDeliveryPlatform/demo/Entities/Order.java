@@ -1,11 +1,18 @@
 package FoodDeliveryPlatform.demo.Entities;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
+@Data
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "Order")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,4 +26,21 @@ public class Order {
     private double discountAmount;
     private double totalAmount;
     private String deliveryNotes;
+
+    @ManyToOne
+    @Column(name = "customerID")
+    private List<Customer> customers;
+
+    @ManyToOne
+    @Column(name = "restaurantID")
+    private List<Restaurant> restaurants;
+
+    @OneToMany(mappedBy = "Order")
+    private List<OrderItem> orderItems;
+
+    @OneToOne
+    private List<Delivery> deliveries;
+
+    @OneToOne
+    private List<Payment> payments;
 }
