@@ -2,10 +2,12 @@ package FoodDeliveryPlatform.demo.Entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.CustomLog;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Entity
@@ -23,4 +25,11 @@ public class CorporateOrder {
     private LocalDate orderDate;
     private Boolean status;
     private double totalAmount;
+
+    @ManyToOne
+    @Column(name="restaurantID")
+    private List<Restaurant> restaurants;
+
+    @OneToMany(mappedBy = "CorporateOrder")
+    private List<OrderItem> orderItems;
 }
