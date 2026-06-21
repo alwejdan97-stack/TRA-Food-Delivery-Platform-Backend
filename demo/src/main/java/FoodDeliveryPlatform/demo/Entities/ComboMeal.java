@@ -11,16 +11,16 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "ComboMeal")
+@Table(name = "comboMeal")
 public class ComboMeal extends BaseEntity{
     private String comboName;
     private String description;
     private Double totalPrice;
 
     @ManyToOne
-    @Column(name = "restaurantID")
-    private List<Restaurant> restaurants;
+    private Restaurant restaurant;
 
     @ManyToMany
+    @JoinTable(name="comboMeal_menuItem",joinColumns=@JoinColumn(name="comboMealID"),inverseJoinColumns = @JoinColumn(name="menuItemID"))
     private List<MenuItem> menuItems;
 }

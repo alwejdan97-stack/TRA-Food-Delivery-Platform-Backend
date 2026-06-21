@@ -10,8 +10,9 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
+@Data
 @MappedSuperclass
-@Data@NoArgsConstructor
+@NoArgsConstructor
 @AllArgsConstructor
 public class BaseEntity {
     @Id

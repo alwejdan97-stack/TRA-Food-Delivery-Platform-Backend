@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "MenuItem")
+@Table(name = "menuItem")
 public class MenuItem extends BaseEntity{
     private String name;
     private String description;
@@ -21,9 +21,9 @@ public class MenuItem extends BaseEntity{
     private Double calories;
 
     @ManyToOne
-    @Column(name = "restaurantID")
-    private List<Restaurant> restaurants;
+    @JoinColumn(name = "restaurantID")
+    private Restaurant restaurant;
 
-    @OneToMany(mappedBy = "MenuItem")
+    @OneToMany(mappedBy = "menuItem")
     private List<OrderItem> orderItems;
 }

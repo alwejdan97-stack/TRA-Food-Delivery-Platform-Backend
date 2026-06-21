@@ -11,12 +11,13 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "DeliveryDriver")
+@Table(name = "deliveryDriver")
 public class DeliveryDriver extends BaseEntity{
     private String firstName;
     private String lastName;
     @Column(unique = true,nullable = true)
     private String email;
+
     private String phone;
     private String passwordHash;
     private String driverCode;
@@ -26,6 +27,6 @@ public class DeliveryDriver extends BaseEntity{
     private Double currentLng;
     private Boolean isOnline;
 
-    @OneToMany(mappedBy = "DeliveryDriver")
+    @OneToMany(mappedBy = "deliveryDriver")
     private List<Delivery> deliveries;
 }

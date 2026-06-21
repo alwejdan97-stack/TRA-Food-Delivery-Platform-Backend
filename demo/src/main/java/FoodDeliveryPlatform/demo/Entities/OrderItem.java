@@ -11,16 +11,22 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "OrderItem")
+@Table(name = "orderItem")
 public class OrderItem extends BaseEntity{
     private Integer quantity;
     private Double unitPrice;
     private Double totalPrice;
     private String specialInstructions;
 
-    @OneToMany(mappedBy = "OrderItem")
-    private List<CorporateOrder> corporateOrders;
+    @ManyToOne
+    @JoinColumn(name = "corporateOrderID")
+    private CorporateOrder corporateOrder;
 
-    @OneToMany(mappedBy = "OrderItem")
-    private List<MenuItem> menuItems;
+    @ManyToOne
+    @JoinColumn(name = "orderID")
+    private Order order;
+
+    @ManyToOne
+    @JoinColumn(name = "menuItemID")
+    private MenuItem menuItem;
 }

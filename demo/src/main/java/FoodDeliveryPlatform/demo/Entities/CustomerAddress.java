@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "CustomerAddress")
+@Table(name = "customerAddress")
 public class CustomerAddress extends BaseEntity{
     private String street;
     private String city;
@@ -20,5 +20,5 @@ public class CustomerAddress extends BaseEntity{
 
     @ManyToOne
     @JoinColumn(name = "customerID")
-    private List<Customer> customers;
+    private Customer customer;
 }

@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "Order")
+@Table(name = "customerOrders")
 public class Order extends BaseEntity{
     private String orderCode;
     private LocalDate orderDate;
@@ -24,19 +24,19 @@ public class Order extends BaseEntity{
     private String deliveryNotes;
 
     @ManyToOne
-    @Column(name = "customerID")
-    private List<Customer> customers;
+    @JoinColumn(name = "customerID")
+    private Customer customer;
 
     @ManyToOne
-    @Column(name = "restaurantID")
-    private List<Restaurant> restaurants;
+    @JoinColumn(name = "restaurantID")
+    private Restaurant restaurant;
 
-    @OneToMany(mappedBy = "Order")
+    @OneToMany(mappedBy = "order")
     private List<OrderItem> orderItems;
 
-    @OneToOne
-    private List<Delivery> deliveries;
+    @OneToOne(mappedBy = "order")
+    private Delivery delivery;
 
-    @OneToOne
-    private List<Payment> payments;
+    @OneToOne(mappedBy = "order")
+    private Payment payment;
 }

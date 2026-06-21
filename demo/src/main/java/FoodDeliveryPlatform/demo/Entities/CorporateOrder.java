@@ -13,7 +13,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "CorporateOrder")
+@Table(name = "corporateOrder")
 public class CorporateOrder extends BaseEntity{
     private String corporateCode;
     private String companyName;
@@ -23,9 +23,9 @@ public class CorporateOrder extends BaseEntity{
     private Double totalAmount;
 
     @ManyToOne
-    @Column(name="restaurantID")
-    private List<Restaurant> restaurants;
+    @JoinColumn(name="restaurantID")
+    private Restaurant restaurant;
 
-    @OneToMany(mappedBy = "CorporateOrder")
+    @OneToMany(mappedBy = "corporateOrder")
     private List<OrderItem> orderItems;
 }

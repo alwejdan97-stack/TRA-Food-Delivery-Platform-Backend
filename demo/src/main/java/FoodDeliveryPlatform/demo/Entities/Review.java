@@ -12,21 +12,21 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Review")
+@Table(name = "customerReviews")
 public class Review extends BaseEntity{
     private String targetType;
     private String rating;
     private String comment;
 
     @ManyToOne
-    @Column(name = "customerID")
-    private List<Customer> customers;
+    @JoinColumn(name = "customerID")
+    private Customer customer;
 
     @ManyToOne
-    @JoinColumn (name = "restaurantID" ,nullable = false)
-    private List<Restaurant> restaurants;
+    @JoinColumn (name = "restaurantID" ,nullable = true)
+    private Restaurant restaurant;
 
     @ManyToOne
-    @JoinColumn (name = "deliverDriverID",nullable = false)
-    private List<DeliveryDriver> deliveryDrivers;
+    @JoinColumn (name = "deliverDriverID",nullable = true)
+    private DeliveryDriver deliveryDriver;
 }

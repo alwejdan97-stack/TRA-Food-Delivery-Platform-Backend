@@ -14,7 +14,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Delivery")
+@Table(name = "delivery")
 public class Delivery extends BaseEntity{
     private String trackingCode;
     private Boolean status;
@@ -22,10 +22,10 @@ public class Delivery extends BaseEntity{
     private LocalDateTime pickedUpAt;
     private LocalDateTime deliveredAt;
 
-    @OneToOne
-    private List<Order> orders;
+    @OneToOne(mappedBy = "delivery")
+    private Order order;
 
     @ManyToOne
-    @Column(name = "deliveryDriverID")
-    private List<DeliveryDriver> deliveryDrivers;
+    @JoinColumn(name = "deliveryDriverID")
+    private DeliveryDriver deliveryDriver;
 }

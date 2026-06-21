@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "Restaurant")
+@Table(name = "restaurant")
 public class Restaurant extends BaseEntity{
     private String name;
     private String description;
@@ -23,12 +23,13 @@ public class Restaurant extends BaseEntity{
     private Double deliveryFee;
     private Boolean acceptingOrders;
 
-    @OneToMany(mappedBy = "Restaurant")
-    private List<RestaurantOwner> restaurantOwners;
+    @ManyToOne
+    @JoinColumn(name = "restaurantOwnerID")
+    private RestaurantOwner restaurantOwner;
 
-    @OneToMany(mappedBy = "Restaurant")
+    @OneToMany(mappedBy = "restaurant")
     private List<MenuItem> menuItems;
 
-    @OneToMany(mappedBy = "Restaurant")
+    @OneToMany(mappedBy = "restaurant")
     private List<ComboMeal> comboMeals;
 }

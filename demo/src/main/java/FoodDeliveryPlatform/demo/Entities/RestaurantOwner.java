@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "RestaurantOwner")
+@Table(name = "restaurantOwner")
 public class RestaurantOwner extends BaseEntity{
     private String firstName;
     private String lastName;
@@ -20,6 +20,6 @@ public class RestaurantOwner extends BaseEntity{
     private String passwordHash;
     private String businessLicenseCode;
 
-    @OneToMany(mappedBy = "RestaurantOwner")
+    @OneToMany(mappedBy = "restaurantOwner")
     private List<Restaurant> restaurants;
 }

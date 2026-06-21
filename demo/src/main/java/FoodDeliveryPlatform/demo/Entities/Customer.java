@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Customer")
+@Table(name = "customer")
 public class Customer extends BaseEntity{
     private String firstName;
     private String lastName;
@@ -25,12 +25,12 @@ public class Customer extends BaseEntity{
     private Integer loyaltyPoints;
     private String customerCode;
 
-    @OneToMany(mappedBy = "Customer")
+    @OneToMany(mappedBy = "customer")
     private List<CustomerAddress> customerAddresses;
 
-    @OneToMany(mappedBy = "Customer")
+    @OneToMany(mappedBy = "customer")
     private List<Order> orders;
 
-    @OneToMany(mappedBy = "Customer")
+    @OneToMany(mappedBy = "customer")
     private List<Review> reviews;
 }

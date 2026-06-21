@@ -6,14 +6,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.List;
-
 
 @Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Payment")
+@Table(name = "payment")
 public class Payment extends BaseEntity{
     private String paymentMethod;
     private String status;
@@ -21,6 +19,6 @@ public class Payment extends BaseEntity{
     private String transactionRef;
     private LocalDateTime processedAt;
 
-    @OneToOne
-    private List<Order> orders;
+    @OneToOne(mappedBy = "payment")
+    private Order order;
 }
