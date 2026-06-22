@@ -14,7 +14,6 @@ public class DeliveryDriverDTOSummary extends PersonDTO {
         dto.setId(entity.getId());
         dto.setFirstName(entity.getFirstName());
         dto.setLastName(entity.getLastName());
-
         return dto;
     }
 }
