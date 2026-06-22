@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DeliveryDriverDTORequest extends PersonDTO {
     public void applyToEntity(DeliveryDriver entity){
-        CustomerDTORequest  dto=new CustomerDTORequest();
-        dto.setId(entity.getId());
-        dto.setFirstName(entity.getFirstName());
-        dto.setLastName(entity.getLastName());
-        dto.setEmail(entity.getEmail());
-        dto.setPhone(entity.getPhone());
+        //DeliveryDriverDTORequest  dto=new DeliveryDriverDTORequest();
+        entity.setId(this.getId());
+        entity.setFirstName(this.getFirstName());
+        entity.setLastName(this.getLastName());
+        entity.setEmail(this.getEmail());
+        entity.setPhone(this.getPhone());
         //dto.setPasswordHash(entity.getPasswordHash());
     }
 }

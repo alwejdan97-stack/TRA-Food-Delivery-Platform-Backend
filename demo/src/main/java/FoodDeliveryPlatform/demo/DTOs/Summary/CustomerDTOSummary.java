@@ -20,8 +20,6 @@ public class CustomerDTOSummary extends PersonDTO {
         dto.setId(entity.getId());
         dto.setFirstName(entity.getFirstName());
         dto.setLastName(entity.getLastName());
-        dto.setPhone(entity.getPhone());
-        dto.setEmail(entity.getEmail());
 
         return dto;
     }

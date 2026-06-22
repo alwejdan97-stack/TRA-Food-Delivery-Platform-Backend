@@ -12,8 +12,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public abstract class PersonDTO {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @NotBlank(message = "First Name Can't Be Empty")
     private String firstName;
