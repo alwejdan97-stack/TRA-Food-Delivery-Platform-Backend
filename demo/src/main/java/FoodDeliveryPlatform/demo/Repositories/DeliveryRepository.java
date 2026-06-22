@@ -1,0 +1,13 @@
+package FoodDeliveryPlatform.demo.Repositories;
+
+import FoodDeliveryPlatform.demo.Entities.Delivery;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.util.List;
+
+public interface DeliveryRepository extends JpaRepository<Delivery,Integer> {
+    @Query("SELECT D FROM Delivery D WHERE D.DeliveryDriver.id=:driverId AND D.status=: status AND D.DeliveryDriver.isActive=TRUE")
+    List<Delivery> findByDeliveryDriverIdAndStatus(@Param("driverId") Integer driverId, @Param("status") String status);
+}

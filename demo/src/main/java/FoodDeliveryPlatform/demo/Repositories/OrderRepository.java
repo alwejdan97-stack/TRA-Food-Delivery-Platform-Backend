@@ -26,6 +26,6 @@ public interface OrderRepository extends JpaRepository<Orders,Integer> {
     @Query("SELECT COALESCE(SUM(O),0.0) FROM Orders O WHERE CAST(O.orderDate AS LocalDate)=:date AND O.status=:DELIVERED AND O.isActive=TRUE")
     List<Orders> sumTotalAmountDeliveredOrdersOnSpecifyDate(@Param("date") LocalDate date);
 
-    @Query("SELECT D FROM Delivery D WHERE D.DeliveryDriver.id=:driverId AND D.status=: status AND D.DeliveryDriver.isActive=TRUE")
-    List<Delivery> findByDeliveryDriverIdAndStatus(@Param("driverId") Integer driverId, @Param("status") String status);
+    /*@Query("SELECT D FROM Delivery D WHERE D.DeliveryDriver.id=:driverId AND D.status=: status AND D.DeliveryDriver.isActive=TRUE")
+    List<Delivery> findByDeliveryDriverIdAndStatus(@Param("driverId") Integer driverId, @Param("status") String status);*/
 }
