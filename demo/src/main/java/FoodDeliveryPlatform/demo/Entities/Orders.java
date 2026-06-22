@@ -6,14 +6,11 @@ import lombok.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-
-public class Order extends BaseEntity{
-
+public class Orders extends BaseEntity{
     private String orderCode;
     private LocalDate orderDate;
     private Boolean status;

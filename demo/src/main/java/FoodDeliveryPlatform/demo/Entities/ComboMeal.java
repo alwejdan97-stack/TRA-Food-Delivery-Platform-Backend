@@ -5,17 +5,11 @@ import lombok.*;
 
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table
 public class ComboMeal extends BaseEntity{
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-
     private String comboName;
     private String description;
     private Double totalPrice;
@@ -24,6 +18,5 @@ public class ComboMeal extends BaseEntity{
     private Restaurant restaurant;
 
     @ManyToMany
-    @JoinTable(name="comboMeal_menuItem",joinColumns=@JoinColumn(name="comboMealID"),inverseJoinColumns = @JoinColumn(name="menuItemID"))
     private List<MenuItem> menuItems;
 }

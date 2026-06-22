@@ -5,23 +5,17 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
+@Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table
 public class Payment extends BaseEntity{
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-
     private String paymentMethod;
     private String status;
     private Double amount;
     private String transactionRef;
     private LocalDateTime processedAt;
 
-    @OneToOne(mappedBy = "payment")
-    private Order order;
+    @OneToOne()
+    private Orders orders;
 }

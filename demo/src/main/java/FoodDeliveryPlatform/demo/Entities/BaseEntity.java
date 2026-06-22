@@ -8,15 +8,14 @@ import lombok.*;
 
 import java.time.LocalDate;
 
-@Getter
-@Setter
+@Data
 @MappedSuperclass
 @NoArgsConstructor
 @AllArgsConstructor
 public class BaseEntity {
-    /*@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;*/
+    private Integer id;
 
     private Boolean isAvailable;
     private LocalDate createdDate;

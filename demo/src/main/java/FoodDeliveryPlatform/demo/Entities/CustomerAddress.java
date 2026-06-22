@@ -5,23 +5,16 @@ import lombok.*;
 
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table
 public class CustomerAddress extends BaseEntity{
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-
     private String street;
     private String city;
     private String building;
     private Boolean isDefault;
 
     @ManyToOne
-    @JoinColumn(name = "customerID")
     private Customer customer;
 }

@@ -6,17 +6,11 @@ import lombok.*;
 import java.time.LocalTime;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table
 public class Restaurant extends BaseEntity{
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-
     private String name;
     private String description;
     private String cuisineType;
@@ -27,12 +21,11 @@ public class Restaurant extends BaseEntity{
     private Boolean acceptingOrders;
 
     @ManyToOne
-    @JoinColumn(name = "restaurantOwnerID")
     private RestaurantOwner restaurantOwner;
 
-    @OneToMany(mappedBy = "restaurant")
+    @OneToMany()
     private List<MenuItem> menuItems;
 
-    @OneToMany(mappedBy = "restaurant")
+    @OneToMany()
     private List<ComboMeal> comboMeals;
 }

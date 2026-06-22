@@ -5,17 +5,11 @@ import lombok.*;
 
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table
 public class MenuItem extends BaseEntity{
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-
     private String name;
     private String description;
     private Double price;
@@ -24,9 +18,9 @@ public class MenuItem extends BaseEntity{
     private Double calories;
 
     @ManyToOne
-    @JoinColumn(name = "restaurantID")
+    @JoinColumn()
     private Restaurant restaurant;
 
-    @OneToMany(mappedBy = "menuItem")
+    @OneToMany()
     private List<OrderItem> orderItems;
 }

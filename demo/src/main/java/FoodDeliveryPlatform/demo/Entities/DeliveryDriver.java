@@ -5,19 +5,14 @@ import lombok.*;
 
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table
 public class DeliveryDriver extends BaseEntity{
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-
     private String firstName;
     private String lastName;
+
     @Column(unique = true,nullable = true)
     private String email;
 
@@ -30,6 +25,6 @@ public class DeliveryDriver extends BaseEntity{
     private Double currentLng;
     private Boolean isOnline;
 
-    @OneToMany(mappedBy = "deliveryDriver")
+    @OneToMany()
     private List<Delivery> deliveries;
 }
