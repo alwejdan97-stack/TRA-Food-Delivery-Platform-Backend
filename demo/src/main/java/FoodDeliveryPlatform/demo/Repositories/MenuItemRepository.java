@@ -14,7 +14,7 @@ public interface MenuItemRepository extends JpaRepository<MenuItem,Integer> {
     @Query("SELECT M FROM MenuItem M WHERE M.restaurant.id= :id AND M.isAvailable=TRUE AND M.isActive=TRUE AND M.restaurant.isActive=TRUE")
     List<MenuItem> findByRestaurantIdAndIsAvailableTrue(@Param("id") Integer id);
 
-    @Query("SELECT M FROM MenuItem M JOIN M.orderItems O WHERE O.isVegetarian= TRUE AND M.isActive=TRUE AND O.isActive=TRUE")
+    @Query("SELECT M FROM MenuItem M WHERE M.isVegetarian= TRUE AND M.isActive=TRUE")
     List<MenuItem> findByIsVegetarianTrue();
 
     @Query("SELECT M FROM MenuItem M WHERE M.price BETWEEN :min AND :max AND M.isActive=TRUE")

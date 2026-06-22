@@ -16,12 +16,15 @@ public interface ComboMealRepository extends JpaRepository<ComboMeal,Integer> {
     @Query("SELECT CM FROM ComboMeal CM WHERE CM.restaurant.id= :id AND CM.isAvailable=TRUE AND CM.isActive=TRUE AND CM.restaurant.isActive=TRUE")
     List<ComboMeal> findByRestaurantIdAndIsAvailableTrue(@Param("id") Integer id);
 
-    @Query("SELECT CM FROM ComboMeal CM JOIN CM.orderItems O WHERE O.isVegetarian= TRUE AND CM.isActive=TRUE AND O.isActive=TRUE")
+    //@Query("SELECT DISTINCT CM FROM ComboMeal CM JOIN CM.orderItems O WHERE O.isVegetarian= TRUE AND CM.isActive=TRUE AND O.isActive=TRUE")
+    @Query("SELECT cm FROM ComboMeal cm WHERE cm.isActive = true AND NOT EXISTS (" +
+            "  SELECT mi FROM cm.menuItems mi WHERE mi.isVegetarian = false AND mi.isActive = true" +
+            ")")
     List<ComboMeal> findByIsVegetarianTrue();
 
     @Query("SELECT CM FROM ComboMeal CM WHERE CM.totalPrice BETWEEN :min AND :max AND CM.isActive=TRUE")
     List<ComboMeal> findByPriceBetween(@Param("min") Double min, @Param("max") Double max);
 
-    @Query("SELECT CM FROM ComboMeal CM JOIN CM.menuItems M WHERE M.id= :menuItemId AND CM.isActive=TRUE AND M.isActive=TRUE")
+    @Query("SELECT DISTINCT CM FROM ComboMeal CM JOIN CM.menuItems M WHERE M.id= :menuItemId AND CM.isActive=TRUE AND M.isActive=TRUE")
     List<ComboMeal> findByMenuItemId(@Param("menuItemId") Integer menuItemId);
 }
