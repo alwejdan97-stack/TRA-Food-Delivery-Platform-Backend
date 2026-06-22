@@ -1,19 +1,22 @@
 package FoodDeliveryPlatform.demo.Entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Table
 public class Review extends BaseEntity{
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+
     private String targetType;
     private String rating;
     private String comment;
@@ -23,10 +26,10 @@ public class Review extends BaseEntity{
     private Customer customer;
 
     @ManyToOne
-    @JoinColumn (name = "restaurantID" ,nullable = true)
+    @JoinColumn (name = "restaurantID" ,nullable = false)
     private Restaurant restaurant;
 
     @ManyToOne
-    @JoinColumn (name = "deliverDriverID",nullable = true)
+    @JoinColumn (name = "deliverDriverID",nullable = false)
     private DeliveryDriver deliveryDriver;
 }
