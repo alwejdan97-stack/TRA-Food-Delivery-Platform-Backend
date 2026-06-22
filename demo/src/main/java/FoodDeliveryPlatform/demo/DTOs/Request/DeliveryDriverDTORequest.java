@@ -1,14 +1,14 @@
 package FoodDeliveryPlatform.demo.DTOs.Request;
 
 import FoodDeliveryPlatform.demo.Entities.Customer;
-import jakarta.persistence.Column;
+import FoodDeliveryPlatform.demo.Entities.DeliveryDriver;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class CustomerDTORequest extends PersonRequest{
-    public void applyToEntity(Customer entity){
+public class DeliveryDriverDTORequest extends PersonRequest{
+    public void applyToEntity(DeliveryDriver entity){
         CustomerDTORequest  dto=new CustomerDTORequest();
         dto.setId(entity.getId());
         dto.setFirstName(entity.getFirstName());
@@ -16,6 +16,5 @@ public class CustomerDTORequest extends PersonRequest{
         dto.setEmail(entity.getEmail());
         dto.setPhone(entity.getPhone());
         //dto.setPasswordHash(entity.getPasswordHash());
-        //return dto;
     }
 }

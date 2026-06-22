@@ -1,5 +1,6 @@
 package FoodDeliveryPlatform.demo.DTOs.Summary;
 
+import FoodDeliveryPlatform.demo.DTOs.Request.PersonRequest;
 import FoodDeliveryPlatform.demo.DTOs.Response.CustomerDTOResponse;
 import FoodDeliveryPlatform.demo.Entities.Customer;
 import lombok.Data;
@@ -7,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class CustomerDTOSummary {
+public class CustomerDTOSummary{
     private Integer id;
     private String firstName;
     private String lastName;

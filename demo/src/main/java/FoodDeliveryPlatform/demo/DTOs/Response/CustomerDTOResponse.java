@@ -1,5 +1,6 @@
 package FoodDeliveryPlatform.demo.DTOs.Response;
 
+import FoodDeliveryPlatform.demo.DTOs.Request.PersonRequest;
 import FoodDeliveryPlatform.demo.Entities.Customer;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class CustomerDTOResponse {
+public class CustomerDTOResponse{
     private Integer id;
     private String firstName;
     private String lastName;
