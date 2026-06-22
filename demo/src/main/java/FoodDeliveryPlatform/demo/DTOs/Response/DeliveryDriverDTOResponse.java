@@ -2,6 +2,7 @@ package FoodDeliveryPlatform.demo.DTOs.Response;
 
 import FoodDeliveryPlatform.demo.DTOs.PersonDTO;
 import FoodDeliveryPlatform.demo.Entities.Customer;
+import FoodDeliveryPlatform.demo.Entities.DeliveryDriver;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,16 +11,9 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class CustomerDTOResponse extends PersonDTO {
-    /*private Integer id;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String phone;
-    private String passwordHash;*/
-
-    public static CustomerDTOResponse convertToDTO(Customer entity) {
-        CustomerDTOResponse dto = new CustomerDTOResponse();
+public class DeliveryDriverDTOResponse extends PersonDTO {
+    public static DeliveryDriverDTOResponse convertToDTO(DeliveryDriver entity) {
+        DeliveryDriverDTOResponse dto = new DeliveryDriverDTOResponse();
         dto.setId(entity.getId());
         dto.setFirstName(entity.getFirstName());
         dto.setLastName(entity.getLastName());
@@ -29,9 +23,9 @@ public class CustomerDTOResponse extends PersonDTO {
         return dto;
     }
 
-    public static List<CustomerDTOResponse> convertToDTO(List<Customer> entities) {
-        List<CustomerDTOResponse> dtos = new ArrayList<>();
-        for (Customer entity : entities) {
+    public static List<DeliveryDriverDTOResponse> convertToDTO(List<DeliveryDriver> entities) {
+        List<DeliveryDriverDTOResponse> dtos = new ArrayList<>();
+        for (DeliveryDriver entity : entities) {
             dtos.add(convertToDTO(entity));
         }
         return dtos;

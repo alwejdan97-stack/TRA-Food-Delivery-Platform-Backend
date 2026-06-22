@@ -1,4 +1,4 @@
-package FoodDeliveryPlatform.demo.DTOs.Request;
+package FoodDeliveryPlatform.demo.DTOs;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public abstract class PersonRequest {
+public abstract class PersonDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;

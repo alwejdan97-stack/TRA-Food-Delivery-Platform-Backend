@@ -1,13 +1,13 @@
 package FoodDeliveryPlatform.demo.DTOs.Request;
 
+import FoodDeliveryPlatform.demo.DTOs.PersonDTO;
 import FoodDeliveryPlatform.demo.Entities.Customer;
-import jakarta.persistence.Column;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class CustomerDTORequest extends PersonRequest{
+public class CustomerDTORequest extends PersonDTO {
     public void applyToEntity(Customer entity){
         CustomerDTORequest  dto=new CustomerDTORequest();
         dto.setId(entity.getId());
