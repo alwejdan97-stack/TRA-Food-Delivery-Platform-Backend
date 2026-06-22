@@ -11,20 +11,20 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface OrderRepository extends JpaRepository<Orders,Integer> {
-    @Query("SELECT O FROM Orders O WHERE O.Customer.id=: id AND O.isActive=TRUE AND O.Customer.isActive=TRUE")
+    @Query("SELECT O FROM Orders O WHERE O.customer.id= :id AND O.isActive=TRUE AND O.customer.isActive=TRUE")
     List<Orders> findByCustomerId(@Param("id") Integer customerId);
 
-    @Query("SELECT O FROM Orders O WHERE O.Restaurant.id=: restaurantId AND O.status=:status AND O.isActive=TRUE AND O.Resturant.isActive=TRUE")
+    @Query("SELECT O FROM Orders O WHERE O.restaurant.id= :restaurantId AND O.status= :status AND O.isActive=TRUE AND O.restaurant.isActive=TRUE")
     List<Orders> findByRestaurantIdAndStatus(@Param("restaurantId") Integer restaurantId, @Param("status") String status);
 
     @Query("SELECT O FROM Orders O WHERE O.orderDate BETWEEN :start AND :end AND O.isActive=TRUE")
     List<Orders> findByOrderDateBetween(@Param("start") LocalDate start, @Param("end") LocalDate end);
 
-    @Query("SELECT COUNT(O) FROM Orders O WHERE O.Restaurant.id=: restaurantId AND O.status=:status AND O.isActive=TRUE AND O.Resturant.isActive=TRUE")
-    List<Orders> countCompletedOrdersByRestaurantId(@Param("restaurantId") Integer restaurantId, @Param("status") String status);
+    @Query("SELECT COUNT(O) FROM Orders O WHERE O.restaurant.id= :restaurantId AND O.status= :status AND O.isActive=TRUE AND O.restaurant.isActive=TRUE")
+    Integer countCompletedOrdersByRestaurantId(@Param("restaurantId") Integer restaurantId, @Param("status") String status);
 
-    @Query("SELECT COALESCE(SUM(O),0.0) FROM Orders O WHERE CAST(O.orderDate AS LocalDate)=:date AND O.status=:DELIVERED AND O.isActive=TRUE")
-    List<Orders> sumTotalAmountDeliveredOrdersOnSpecifyDate(@Param("date") LocalDate date);
+    @Query("SELECT COALESCE(SUM(O.totalAmount),0.0) FROM Orders O WHERE O.orderDate= :date AND O.status= 'DELIVERED' AND O.isActive=TRUE")
+    Integer sumTotalAmountDeliveredOrdersOnSpecifyDate(@Param("date") LocalDate date);
 
     /*@Query("SELECT D FROM Delivery D WHERE D.DeliveryDriver.id=:driverId AND D.status=: status AND D.DeliveryDriver.isActive=TRUE")
     List<Delivery> findByDeliveryDriverIdAndStatus(@Param("driverId") Integer driverId, @Param("status") String status);*/

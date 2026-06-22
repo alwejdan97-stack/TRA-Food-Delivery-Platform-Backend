@@ -8,6 +8,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface CustomerAddressRepository extends JpaRepository<CustomerAddress,Integer> {
-    @Query("SELECT CA FROM Customer CA WHERE CA.city=:city AND CA.isActive=TRUE")
+    @Query("SELECT CA FROM CustomerAddress CA WHERE CA.city= :city AND CA.isActive=TRUE")
     List<CustomerAddress> findByCity(@Param("city") String city);
 }
