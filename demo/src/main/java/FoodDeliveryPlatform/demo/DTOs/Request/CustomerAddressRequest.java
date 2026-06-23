@@ -20,9 +20,9 @@ public class CustomerAddressRequest {
     private String building;
 
     public void applyToEntity(CustomerAddress entity){
-        entity.setId(this.getId());
-        entity.setStreet(this.getStreet());
-        entity.setCity(this.getCity());
-        entity.setBuilding(this.getBuilding());
+        entity.setId(this.id);
+        entity.setStreet(this.street);
+        entity.setCity(this.city);
+        entity.setBuilding(this.building);
     }
 }
