@@ -3,12 +3,18 @@ package FoodDeliveryPlatform.demo.Utilities;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.util.Currency;
+import java.util.UUID;
 
 public class HelperUtils {
 
-    public static String generateCode(String prefix){}
+    public static String generateCode(String prefix){
+        return generateCode(prefix,4);
+    }
 
-    public static String generateCode(String prefix, int length){}
+    public static String generateCode(String prefix, int length){
+        String randomCode= UUID.randomUUID().toString().replace("-","").substring(0,length).toUpperCase();
+        return prefix+"-"+randomCode;
+    }
 
     public static Double calculateDistance(double lat1, double lng1, double lat2, double lng2){
         //convert degree to radians
