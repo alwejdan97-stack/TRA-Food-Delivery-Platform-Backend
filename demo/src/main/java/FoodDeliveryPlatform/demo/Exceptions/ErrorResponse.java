@@ -6,18 +6,17 @@ import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDate;
-import java.util.Date;
+import java.util.Map;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class ErrorResponse {
     private LocalDate timestamp;
-    private Integer httpStatus;
+    private Integer status;
+    private HttpStatus httpStatus;
     private String error;
     private String message;
     private String path;
-
-    public ErrorResponse(HttpStatus httpStatus, int value, String internalServerError, String s, String replace) {
-    }
+    private Map<String,String> fieldErrors;
 }
