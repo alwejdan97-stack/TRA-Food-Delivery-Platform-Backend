@@ -16,8 +16,8 @@ public class OrderItem extends BaseEntity{
     @ManyToOne
     private CorporateOrder corporateOrder;
 
-    @ManyToOne
-    private Orders orders;
+   /* @ManyToOne
+    private Orders orders;*/
 
     @ManyToOne
     private MenuItem menuItem;
