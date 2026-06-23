@@ -1,12 +1,18 @@
 package FoodDeliveryPlatform.demo.DTOs.Response;
 
+import FoodDeliveryPlatform.demo.Entities.Delivery;
+import FoodDeliveryPlatform.demo.Entities.DeliveryDriver;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -18,6 +24,23 @@ public class DeliveryDTOResponse {
     @Pattern(regexp = "PENDING|...| CANCELLED")
     private Boolean status;
     private LocalDateTime assignedAt;
-    private LocalDateTime pickedUpAt;
-    private LocalDateTime deliveredAt;
+
+    public static DeliveryDTOResponse convertToDTO(Delivery entity) {
+        DeliveryDTOResponse dto = new DeliveryDTOResponse();
+        dto.setId(entity.getId());
+        dto.setTrackingCode(entity.getTrackingCode());
+        dto.setStatus(entity.getStatus());
+        dto.setAssignedAt(entity.getAssignedAt());
+        return dto;
+    }
+
+    @NotEmpty
+    @Valid
+    public static List<DeliveryDTOResponse> convertToDTO(List<Delivery> entities) {
+        List<DeliveryDTOResponse> dtos = new ArrayList<>();
+        for (Delivery entity : entities) {
+            dtos.add(convertToDTO(entity));
+        }
+        return dtos;
+    }
 }

@@ -1,5 +1,8 @@
 package FoodDeliveryPlatform.demo.DTOs.Request;
 
+import FoodDeliveryPlatform.demo.Entities.Delivery;
+import FoodDeliveryPlatform.demo.Entities.DeliveryDriver;
+import FoodDeliveryPlatform.demo.Entities.MenuItem;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -18,4 +21,12 @@ public class DeliveryDTORequest {
     private LocalDateTime assignedAt;
     private LocalDateTime pickedUpAt;
     private LocalDateTime deliveredAt;
+
+    public void DeliveryDTORequest(Delivery entity){
+        entity.setTrackingCode(this.trackingCode);
+        entity.setStatus(this.status);
+        entity.setAssignedAt(this.assignedAt);
+        entity.setPickedUpAt(this.pickedUpAt);
+        entity.setDeliveredAt(this.deliveredAt);
+    }
 }
