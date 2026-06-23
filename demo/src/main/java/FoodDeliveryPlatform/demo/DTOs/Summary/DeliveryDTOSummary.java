@@ -1,5 +1,7 @@
 package FoodDeliveryPlatform.demo.DTOs.Summary;
 
+import FoodDeliveryPlatform.demo.Entities.Delivery;
+import FoodDeliveryPlatform.demo.Entities.DeliveryDriver;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -11,8 +13,6 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 public class DeliveryDTOSummary {
-    @NotNull
-    private Integer id;
     @NotBlank(message = "Code Can't Be Empty")
     private String trackingCode;
     @Pattern(regexp = "PENDING|...| CANCELLED")
@@ -20,4 +20,14 @@ public class DeliveryDTOSummary {
     private LocalDateTime assignedAt;
     private LocalDateTime pickedUpAt;
     private LocalDateTime deliveredAt;
+
+    public static DeliveryDTOSummary fromEntity(Delivery entity) {
+        DeliveryDTOSummary dto = new DeliveryDTOSummary();
+        dto.setTrackingCode(entity.getTrackingCode());
+        dto.setStatus(entity.getStatus());
+        dto.setAssignedAt(entity.getAssignedAt());
+        dto.setPickedUpAt(entity.getPickedUpAt());
+        dto.setDeliveredAt(entity.getDeliveredAt());
+        return dto;
+    }
 }
