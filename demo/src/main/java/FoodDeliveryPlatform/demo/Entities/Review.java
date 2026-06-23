@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Review extends BaseEntity{
     private String targetType;
-    private String rating;
+    private Integer rating;
     private String comment;
 
     @ManyToOne
