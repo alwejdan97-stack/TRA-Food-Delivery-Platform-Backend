@@ -3,6 +3,8 @@ package FoodDeliveryPlatform.demo.DTOs.Response;
 import FoodDeliveryPlatform.demo.DTOs.PersonDTO;
 import FoodDeliveryPlatform.demo.Entities.DeliveryDriver;
 import FoodDeliveryPlatform.demo.Entities.RestaurantOwner;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -23,6 +25,8 @@ public class RestaurantOwnerResponse extends PersonDTO {
         return dto;
     }
 
+    @NotEmpty
+    @Valid
     public static List<RestaurantOwnerResponse> convertToDTO(List<RestaurantOwner> entities) {
         List<RestaurantOwnerResponse> dtos = new ArrayList<>();
         for (RestaurantOwner entity : entities) {

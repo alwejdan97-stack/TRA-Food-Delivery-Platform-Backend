@@ -2,7 +2,9 @@ package FoodDeliveryPlatform.demo.DTOs.Response;
 
 import FoodDeliveryPlatform.demo.Entities.Customer;
 import FoodDeliveryPlatform.demo.Entities.CustomerAddress;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,6 +33,8 @@ public class CustomerAddressResponse {
         return dto;
     }
 
+    @NotEmpty
+    @Valid
     public static List<CustomerAddressResponse> convertToDTO(List<CustomerAddress> entities) {
         List<CustomerAddressResponse> dtos = new ArrayList<>();
         for (CustomerAddress entity : entities) {
