@@ -21,7 +21,7 @@ public class MenuItemDTORequest {
     @Pattern(regexp = "YES|...| NO")
     private Boolean isVegetarian;
 
-    public void MenuItemDTORequest(MenuItem entity){
+    public void applyToEntity(MenuItem entity){
         entity.setName(this.name);
         entity.setPrice(this.price);
         entity.setIsAvailable(this.isAvailable);

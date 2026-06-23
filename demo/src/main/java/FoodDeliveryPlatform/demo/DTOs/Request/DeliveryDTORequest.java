@@ -22,7 +22,7 @@ public class DeliveryDTORequest {
     private LocalDateTime pickedUpAt;
     private LocalDateTime deliveredAt;
 
-    public void DeliveryDTORequest(Delivery entity){
+    public void applyToEntity(Delivery entity){
         entity.setTrackingCode(this.trackingCode);
         entity.setStatus(this.status);
         entity.setAssignedAt(this.assignedAt);
