@@ -1,0 +1,36 @@
+package FoodDeliveryPlatform.demo.DTOs.Summary;
+
+import FoodDeliveryPlatform.demo.Entities.MenuItem;
+import FoodDeliveryPlatform.demo.Entities.OrderItem;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+public class MenuItemDTOSummary {
+
+    @NotBlank(message = "Name Can't Be Empty")
+    private String name;
+    @NotBlank(message = "Name Can't Be Empty")
+    private String description;
+    @DecimalMin("0.0")
+    private Double price;
+    @Pattern(regexp = "YES|...| NO")
+    private Boolean isAvailable;
+    @DecimalMin("0.0")
+    private Double calories;
+
+    public static MenuItemDTOSummary fromEntity(MenuItem entity) {
+        MenuItemDTOSummary dto = new MenuItemDTOSummary();
+        dto.setName(entity.getName());
+        dto.setDescription(entity.getDescription());
+        dto.setPrice(entity.getPrice());
+        dto.setIsAvailable(entity.getIsAvailable());
+        dto.setCalories(entity.getCalories());
+        return dto;
+    }
+}
