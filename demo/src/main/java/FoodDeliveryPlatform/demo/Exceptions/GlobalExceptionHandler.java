@@ -1,4 +1,12 @@
 package FoodDeliveryPlatform.demo.Exceptions;
 
-public class GlobalExceptionHandler {
+import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+@RestControllerAdvice
+@AllArgsConstructor
+public class GlobalExceptionHandler extends RuntimeException{
+    public GlobalExceptionHandler(String message){
+        super(message);
+    }
 }
