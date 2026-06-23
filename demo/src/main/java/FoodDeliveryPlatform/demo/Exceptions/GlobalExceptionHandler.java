@@ -15,9 +15,9 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler extends RuntimeException{
-    public GlobalExceptionHandler(String message){
+   /* public GlobalExceptionHandler(String message){
         super(message);
-    }
+    }*/
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGlobalException(Exception ex, WebRequest request) {
