@@ -1,6 +1,8 @@
 package FoodDeliveryPlatform.demo.DTOs.Request;
 
 import FoodDeliveryPlatform.demo.Entities.DeliveryDriver;
+import FoodDeliveryPlatform.demo.Entities.OrderItem;
+import FoodDeliveryPlatform.demo.Entities.Orders;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -19,7 +21,7 @@ public class OrdersDTORequest {
     @Pattern(regexp = "PENDING|...| CANCELLED")
     private Boolean status;
 
-    public void applyToEntity(OrdersDTORequest entity){
+    public void applyToEntity(Orders entity){
         entity.setId(this.id);
         entity.setOrderCode(this.orderCode);
         entity.setStatus(this.status);
