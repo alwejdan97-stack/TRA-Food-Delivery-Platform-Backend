@@ -1,6 +1,7 @@
 package FoodDeliveryPlatform.demo.DTOs.Summary;
 
 import FoodDeliveryPlatform.demo.Entities.RestaurantOwner;
+import FoodDeliveryPlatform.demo.Entities.Review;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -11,8 +12,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class ReviewDTOSummary {
-    @NotNull
-    private Integer id;
     @NotBlank(message = "Target Can't Be Empty")
     private String targetType;
     @Min(1) @Max(5)
@@ -20,11 +19,11 @@ public class ReviewDTOSummary {
     @NotBlank(message = "Comment Can't Be Empty")
     private String comment;
 
-    public static ReviewDTOSummary fromEntity(RestaurantOwner entity) {
+    public static ReviewDTOSummary fromEntity(Review entity) {
         ReviewDTOSummary dto = new ReviewDTOSummary();
-        dto.setId(entity.getId());
-        dto.setFirstName(entity.getFirstName());
-        dto.setLastName(entity.getLastName());
+        dto.setComment(entity.getComment());
+        dto.setTargetType(entity.getTargetType());
+        dto.setRating(entity.getRating());
         return dto;
     }
 }
