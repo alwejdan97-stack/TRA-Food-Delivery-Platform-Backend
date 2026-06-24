@@ -13,7 +13,7 @@ public interface CustomerRepository extends JpaRepository<Customer,Integer> {
     List<Customer> findByEmail(@Param("email") String email);
 
     @Query("SELECT C FROM Customer C WHERE C.loyaltyPoints>=:loyaltyPoints AND C.isActive=TRUE")
-    List<Customer> findByLoyaltyPointsGreaterThanEqual(@Param("loyaltyPoints") Integer points);
+    List<Customer> findByLoyaltyPointsGreaterThanEqual(@Param("loyaltyPoints") int points);
 
     @Query("SELECT C FROM Customer C WHERE C.createdDate BETWEEN :startDate AND :endDate AND C.isActive=TRUE")
     List<Customer> findByRegistrationDateBetween(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
