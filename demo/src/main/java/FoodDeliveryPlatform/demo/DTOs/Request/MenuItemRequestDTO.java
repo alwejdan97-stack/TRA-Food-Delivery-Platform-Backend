@@ -13,16 +13,16 @@ public class MenuItemRequestDTO {
     @NotBlank(message = "Name Can't Be Empty")
     private String name;
     @DecimalMin("0.0")
-    private Double price;
+    private double price;
     @Pattern(regexp = "YES|...| NO")
-    private Boolean isAvailable;
+    private boolean isAvailable;
     @Pattern(regexp = "YES|...| NO")
-    private Boolean isVegetarian;
+    private boolean isVegetarian;
 
     public void applyToEntity(MenuItem entity){
         entity.setName(this.name);
         entity.setPrice(this.price);
-        entity.setIsAvailable(this.isAvailable);
-        entity.setIsVegetarian(this.isVegetarian);
+        entity.setAvailable(this.isAvailable);
+        entity.setVegetarian(this.isVegetarian);
     }
 }

@@ -14,7 +14,7 @@ public class ComboMealRequestDTO {
     @NotBlank(message = "Description Can't Be Empty")
     private String description;
     @DecimalMin("0.0")
-    private Double totalPrice;
+    private double totalPrice;
 
     public void applyToEntity(ComboMeal entity){
         entity.setComboName(this.comboName);

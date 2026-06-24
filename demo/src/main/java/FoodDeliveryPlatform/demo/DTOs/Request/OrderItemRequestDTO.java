@@ -10,11 +10,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OrderItemRequestDTO {
     @PositiveOrZero
-    private Integer quantity;
+    private int quantity;
     @DecimalMin("0.0")
-    private Double unitPrice;
+    private double unitPrice;
     @DecimalMin("0.0")
-    private Double totalPrice;
+    private double totalPrice;
 
     public void applyToEntity(OrderItem entity){
         entity.setQuantity(this.quantity);

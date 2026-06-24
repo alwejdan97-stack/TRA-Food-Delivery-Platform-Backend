@@ -19,9 +19,9 @@ public class RestaurantRequestDTO {
     private LocalTime openingTime;
     private LocalTime closingTime;
     @Min(1)
-    private Double minOrderAmount;
+    private double minOrderAmount;
     @Pattern(regexp = "YES|...| NO")
-    private Boolean acceptingOrders;
+    private boolean acceptingOrders;
 
     public void applyToEntity(Restaurant entity){
         entity.setName(this.name);
