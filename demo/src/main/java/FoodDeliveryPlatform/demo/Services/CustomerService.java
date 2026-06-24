@@ -88,7 +88,6 @@ public class CustomerService {
     }
 
     public CustomerResponseDTO addAddress(Integer customerId, CustomerAddressRequestDTO address){
-        for(Customer c:customers){
             if(!customerRepository.existsById(customerId)){
                 throw new ResourceNotFoundException(ErrorMessage.CUSTOMER_NOT_FOUND);
             }
@@ -109,10 +108,25 @@ public class CustomerService {
                 customerDTOResponse.setPhone(newCustomer.getPhone());
                 customerDTOResponse.setEmail(newCustomer.getEmail());
                 customerDTOResponse.setPassword(newCustomer.getPasswordHash());
-        }
         return customerDTOResponse;
     }
-    updateLoyaltyPoints(Integer customerId, int points){}
+    public CustomerResponseDTO updateLoyaltyPoints(Integer customerId, int points){
+            if (!customerRepository.existsById(customerId)) {
+                throw new ResourceNotFoundException(ErrorMessage.CUSTOMER_NOT_FOUND);
+            }
+            customer.setLoyaltyPoints(customer.getLoyaltyPoints()+ points);
+            customer.setUpdatedDate(LocalDate.now());
+
+            Customer newCustomer=customerRepository.save(customer);
+
+            customerDTOResponse.setId(newCustomer.getId());
+            customerDTOResponse.setFirstName(newCustomer.getFirstName());
+            customerDTOResponse.setLastName(newCustomer.getLastName());
+            customerDTOResponse.setPhone(newCustomer.getPhone());
+            customerDTOResponse.setEmail(newCustomer.getEmail());
+            customerDTOResponse.setPassword(newCustomer.getPasswordHash());
+        return customerDTOResponse;
+    }
     applyLoyaltyPenalty(Integer customerId, int pointsDeducted){}
     deactivateCustomer(Integer customerId){}
 }
