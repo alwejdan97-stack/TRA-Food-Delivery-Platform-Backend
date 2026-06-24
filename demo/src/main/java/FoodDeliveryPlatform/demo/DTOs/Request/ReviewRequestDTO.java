@@ -1,6 +1,5 @@
 package FoodDeliveryPlatform.demo.DTOs.Request;
 
-import FoodDeliveryPlatform.demo.Entities.DeliveryDriver;
 import FoodDeliveryPlatform.demo.Entities.Review;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -10,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class ReviewDTORequest {
+public class ReviewRequestDTO {
     @NotBlank(message = "Target Can't Be Empty")
     private String targetType;
     @Min(1) @Max(5)

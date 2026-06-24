@@ -1,6 +1,5 @@
 package FoodDeliveryPlatform.demo.DTOs.Request;
 
-import FoodDeliveryPlatform.demo.Entities.Customer;
 import FoodDeliveryPlatform.demo.Entities.CustomerAddress;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -9,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class CustomerAddressRequest {
+public class CustomerAddressRequestDTO {
     @NotNull
     private Integer id;
     @NotBlank(message = "Street Can't Be Null")

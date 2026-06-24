@@ -2,7 +2,6 @@ package FoodDeliveryPlatform.demo.DTOs.Response;
 
 import FoodDeliveryPlatform.demo.DTOs.PersonDTO;
 import FoodDeliveryPlatform.demo.Entities.Customer;
-import FoodDeliveryPlatform.demo.Entities.DeliveryDriver;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
@@ -13,9 +12,16 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class DeliveryDriverDTOResponse extends PersonDTO {
-    public static DeliveryDriverDTOResponse convertToDTO(DeliveryDriver entity) {
-        DeliveryDriverDTOResponse dto = new DeliveryDriverDTOResponse();
+public class CustomerResponseDTO extends PersonDTO {
+    /*private Integer id;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String phone;
+    private String passwordHash;*/
+
+    public static CustomerResponseDTO convertToDTO(Customer entity) {
+        CustomerResponseDTO dto = new CustomerResponseDTO();
         dto.setId(entity.getId());
         dto.setFirstName(entity.getFirstName());
         dto.setLastName(entity.getLastName());
@@ -27,9 +33,9 @@ public class DeliveryDriverDTOResponse extends PersonDTO {
 
     @NotEmpty
     @Valid
-    public static List<DeliveryDriverDTOResponse> convertToDTO(List<DeliveryDriver> entities) {
-        List<DeliveryDriverDTOResponse> dtos = new ArrayList<>();
-        for (DeliveryDriver entity : entities) {
+    public static List<CustomerResponseDTO> convertToDTO(List<Customer> entities) {
+        List<CustomerResponseDTO> dtos = new ArrayList<>();
+        for (Customer entity : entities) {
             dtos.add(convertToDTO(entity));
         }
         return dtos;

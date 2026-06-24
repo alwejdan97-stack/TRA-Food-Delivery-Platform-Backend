@@ -1,7 +1,6 @@
 package FoodDeliveryPlatform.demo.DTOs.Response;
 
 import FoodDeliveryPlatform.demo.Entities.OrderItem;
-import FoodDeliveryPlatform.demo.Entities.Orders;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.Data;
@@ -12,7 +11,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class OrderItemDTOResponse {
+public class OrderItemResponseDTO {
     @NotNull
     private Integer id;
     @PositiveOrZero
@@ -24,8 +23,8 @@ public class OrderItemDTOResponse {
     @NotBlank(message = "Instructions Can't Be Empty")
     private String specialInstructions;
 
-    public static OrderItemDTOResponse convertToDTO(OrderItem entity) {
-        OrderItemDTOResponse dto = new OrderItemDTOResponse();
+    public static OrderItemResponseDTO convertToDTO(OrderItem entity) {
+        OrderItemResponseDTO dto = new OrderItemResponseDTO();
         dto.setId(entity.getId());
         dto.setQuantity(entity.getQuantity());
         dto.setUnitPrice(entity.getUnitPrice());
@@ -36,8 +35,8 @@ public class OrderItemDTOResponse {
 
     @NotEmpty
     @Valid
-    public static List<OrderItemDTOResponse> convertToDTO(List<OrderItem> entities) {
-        List<OrderItemDTOResponse> dtos = new ArrayList<>();
+    public static List<OrderItemResponseDTO> convertToDTO(List<OrderItem> entities) {
+        List<OrderItemResponseDTO> dtos = new ArrayList<>();
         for (OrderItem entity : entities) {
             dtos.add(convertToDTO(entity));
         }

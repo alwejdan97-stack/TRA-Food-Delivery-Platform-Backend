@@ -2,7 +2,6 @@ package FoodDeliveryPlatform.demo.DTOs.Response;
 
 import FoodDeliveryPlatform.demo.DTOs.PersonDTO;
 import FoodDeliveryPlatform.demo.Entities.DeliveryDriver;
-import FoodDeliveryPlatform.demo.Entities.RestaurantOwner;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
@@ -13,9 +12,9 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class RestaurantOwnerResponse extends PersonDTO {
-    public static RestaurantOwnerResponse convertToDTO(RestaurantOwner entity) {
-        RestaurantOwnerResponse dto = new RestaurantOwnerResponse();
+public class DeliveryDriverResponseDTO extends PersonDTO {
+    public static DeliveryDriverResponseDTO convertToDTO(DeliveryDriver entity) {
+        DeliveryDriverResponseDTO dto = new DeliveryDriverResponseDTO();
         dto.setId(entity.getId());
         dto.setFirstName(entity.getFirstName());
         dto.setLastName(entity.getLastName());
@@ -27,9 +26,9 @@ public class RestaurantOwnerResponse extends PersonDTO {
 
     @NotEmpty
     @Valid
-    public static List<RestaurantOwnerResponse> convertToDTO(List<RestaurantOwner> entities) {
-        List<RestaurantOwnerResponse> dtos = new ArrayList<>();
-        for (RestaurantOwner entity : entities) {
+    public static List<DeliveryDriverResponseDTO> convertToDTO(List<DeliveryDriver> entities) {
+        List<DeliveryDriverResponseDTO> dtos = new ArrayList<>();
+        for (DeliveryDriver entity : entities) {
             dtos.add(convertToDTO(entity));
         }
         return dtos;

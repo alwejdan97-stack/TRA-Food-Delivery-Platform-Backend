@@ -1,6 +1,5 @@
 package FoodDeliveryPlatform.demo.DTOs.Response;
 
-import FoodDeliveryPlatform.demo.Entities.Customer;
 import FoodDeliveryPlatform.demo.Entities.CustomerAddress;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -14,7 +13,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class CustomerAddressResponse {
+public class CustomerAddressResponseDTO {
     @NotNull
     private Integer id;
     @NotBlank(message = "Street Can't Be Null")
@@ -24,8 +23,8 @@ public class CustomerAddressResponse {
     @NotBlank(message = "Building Can't Be Null")
     private String building;
 
-    public static CustomerAddressResponse convertToDTO(CustomerAddress entity) {
-        CustomerAddressResponse dto = new CustomerAddressResponse();
+    public static CustomerAddressResponseDTO convertToDTO(CustomerAddress entity) {
+        CustomerAddressResponseDTO dto = new CustomerAddressResponseDTO();
         dto.setId(entity.getId());
         dto.setCity(entity.getCity());
         dto.setStreet(entity.getStreet());
@@ -35,8 +34,8 @@ public class CustomerAddressResponse {
 
     @NotEmpty
     @Valid
-    public static List<CustomerAddressResponse> convertToDTO(List<CustomerAddress> entities) {
-        List<CustomerAddressResponse> dtos = new ArrayList<>();
+    public static List<CustomerAddressResponseDTO> convertToDTO(List<CustomerAddress> entities) {
+        List<CustomerAddressResponseDTO> dtos = new ArrayList<>();
         for (CustomerAddress entity : entities) {
             dtos.add(convertToDTO(entity));
         }

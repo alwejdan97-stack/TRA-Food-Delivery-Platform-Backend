@@ -1,7 +1,7 @@
 package FoodDeliveryPlatform.demo.DTOs.Response;
 
 import FoodDeliveryPlatform.demo.DTOs.PersonDTO;
-import FoodDeliveryPlatform.demo.Entities.Customer;
+import FoodDeliveryPlatform.demo.Entities.RestaurantOwner;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
@@ -12,16 +12,9 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class CustomerDTOResponse extends PersonDTO {
-    /*private Integer id;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String phone;
-    private String passwordHash;*/
-
-    public static CustomerDTOResponse convertToDTO(Customer entity) {
-        CustomerDTOResponse dto = new CustomerDTOResponse();
+public class RestaurantOwnerResponseDTO extends PersonDTO {
+    public static RestaurantOwnerResponseDTO convertToDTO(RestaurantOwner entity) {
+        RestaurantOwnerResponseDTO dto = new RestaurantOwnerResponseDTO();
         dto.setId(entity.getId());
         dto.setFirstName(entity.getFirstName());
         dto.setLastName(entity.getLastName());
@@ -33,9 +26,9 @@ public class CustomerDTOResponse extends PersonDTO {
 
     @NotEmpty
     @Valid
-    public static List<CustomerDTOResponse> convertToDTO(List<Customer> entities) {
-        List<CustomerDTOResponse> dtos = new ArrayList<>();
-        for (Customer entity : entities) {
+    public static List<RestaurantOwnerResponseDTO> convertToDTO(List<RestaurantOwner> entities) {
+        List<RestaurantOwnerResponseDTO> dtos = new ArrayList<>();
+        for (RestaurantOwner entity : entities) {
             dtos.add(convertToDTO(entity));
         }
         return dtos;

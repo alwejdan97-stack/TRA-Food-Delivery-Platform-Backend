@@ -1,7 +1,6 @@
 package FoodDeliveryPlatform.demo.DTOs.Response;
 
 import FoodDeliveryPlatform.demo.Entities.Delivery;
-import FoodDeliveryPlatform.demo.Entities.DeliveryDriver;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -16,7 +15,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class DeliveryDTOResponse {
+public class DeliveryResponseDTO {
     @NotNull
     private Integer id;
     @NotBlank(message = "Code Can't Be Empty")
@@ -25,8 +24,8 @@ public class DeliveryDTOResponse {
     private Boolean status;
     private LocalDateTime assignedAt;
 
-    public static DeliveryDTOResponse convertToDTO(Delivery entity) {
-        DeliveryDTOResponse dto = new DeliveryDTOResponse();
+    public static DeliveryResponseDTO convertToDTO(Delivery entity) {
+        DeliveryResponseDTO dto = new DeliveryResponseDTO();
         dto.setId(entity.getId());
         dto.setTrackingCode(entity.getTrackingCode());
         dto.setStatus(entity.getStatus());
@@ -36,8 +35,8 @@ public class DeliveryDTOResponse {
 
     @NotEmpty
     @Valid
-    public static List<DeliveryDTOResponse> convertToDTO(List<Delivery> entities) {
-        List<DeliveryDTOResponse> dtos = new ArrayList<>();
+    public static List<DeliveryResponseDTO> convertToDTO(List<Delivery> entities) {
+        List<DeliveryResponseDTO> dtos = new ArrayList<>();
         for (Delivery entity : entities) {
             dtos.add(convertToDTO(entity));
         }

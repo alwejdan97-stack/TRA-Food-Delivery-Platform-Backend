@@ -1,7 +1,5 @@
 package FoodDeliveryPlatform.demo.DTOs.Request;
 
-import FoodDeliveryPlatform.demo.Entities.DeliveryDriver;
-import FoodDeliveryPlatform.demo.Entities.OrderItem;
 import FoodDeliveryPlatform.demo.Entities.Orders;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -11,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class OrdersDTORequest {
+public class OrdersRequestDTO {
     @NotNull
     private Integer id;
     @NotBlank(message = "Code Can't Be Null")

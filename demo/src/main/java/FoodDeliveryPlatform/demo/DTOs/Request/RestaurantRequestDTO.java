@@ -1,6 +1,5 @@
 package FoodDeliveryPlatform.demo.DTOs.Request;
 
-import FoodDeliveryPlatform.demo.Entities.Payment;
 import FoodDeliveryPlatform.demo.Entities.Restaurant;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -12,7 +11,7 @@ import java.time.LocalTime;
 
 @Data
 @NoArgsConstructor
-public class RestaurantDTORequest {
+public class RestaurantRequestDTO {
     @NotBlank(message = "Name Can't Be Empty")
     private String name;
     @NotBlank(message = "Description Can't Be Empty")

@@ -12,7 +12,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class PaymentDTOResponse {
+public class PaymentResponseDTO {
     @NotNull
     private Integer id;
     @NotBlank(message = "Payment Method Can't Be Empty")
@@ -23,8 +23,8 @@ public class PaymentDTOResponse {
     private Double amount;
     private LocalDateTime processedAt;
 
-    public static PaymentDTOResponse convertToDTO(Payment entity) {
-        PaymentDTOResponse dto = new PaymentDTOResponse();
+    public static PaymentResponseDTO convertToDTO(Payment entity) {
+        PaymentResponseDTO dto = new PaymentResponseDTO();
         dto.setId(entity.getId());
         dto.setPaymentMethod(dto.getPaymentMethod());
         dto.setStatus(entity.getStatus());
@@ -35,8 +35,8 @@ public class PaymentDTOResponse {
 
     @NotEmpty
     @Valid
-    public static List<PaymentDTOResponse> convertToDTO(List<Payment> entities) {
-        List<PaymentDTOResponse> dtos = new ArrayList<>();
+    public static List<PaymentResponseDTO> convertToDTO(List<Payment> entities) {
+        List<PaymentResponseDTO> dtos = new ArrayList<>();
         for (Payment entity : entities) {
             dtos.add(convertToDTO(entity));
         }

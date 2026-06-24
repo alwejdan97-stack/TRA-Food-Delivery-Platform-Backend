@@ -1,7 +1,6 @@
 package FoodDeliveryPlatform.demo.DTOs.Response;
 
 import FoodDeliveryPlatform.demo.Entities.CorporateOrder;
-import FoodDeliveryPlatform.demo.Entities.CustomerAddress;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.Data;
@@ -13,7 +12,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class CorporateOrderDTOResponse {
+public class CorporateOrderResponseDTO {
     @NotNull
     private Integer id;
     @NotBlank(message = "Code Can't Be Empty")
@@ -28,8 +27,8 @@ public class CorporateOrderDTOResponse {
     @DecimalMin("0.0")
     private Double totalAmount;
 
-    public static CorporateOrderDTOResponse convertToDTO(CorporateOrder entity) {
-        CorporateOrderDTOResponse dto = new CorporateOrderDTOResponse();
+    public static CorporateOrderResponseDTO convertToDTO(CorporateOrder entity) {
+        CorporateOrderResponseDTO dto = new CorporateOrderResponseDTO();
         dto.setId(entity.getId());
         dto.setCorporateCode(entity.getCorporateCode());
         dto.setCompanyName(entity.getCompanyName());
@@ -42,8 +41,8 @@ public class CorporateOrderDTOResponse {
 
     @NotEmpty
     @Valid
-    public static List<CorporateOrderDTOResponse> convertToDTO(List<CorporateOrder> entities) {
-        List<CorporateOrderDTOResponse> dtos = new ArrayList<>();
+    public static List<CorporateOrderResponseDTO> convertToDTO(List<CorporateOrder> entities) {
+        List<CorporateOrderResponseDTO> dtos = new ArrayList<>();
         for (CorporateOrder entity : entities) {
             dtos.add(convertToDTO(entity));
         }

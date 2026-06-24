@@ -1,6 +1,5 @@
 package FoodDeliveryPlatform.demo.DTOs.Response;
 
-import FoodDeliveryPlatform.demo.Entities.Payment;
 import FoodDeliveryPlatform.demo.Entities.Restaurant;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -13,7 +12,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class RestaurantDTOResponse {
+public class RestaurantResponseDTO {
     @NotNull
     private Integer id;
     @NotBlank(message = "Name Can't Be Empty")
@@ -27,8 +26,8 @@ public class RestaurantDTOResponse {
     @Pattern(regexp = "YES|...| NO")
     private Boolean acceptingOrders;
 
-    public static RestaurantDTOResponse convertToDTO(Restaurant entity) {
-        RestaurantDTOResponse dto = new RestaurantDTOResponse();
+    public static RestaurantResponseDTO convertToDTO(Restaurant entity) {
+        RestaurantResponseDTO dto = new RestaurantResponseDTO();
         dto.setId(entity.getId());
         dto.setName(dto.getName());
         dto.setDescription(entity.getDescription());
@@ -41,8 +40,8 @@ public class RestaurantDTOResponse {
 
     @NotEmpty
     @Valid
-    public static List<RestaurantDTOResponse> convertToDTO(List<Restaurant> entities) {
-        List<RestaurantDTOResponse> dtos = new ArrayList<>();
+    public static List<RestaurantResponseDTO> convertToDTO(List<Restaurant> entities) {
+        List<RestaurantResponseDTO> dtos = new ArrayList<>();
         for (Restaurant entity : entities) {
             dtos.add(convertToDTO(entity));
         }

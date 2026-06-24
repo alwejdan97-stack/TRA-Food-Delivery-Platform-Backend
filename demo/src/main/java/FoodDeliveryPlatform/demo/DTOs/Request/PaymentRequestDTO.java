@@ -1,6 +1,5 @@
 package FoodDeliveryPlatform.demo.DTOs.Request;
 
-import FoodDeliveryPlatform.demo.Entities.Orders;
 import FoodDeliveryPlatform.demo.Entities.Payment;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
@@ -12,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
-public class PaymentDTORequest {
+public class PaymentRequestDTO {
     @NotBlank(message = "Payment Method Can't Be Empty")
     private String paymentMethod;
     @Pattern(regexp = "PENDING|...| CANCELLED")

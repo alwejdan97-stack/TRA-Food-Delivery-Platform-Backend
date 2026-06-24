@@ -1,7 +1,6 @@
 package FoodDeliveryPlatform.demo.DTOs.Response;
 
 import FoodDeliveryPlatform.demo.Entities.MenuItem;
-import FoodDeliveryPlatform.demo.Entities.OrderItem;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.Data;
@@ -12,7 +11,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class MenuItemDTOResponse {
+public class MenuItemResponseDTO {
     @NotNull
     private Integer id;
     @NotBlank(message = "Name Can't Be Empty")
@@ -28,8 +27,8 @@ public class MenuItemDTOResponse {
     @DecimalMin("0.0")
     private Double calories;
 
-    public static MenuItemDTOResponse convertToDTO(MenuItem entity) {
-        MenuItemDTOResponse dto = new MenuItemDTOResponse();
+    public static MenuItemResponseDTO convertToDTO(MenuItem entity) {
+        MenuItemResponseDTO dto = new MenuItemResponseDTO();
         dto.setId(entity.getId());
         dto.setName(entity.getName());
         dto.setDescription(entity.getDescription());
@@ -42,8 +41,8 @@ public class MenuItemDTOResponse {
 
     @NotEmpty
     @Valid
-    public static List<MenuItemDTOResponse> convertToDTO(List<MenuItem> entities) {
-        List<MenuItemDTOResponse> dtos = new ArrayList<>();
+    public static List<MenuItemResponseDTO> convertToDTO(List<MenuItem> entities) {
+        List<MenuItemResponseDTO> dtos = new ArrayList<>();
         for (MenuItem entity : entities) {
             dtos.add(convertToDTO(entity));
         }

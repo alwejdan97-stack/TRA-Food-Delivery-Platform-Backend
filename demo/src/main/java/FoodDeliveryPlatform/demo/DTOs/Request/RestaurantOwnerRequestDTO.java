@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class RestaurantOwnerRequest extends PersonDTO {
+public class RestaurantOwnerRequestDTO extends PersonDTO {
     public void applyToEntity(DeliveryDriver entity){
         entity.setId(this.getId());
         entity.setFirstName(this.getFirstName());

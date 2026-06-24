@@ -1,17 +1,15 @@
 package FoodDeliveryPlatform.demo.DTOs.Request;
 
 import FoodDeliveryPlatform.demo.Entities.MenuItem;
-import FoodDeliveryPlatform.demo.Entities.OrderItem;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class MenuItemDTORequest {
+public class MenuItemRequestDTO {
     @NotBlank(message = "Name Can't Be Empty")
     private String name;
     @DecimalMin("0.0")

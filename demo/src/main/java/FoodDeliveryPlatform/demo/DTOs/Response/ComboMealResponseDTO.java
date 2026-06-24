@@ -1,7 +1,6 @@
 package FoodDeliveryPlatform.demo.DTOs.Response;
 
 import FoodDeliveryPlatform.demo.Entities.ComboMeal;
-import FoodDeliveryPlatform.demo.Entities.CorporateOrder;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
@@ -15,7 +14,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class ComboMealDTOResponse {
+public class ComboMealResponseDTO {
     @NotNull
     private Integer id;
     @NotBlank(message = "Name Can't Be Empty")
@@ -25,8 +24,8 @@ public class ComboMealDTOResponse {
     @DecimalMin("0.0")
     private Double totalPrice;
 
-    public static ComboMealDTOResponse convertToDTO(ComboMeal entity) {
-        ComboMealDTOResponse dto = new ComboMealDTOResponse();
+    public static ComboMealResponseDTO convertToDTO(ComboMeal entity) {
+        ComboMealResponseDTO dto = new ComboMealResponseDTO();
         dto.setId(entity.getId());
         dto.setComboName(entity.getComboName());
         dto.setDescription(entity.getDescription());
@@ -36,8 +35,8 @@ public class ComboMealDTOResponse {
 
     @NotEmpty
     @Valid
-    public static List<ComboMealDTOResponse> convertToDTO(List<ComboMeal> entities) {
-        List<ComboMealDTOResponse> dtos = new ArrayList<>();
+    public static List<ComboMealResponseDTO> convertToDTO(List<ComboMeal> entities) {
+        List<ComboMealResponseDTO> dtos = new ArrayList<>();
         for (ComboMeal entity : entities) {
             dtos.add(convertToDTO(entity));
         }

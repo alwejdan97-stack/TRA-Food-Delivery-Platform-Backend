@@ -1,6 +1,5 @@
 package FoodDeliveryPlatform.demo.DTOs.Response;
 
-import FoodDeliveryPlatform.demo.Entities.RestaurantOwner;
 import FoodDeliveryPlatform.demo.Entities.Review;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -12,7 +11,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class ReviewDTOResponse {
+public class ReviewResponseDTO {
     @NotNull
     private Integer id;
     @NotBlank(message = "Target Can't Be Empty")
@@ -22,8 +21,8 @@ public class ReviewDTOResponse {
     @NotBlank(message = "Comment Can't Be Empty")
     private String comment;
 
-    public static ReviewDTOResponse convertToDTO(Review entity) {
-        ReviewDTOResponse dto = new ReviewDTOResponse();
+    public static ReviewResponseDTO convertToDTO(Review entity) {
+        ReviewResponseDTO dto = new ReviewResponseDTO();
         dto.setId(entity.getId());
         dto.setComment(entity.getComment());
         dto.setTargetType(entity.getTargetType());
@@ -33,8 +32,8 @@ public class ReviewDTOResponse {
 
     @NotEmpty
     @Valid
-    public static List<ReviewDTOResponse> convertToDTO(List<Review> entities) {
-        List<ReviewDTOResponse> dtos = new ArrayList<>();
+    public static List<ReviewResponseDTO> convertToDTO(List<Review> entities) {
+        List<ReviewResponseDTO> dtos = new ArrayList<>();
         for (Review entity : entities) {
             dtos.add(convertToDTO(entity));
         }

@@ -1,6 +1,5 @@
 package FoodDeliveryPlatform.demo.DTOs.Response;
 
-import FoodDeliveryPlatform.demo.Entities.Customer;
 import FoodDeliveryPlatform.demo.Entities.Orders;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -13,7 +12,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class OrdersDTOResponse {
+public class OrdersResponseDTO {
     @NotNull
     private Integer id;
     @NotBlank(message = "Code Can't Be Null")
@@ -30,8 +29,8 @@ public class OrdersDTOResponse {
     @DecimalMin("0.0")
     private Double totalAmount;
 
-    public static OrdersDTOResponse convertToDTO(Orders entity) {
-        OrdersDTOResponse dto = new OrdersDTOResponse();
+    public static OrdersResponseDTO convertToDTO(Orders entity) {
+        OrdersResponseDTO dto = new OrdersResponseDTO();
         dto.setId(entity.getId());
         dto.setOrderCode(dto.getOrderCode());
         dto.setOrderDate(entity.getOrderDate());
@@ -45,8 +44,8 @@ public class OrdersDTOResponse {
 
     @NotEmpty
     @Valid
-    public static List<OrdersDTOResponse> convertToDTO(List<Orders> entities) {
-        List<OrdersDTOResponse> dtos = new ArrayList<>();
+    public static List<OrdersResponseDTO> convertToDTO(List<Orders> entities) {
+        List<OrdersResponseDTO> dtos = new ArrayList<>();
         for (Orders entity : entities) {
             dtos.add(convertToDTO(entity));
         }
