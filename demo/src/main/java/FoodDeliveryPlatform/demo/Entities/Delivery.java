@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Delivery extends BaseEntity{
     private String trackingCode;
-    private boolean status;
+    private Boolean status;
     private LocalDateTime assignedAt;
     private LocalDateTime pickedUpAt;
     private LocalDateTime deliveredAt;

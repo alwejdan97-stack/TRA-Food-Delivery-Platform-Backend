@@ -13,7 +13,7 @@ public class CustomerAddress extends BaseEntity{
     private String street;
     private String city;
     private String building;
-    private boolean isDefault;
+    private Boolean isDefault;
 
     @ManyToOne
     private Customer customer;

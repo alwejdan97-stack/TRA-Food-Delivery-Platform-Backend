@@ -17,8 +17,8 @@ public class BaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    private boolean isAvailable;
+    private Boolean isAvailable;
     private LocalDate createdDate;
     private LocalDate updatedDate;
-    private boolean isActive;
+    private Boolean isActive;
 }

@@ -6,7 +6,6 @@ import FoodDeliveryPlatform.demo.DTOs.Response.CustomerResponseDTO;
 import FoodDeliveryPlatform.demo.Entities.Customer;
 import FoodDeliveryPlatform.demo.Entities.CustomerAddress;
 import FoodDeliveryPlatform.demo.Exceptions.ErrorMessage;
-import FoodDeliveryPlatform.demo.Exceptions.GlobalExceptionHandler;
 import FoodDeliveryPlatform.demo.Exceptions.ResourceNotFoundException;
 import FoodDeliveryPlatform.demo.Repositories.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +17,9 @@ import java.util.List;
 @Service
 public class CustomerService {
     CustomerRepository customerRepository;
-    CustomerRequestDTO customerDTORequest;
-    CustomerResponseDTO customerDTOResponse;
-    CustomerAddressRequestDTO customerAddressRequest;
+    CustomerRequestDTO customerRequestDTO;
+    CustomerResponseDTO customerResponseDTO;
+    CustomerAddressRequestDTO customerAddressRequestDTO;
     Customer customer;
     CustomerAddress customerAddress;
     public static List<Customer> customers;
@@ -28,9 +27,9 @@ public class CustomerService {
     @Autowired
     public CustomerService(CustomerRepository customerRepository, CustomerRequestDTO customerDTORequest, CustomerResponseDTO customerDTOResponse, CustomerAddressRequestDTO customerAddressRequest, Customer customer, CustomerAddress customerAddress) {
         this.customerRepository = customerRepository;
-        this.customerDTORequest = customerDTORequest;
-        this.customerDTOResponse = customerDTOResponse;
-        this.customerAddressRequest = customerAddressRequest;
+        this.customerRequestDTO = customerDTORequest;
+        this.customerResponseDTO = customerDTOResponse;
+        this.customerAddressRequestDTO = customerAddressRequest;
         this.customer = customer;
         this.customerAddress=customerAddress;
     }
@@ -45,14 +44,14 @@ public class CustomerService {
 
         Customer newCustomer=customerRepository.save(customer);
 
-        customerDTOResponse.setId(newCustomer.getId());
-        customerDTOResponse.setFirstName(newCustomer.getFirstName());
-        customerDTOResponse.setLastName(newCustomer.getLastName());
-        customerDTOResponse.setPhone(newCustomer.getPhone());
-        customerDTOResponse.setEmail(newCustomer.getEmail());
-        customerDTOResponse.setPassword(newCustomer.getPasswordHash());
+        customerResponseDTO.setId(newCustomer.getId());
+        customerResponseDTO.setFirstName(newCustomer.getFirstName());
+        customerResponseDTO.setLastName(newCustomer.getLastName());
+        customerResponseDTO.setPhone(newCustomer.getPhone());
+        customerResponseDTO.setEmail(newCustomer.getEmail());
+        customerResponseDTO.setPassword(newCustomer.getPasswordHash());
 
-        return customerDTOResponse;
+        return customerResponseDTO;
     }
 
     public CustomerResponseDTO createCustomer(CustomerRequestDTO dto, CustomerAddressRequestDTO initialAddress){
@@ -77,20 +76,22 @@ public class CustomerService {
         Customer newCustomer=customerRepository.save(customer);
 
         //assign customer to CustomerResponseDTO
-        customerDTOResponse.setId(newCustomer.getId());
-        customerDTOResponse.setFirstName(newCustomer.getFirstName());
-        customerDTOResponse.setLastName(newCustomer.getLastName());
-        customerDTOResponse.setPhone(newCustomer.getPhone());
-        customerDTOResponse.setEmail(newCustomer.getEmail());
-        customerDTOResponse.setPassword(newCustomer.getPasswordHash());
+        customerResponseDTO.setId(newCustomer.getId());
+        customerResponseDTO.setFirstName(newCustomer.getFirstName());
+        customerResponseDTO.setLastName(newCustomer.getLastName());
+        customerResponseDTO.setPhone(newCustomer.getPhone());
+        customerResponseDTO.setEmail(newCustomer.getEmail());
+        customerResponseDTO.setPassword(newCustomer.getPasswordHash());
 
-        return customerDTOResponse;
+        return customerResponseDTO;
     }
 
     public CustomerResponseDTO addAddress(Integer customerId, CustomerAddressRequestDTO address){
         if(customers.isEmpty() || !customerRepository.existsById(customerId)){
             throw new ResourceNotFoundException(ErrorMessage.CUSTOMER_NOT_FOUND);
         }
+        Customer customer=customers.get(customerId);
+
         customerAddress.setId(address.getId());
         customerAddress.setStreet(address.getStreet());
         customerAddress.setCity(address.getCity());
@@ -102,31 +103,33 @@ public class CustomerService {
 
         Customer newCustomer=customerRepository.save(customer);
 
-        customerDTOResponse.setId(newCustomer.getId());
-        customerDTOResponse.setFirstName(newCustomer.getFirstName());
-        customerDTOResponse.setLastName(newCustomer.getLastName());
-        customerDTOResponse.setPhone(newCustomer.getPhone());
-        customerDTOResponse.setEmail(newCustomer.getEmail());
-        customerDTOResponse.setPassword(newCustomer.getPasswordHash());
-        return customerDTOResponse;
+        customerResponseDTO.setId(newCustomer.getId());
+        customerResponseDTO.setFirstName(newCustomer.getFirstName());
+        customerResponseDTO.setLastName(newCustomer.getLastName());
+        customerResponseDTO.setPhone(newCustomer.getPhone());
+        customerResponseDTO.setEmail(newCustomer.getEmail());
+        customerResponseDTO.setPassword(newCustomer.getPasswordHash());
+        return customerResponseDTO;
     }
 
     public CustomerResponseDTO updateLoyaltyPoints(Integer customerId, int points){
         if (customers.isEmpty() || !customerRepository.existsById(customerId)) {
             throw new ResourceNotFoundException(ErrorMessage.CUSTOMER_NOT_FOUND);
         }
+        Customer customer=customers.get(customerId);
+
         customer.setLoyaltyPoints(customer.getLoyaltyPoints()+ points);
         customer.setUpdatedDate(LocalDate.now());
 
         Customer newCustomer=customerRepository.save(customer);
 
-        customerDTOResponse.setId(newCustomer.getId());
-        customerDTOResponse.setFirstName(newCustomer.getFirstName());
-        customerDTOResponse.setLastName(newCustomer.getLastName());
-        customerDTOResponse.setPhone(newCustomer.getPhone());
-        customerDTOResponse.setEmail(newCustomer.getEmail());
-        customerDTOResponse.setPassword(newCustomer.getPasswordHash());
-        return customerDTOResponse;
+        customerResponseDTO.setId(newCustomer.getId());
+        customerResponseDTO.setFirstName(newCustomer.getFirstName());
+        customerResponseDTO.setLastName(newCustomer.getLastName());
+        customerResponseDTO.setPhone(newCustomer.getPhone());
+        customerResponseDTO.setEmail(newCustomer.getEmail());
+        customerResponseDTO.setPassword(newCustomer.getPasswordHash());
+        return customerResponseDTO;
     }
     public CustomerResponseDTO applyLoyaltyPenalty(Integer customerId, int pointsDeducted){
         if (customers.isEmpty() || !customerRepository.existsById(customerId)) {
@@ -140,14 +143,25 @@ public class CustomerService {
 
         Customer newCustomer=customerRepository.save(customer);
 
-        customerDTOResponse.setId(newCustomer.getId());
-        customerDTOResponse.setFirstName(newCustomer.getFirstName());
-        customerDTOResponse.setLastName(newCustomer.getLastName());
-        customerDTOResponse.setPhone(newCustomer.getPhone());
-        customerDTOResponse.setEmail(newCustomer.getEmail());
-        customerDTOResponse.setPassword(newCustomer.getPasswordHash());
-        return customerDTOResponse;
+        customerResponseDTO.setId(newCustomer.getId());
+        customerResponseDTO.setFirstName(newCustomer.getFirstName());
+        customerResponseDTO.setLastName(newCustomer.getLastName());
+        customerResponseDTO.setPhone(newCustomer.getPhone());
+        customerResponseDTO.setEmail(newCustomer.getEmail());
+        customerResponseDTO.setPassword(newCustomer.getPasswordHash());
+        return customerResponseDTO;
     }
 
-    deactivateCustomer(Integer customerId){}
+    public void deactivateCustomer(Integer customerId){
+        if (customers.isEmpty() || !customerRepository.existsById(customerId)) {
+            throw new ResourceNotFoundException(ErrorMessage.CUSTOMER_NOT_FOUND);
+        }
+        Customer customer=customers.get(customerId);
+
+        customer.setIsActive(false);
+
+        customer.setUpdatedDate(LocalDate.now());
+
+        Customer newCustomer=customerRepository.save(customer);
+    }
 }

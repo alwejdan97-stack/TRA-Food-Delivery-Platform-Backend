@@ -23,7 +23,7 @@ public class DeliveryDriver extends BaseEntity{
     private String vehiclePlate;
     private double currentLat;
     private double currentLng;
-    private boolean isOnline;
+    private Boolean isOnline;
 
     @OneToMany()
     private List<Delivery> deliveries;
