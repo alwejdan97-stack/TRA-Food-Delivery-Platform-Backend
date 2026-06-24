@@ -61,7 +61,7 @@ public class OrderService {
                 throw new ResourceNotFoundException(ErrorMessage.ITEM_NOT_FOUND);
             }
             OrderItem orderItem=new OrderItem();
-            orderItem.setCorporateOrder();
+            orderItem.setOrders(order);
             orderItem.setMenuItem(menuItem);
             orderItem.setQuantity(oi.getQuantity());
             orderItem.setUnitPrice(menuItem.getPrice());
@@ -95,11 +95,37 @@ public class OrderService {
         Orders order=new Orders();
         order.setRestaurant(restaurant);
         order.setCustomer(customer);
+        order.setDeliveryNotes(notes);
         order.setStatus("PENDING");
         order.setUpdatedDate(LocalDate.now());
 
-        List<OrderItemRequestDTO> orderItemRequestDTOS=new ArrayList<>();
-        double amount=0.0;
+        List<OrderItem> orderItems=new ArrayList<>();
+        double totalAmount=0.0;
+
+        for(OrderItemRequestDTO oi:items){
+            MenuItem menuItem = menuItemRepository.findById(oi.getId()).get();
+            if(menuItem==null || !menuItem.getIsActive()){
+                throw new ResourceNotFoundException(ErrorMessage.ITEM_NOT_FOUND);
+            }
+            OrderItem orderItem=new OrderItem();
+            orderItem.setOrders(order);
+            orderItem.setMenuItem(menuItem);
+            orderItem.setQuantity(oi.getQuantity());
+            orderItem.setUnitPrice(menuItem.getPrice());
+
+            totalAmount= totalAmount+menuItem.getPrice()*oi.getQuantity();
+
+            orderItems.add(orderItem);
+        }
+        totalAmount=totalAmount+restaurant.getDeliveryFee();
+        order.setTotalAmount(totalAmount);
+        order.setOrderItems(orderItems);
+
+        Orders orderToSave=orderRepository.save(order);
+
+        List<OrdersResponseDTO> ordersResponseDTOS=new ArrayList<>();
+        ordersResponseDTOS.add(OrdersResponseDTO.convertToDTO(orderToSave));
+        return ordersResponseDTOS;
     }
 
     public List<MenuItemResponseDTO> addMenuItemToOrder(Integer orderId, Integer menuItemId, int quantity)

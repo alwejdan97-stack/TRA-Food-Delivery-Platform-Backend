@@ -13,11 +13,11 @@ public class OrderItem extends BaseEntity{
     private double totalPrice;
     private String specialInstructions;
 
-    @ManyToOne
-    private CorporateOrder corporateOrder;
+    /*@ManyToOne
+    private CorporateOrder corporateOrder;*/
 
-   /* @ManyToOne
-    private Orders orders;*/
+   @ManyToOne
+    private Orders orders;
 
     @ManyToOne
     private MenuItem menuItem;
