@@ -132,6 +132,21 @@ public class CustomerService {
         if (customers.isEmpty() || !customerRepository.existsById(customerId)) {
             throw new ResourceNotFoundException(ErrorMessage.CUSTOMER_NOT_FOUND);
         }
+        Customer customer=customers.get(customerId);
+        int existPoint=customer.getLoyaltyPoints();
+        customer.setLoyaltyPoints(Math.max(0,existPoint-pointsDeducted));
+
+        customer.setUpdatedDate(LocalDate.now());
+
+        Customer newCustomer=customerRepository.save(customer);
+
+        customerDTOResponse.setId(newCustomer.getId());
+        customerDTOResponse.setFirstName(newCustomer.getFirstName());
+        customerDTOResponse.setLastName(newCustomer.getLastName());
+        customerDTOResponse.setPhone(newCustomer.getPhone());
+        customerDTOResponse.setEmail(newCustomer.getEmail());
+        customerDTOResponse.setPassword(newCustomer.getPasswordHash());
+        return customerDTOResponse;
     }
 
     deactivateCustomer(Integer customerId){}
