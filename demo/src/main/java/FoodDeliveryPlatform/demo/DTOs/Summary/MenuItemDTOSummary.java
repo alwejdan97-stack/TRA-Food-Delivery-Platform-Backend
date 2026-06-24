@@ -18,11 +18,11 @@ public class MenuItemDTOSummary {
     @NotBlank(message = "Name Can't Be Empty")
     private String description;
     @DecimalMin("0.0")
-    private Double price;
+    private double price;
     @Pattern(regexp = "YES|...| NO")
-    private Boolean isAvailable;
+    private boolean isAvailable;
     @DecimalMin("0.0")
-    private Double calories;
+    private double calories;
 
     public static MenuItemDTOSummary fromEntity(MenuItem entity) {
         MenuItemDTOSummary dto = new MenuItemDTOSummary();

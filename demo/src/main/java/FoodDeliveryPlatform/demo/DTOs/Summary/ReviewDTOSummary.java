@@ -15,7 +15,7 @@ public class ReviewDTOSummary {
     @NotBlank(message = "Target Can't Be Empty")
     private String targetType;
     @Min(1) @Max(5)
-    private Integer rating;
+    private int rating;
     @NotBlank(message = "Comment Can't Be Empty")
     private String comment;
 

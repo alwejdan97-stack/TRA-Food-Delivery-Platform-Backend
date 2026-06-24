@@ -15,9 +15,9 @@ public class OrderItemDTOSummary {
     @PositiveOrZero
     private Integer quantity;
     @DecimalMin("0.0")
-    private Double unitPrice;
+    private double unitPrice;
     @DecimalMin("0.0")
-    private Double totalPrice;
+    private double totalPrice;
     @NotBlank(message = "Instructions Can't Be Empty")
     private String specialInstructions;
 

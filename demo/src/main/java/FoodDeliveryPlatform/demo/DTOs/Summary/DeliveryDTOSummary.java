@@ -16,7 +16,7 @@ public class DeliveryDTOSummary {
     @NotBlank(message = "Code Can't Be Empty")
     private String trackingCode;
     @Pattern(regexp = "PENDING|...| CANCELLED")
-    private Boolean status;
+    private boolean status;
     private LocalDateTime assignedAt;
     private LocalDateTime pickedUpAt;
     private LocalDateTime deliveredAt;

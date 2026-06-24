@@ -14,7 +14,7 @@ public class ComboMealDTOSummary {
     @NotBlank(message = "Description Can't Be Empty")
     private String description;
     @DecimalMin("0.0")
-    private Double totalPrice;
+    private double totalPrice;
 
     public static ComboMealDTOSummary fromEntity(ComboMeal entity) {
         ComboMealDTOSummary dto = new ComboMealDTOSummary();

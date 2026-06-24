@@ -19,7 +19,7 @@ public class PaymentDTOSummary {
     @Pattern(regexp = "PENDING|...| CANCELLED")
     private Boolean status;
     @DecimalMin("0.0")
-    private Double amount;
+    private double amount;
     private LocalDateTime processedAt;
 
     public static PaymentDTOSummary fromEntity(Payment entity) {
