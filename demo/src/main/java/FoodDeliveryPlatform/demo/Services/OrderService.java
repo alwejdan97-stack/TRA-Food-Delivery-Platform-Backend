@@ -128,7 +128,55 @@ public class OrderService {
         return ordersResponseDTOS;
     }
 
-    public List<MenuItemResponseDTO> addMenuItemToOrder(Integer orderId, Integer menuItemId, int quantity)
+    public List<MenuItemResponseDTO> addMenuItemToOrder(Integer orderId, Integer menuItemId, int quantity){
+        Optional<MenuItem> menuItems = menuItemRepository.findById(menuItemId);
+        Optional<Orders> orders = orderRepository.findById(orderId);
+
+        if(menuItems.isEmpty() || !menuItems.get().getIsActive()){
+            throw new ResourceNotFoundException(ErrorMessage.ITEM_NOT_FOUND);
+        }else if(orders.isEmpty() || !orders.get().getIsActive()){
+            throw new ResourceNotFoundException(ErrorMessage.ORDER_NOT_FOUND);
+        }else if(quantity<=0){
+            throw new IllegalArgumentException(ErrorMessage.INVALID_QUANTITY);
+        }
+        MenuItem menuItem=menuItems.get();
+        Orders order=orders.get();
+        String status="PENDING";
+        if(!status.equalsIgnoreCase(order.getStatus())){
+            throw new IllegalStateException(ErrorMessage.ORDER_STATUS);
+        }
+        boolean itemAlreadyOrdered=false;
+        for(OrderItem oi: order.getOrderItems()){
+            if(oi.getMenuItem().getId().equals(menuItemId)){
+                oi.setQuantity(oi.getQuantity()+quantity);
+                itemAlreadyOrdered=true;
+                break;
+            }
+        }
+        if(!itemAlreadyOrdered){
+            OrderItem newOrderItem=new OrderItem();
+            newOrderItem.setMenuItem(menuItem);
+            newOrderItem.setOrders(order);
+            newOrderItem.setQuantity(quantity);
+            newOrderItem.setUnitPrice(menuItem.getPrice());
+
+            order.getOrderItems().add(newOrderItem);
+        }
+        double currentTotal = 0.0;
+        for (OrderItem item : order.getOrderItems()) {
+            currentTotal = currentTotal+ item.getUnitPrice() * item.getQuantity();
+        }
+        currentTotal += order.getRestaurant().getDeliveryFee();
+        order.setTotalAmount(currentTotal);
+        order.setUpdatedDate(LocalDate.now());
+
+        orderRepository.save(order);
+        List<MenuItemResponseDTO> menuItemResponseDTOS=new ArrayList<>();
+        for (OrderItem item : order.getOrderItems()) {
+            menuItemResponseDTOS.add(MenuItemResponseDTO.convertToDTO(item.getMenuItem()));
+        }
+        return menuItemResponseDTOS;
+    }
 
     public List<MenuItemResponseDTO> removeMenuItemFromOrder(Integer orderId, Integer orderItemId)
 
