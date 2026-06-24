@@ -19,15 +19,15 @@ public class OrdersResponseDTO {
     private String orderCode;
     private LocalDate orderDate;
     @Pattern(regexp = "PENDING|...| CANCELLED")
-    private Boolean status;
+    private boolean status;
     @DecimalMin("0.0")
-    private Double subtotal;
+    private double subtotal;
     @DecimalMin("0.0")
-    private Double deliveryFee;
+    private double deliveryFee;
     @DecimalMin("0.0")
-    private Double discountAmount;
+    private double discountAmount;
     @DecimalMin("0.0")
-    private Double totalAmount;
+    private double totalAmount;
 
     public static OrdersResponseDTO convertToDTO(Orders entity) {
         OrdersResponseDTO dto = new OrdersResponseDTO();

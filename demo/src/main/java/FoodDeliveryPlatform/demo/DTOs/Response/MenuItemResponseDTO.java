@@ -19,13 +19,13 @@ public class MenuItemResponseDTO {
     @NotBlank(message = "Name Can't Be Empty")
     private String description;
     @DecimalMin("0.0")
-    private Double price;
+    private double price;
     @Pattern(regexp = "YES|...| NO")
-    private Boolean isAvailable;
+    private boolean isAvailable;
     @Pattern(regexp = "YES|...| NO")
-    private Boolean isVegetarian;
+    private boolean isVegetarian;
     @DecimalMin("0.0")
-    private Double calories;
+    private double calories;
 
     public static MenuItemResponseDTO convertToDTO(MenuItem entity) {
         MenuItemResponseDTO dto = new MenuItemResponseDTO();
@@ -33,8 +33,8 @@ public class MenuItemResponseDTO {
         dto.setName(entity.getName());
         dto.setDescription(entity.getDescription());
         dto.setPrice(entity.getPrice());
-        dto.setIsAvailable(entity.getIsAvailable());
-        dto.setIsVegetarian(entity.getIsVegetarian());
+        dto.setAvailable(entity.getIsAvailable());
+        dto.setVegetarian(entity.getIsVegetarian());
         dto.setCalories(entity.getCalories());
         return dto;
     }

@@ -18,9 +18,9 @@ public class PaymentResponseDTO {
     @NotBlank(message = "Payment Method Can't Be Empty")
     private String paymentMethod;
     @Pattern(regexp = "PENDING|...| CANCELLED")
-    private Boolean status;
+    private boolean status;
     @DecimalMin("0.0")
-    private Double amount;
+    private double amount;
     private LocalDateTime processedAt;
 
     public static PaymentResponseDTO convertToDTO(Payment entity) {

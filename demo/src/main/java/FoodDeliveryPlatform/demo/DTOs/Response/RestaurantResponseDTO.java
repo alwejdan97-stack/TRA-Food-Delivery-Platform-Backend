@@ -22,9 +22,9 @@ public class RestaurantResponseDTO {
     private LocalTime openingTime;
     private LocalTime closingTime;
     @Min(1)
-    private Double minOrderAmount;
+    private double minOrderAmount;
     @Pattern(regexp = "YES|...| NO")
-    private Boolean acceptingOrders;
+    private boolean acceptingOrders;
 
     public static RestaurantResponseDTO convertToDTO(Restaurant entity) {
         RestaurantResponseDTO dto = new RestaurantResponseDTO();

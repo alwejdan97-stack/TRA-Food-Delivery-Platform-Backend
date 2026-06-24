@@ -20,12 +20,12 @@ public class CorporateOrderResponseDTO {
     @NotBlank(message = "Name Can't Be Empty")
     private String companyName;
     @DecimalMin("0.0")
-    private Double costCenter;
+    private double costCenter;
     private LocalDate orderDate;
     @Pattern(regexp = "PENDING|...| CANCELLED")
-    private Boolean status;
+    private boolean status;
     @DecimalMin("0.0")
-    private Double totalAmount;
+    private double totalAmount;
 
     public static CorporateOrderResponseDTO convertToDTO(CorporateOrder entity) {
         CorporateOrderResponseDTO dto = new CorporateOrderResponseDTO();

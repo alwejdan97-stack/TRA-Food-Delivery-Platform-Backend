@@ -22,7 +22,7 @@ public class ComboMealResponseDTO {
     @NotBlank(message = "Description Can't Be Empty")
     private String description;
     @DecimalMin("0.0")
-    private Double totalPrice;
+    private double totalPrice;
 
     public static ComboMealResponseDTO convertToDTO(ComboMeal entity) {
         ComboMealResponseDTO dto = new ComboMealResponseDTO();
