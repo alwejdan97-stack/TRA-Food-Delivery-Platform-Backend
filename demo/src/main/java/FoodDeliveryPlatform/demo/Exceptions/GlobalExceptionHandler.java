@@ -15,9 +15,6 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler extends RuntimeException{
-   /* public GlobalExceptionHandler(String message){
-        super(message);
-    }*/
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGlobalException(Exception ex, WebRequest request) {
@@ -30,14 +27,14 @@ public class GlobalExceptionHandler extends RuntimeException{
         return new ResponseEntity<>(errorDetails,status);
     }
 
-    @ExceptionHandler(GenericException.class)
-    public ResponseEntity<ErrorResponse> handleGlobalException(GenericException exception, WebRequest request) {
+    /*@ExceptionHandler(GenericException.class)
+    public ResponseEntity<ErrorResponse> handleGenericException(GenericException exception, WebRequest request) {
         HttpStatus status=HttpStatus.INTERNAL_SERVER_ERROR;
         String path=request.getDescription(false).replace("uri=", "");
         ErrorResponse errorDetails = new ErrorResponse(LocalDate.now(),
                 status.value(),status,status.getReasonPhrase(), exception.getMessage(), path,null);
         return new ResponseEntity<>(errorDetails,status);
-    }
+    }*/
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleResourceNotFoundException(ResourceNotFoundException exception, WebRequest request) {
@@ -75,7 +72,7 @@ public class GlobalExceptionHandler extends RuntimeException{
             fieldErrors.put(fieldError.getField(),fieldError.getDefaultMessage());
         }
         ErrorResponse errorResponse = new ErrorResponse(LocalDate.now(), status.value(), status,
-                status.getReasonPhrase(), exception.getMessage(), path, null);
+                status.getReasonPhrase(), "Validation FAILED", path, fieldErrors);
         return ResponseEntity.status(status).body(errorResponse);
     }
 }
