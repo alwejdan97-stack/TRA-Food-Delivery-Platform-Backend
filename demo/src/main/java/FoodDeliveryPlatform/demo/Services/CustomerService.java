@@ -44,14 +44,15 @@ public class CustomerService {
 
         Customer newCustomer=customerRepository.save(customer);
 
-        customerResponseDTO.setId(newCustomer.getId());
+        //convert customer to CustomerResponseDTO
+        /*customerResponseDTO.setId(newCustomer.getId());
         customerResponseDTO.setFirstName(newCustomer.getFirstName());
         customerResponseDTO.setLastName(newCustomer.getLastName());
         customerResponseDTO.setPhone(newCustomer.getPhone());
         customerResponseDTO.setEmail(newCustomer.getEmail());
-        customerResponseDTO.setPassword(newCustomer.getPasswordHash());
+        customerResponseDTO.setPassword(newCustomer.getPasswordHash());*/
 
-        return customerResponseDTO;
+        return CustomerResponseDTO.convertToDTO(newCustomer);
     }
 
     public CustomerResponseDTO createCustomer(CustomerRequestDTO dto, CustomerAddressRequestDTO initialAddress){
@@ -75,15 +76,7 @@ public class CustomerService {
 
         Customer newCustomer=customerRepository.save(customer);
 
-        //assign customer to CustomerResponseDTO
-        customerResponseDTO.setId(newCustomer.getId());
-        customerResponseDTO.setFirstName(newCustomer.getFirstName());
-        customerResponseDTO.setLastName(newCustomer.getLastName());
-        customerResponseDTO.setPhone(newCustomer.getPhone());
-        customerResponseDTO.setEmail(newCustomer.getEmail());
-        customerResponseDTO.setPassword(newCustomer.getPasswordHash());
-
-        return customerResponseDTO;
+        return CustomerResponseDTO.convertToDTO(newCustomer);
     }
 
     public CustomerResponseDTO addAddress(Integer customerId, CustomerAddressRequestDTO address){
@@ -103,13 +96,7 @@ public class CustomerService {
 
         Customer newCustomer=customerRepository.save(customer);
 
-        customerResponseDTO.setId(newCustomer.getId());
-        customerResponseDTO.setFirstName(newCustomer.getFirstName());
-        customerResponseDTO.setLastName(newCustomer.getLastName());
-        customerResponseDTO.setPhone(newCustomer.getPhone());
-        customerResponseDTO.setEmail(newCustomer.getEmail());
-        customerResponseDTO.setPassword(newCustomer.getPasswordHash());
-        return customerResponseDTO;
+        return CustomerResponseDTO.convertToDTO(newCustomer);
     }
 
     public CustomerResponseDTO updateLoyaltyPoints(Integer customerId, int points){
@@ -123,13 +110,7 @@ public class CustomerService {
 
         Customer newCustomer=customerRepository.save(customer);
 
-        customerResponseDTO.setId(newCustomer.getId());
-        customerResponseDTO.setFirstName(newCustomer.getFirstName());
-        customerResponseDTO.setLastName(newCustomer.getLastName());
-        customerResponseDTO.setPhone(newCustomer.getPhone());
-        customerResponseDTO.setEmail(newCustomer.getEmail());
-        customerResponseDTO.setPassword(newCustomer.getPasswordHash());
-        return customerResponseDTO;
+        return CustomerResponseDTO.convertToDTO(newCustomer);
     }
     public CustomerResponseDTO applyLoyaltyPenalty(Integer customerId, int pointsDeducted){
         if (customers.isEmpty() || !customerRepository.existsById(customerId)) {
@@ -143,13 +124,7 @@ public class CustomerService {
 
         Customer newCustomer=customerRepository.save(customer);
 
-        customerResponseDTO.setId(newCustomer.getId());
-        customerResponseDTO.setFirstName(newCustomer.getFirstName());
-        customerResponseDTO.setLastName(newCustomer.getLastName());
-        customerResponseDTO.setPhone(newCustomer.getPhone());
-        customerResponseDTO.setEmail(newCustomer.getEmail());
-        customerResponseDTO.setPassword(newCustomer.getPasswordHash());
-        return customerResponseDTO;
+        return CustomerResponseDTO.convertToDTO(newCustomer);
     }
 
     public void deactivateCustomer(Integer customerId){

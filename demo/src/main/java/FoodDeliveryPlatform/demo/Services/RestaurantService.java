@@ -14,7 +14,6 @@ public class RestaurantService {
     RestaurantResponseDTO restaurantResponseDTO;
     RestaurantRequestDTO restaurantRequestDTO;
     RestaurantRepository restaurantRepository;
-    Rest
     Restaurant restaurant;
     public static List<Restaurant> restaurantList;
 
@@ -27,7 +26,25 @@ public class RestaurantService {
     }
 
     public RestaurantResponseDTO createRestaurant(RestaurantRequestDTO dto, Integer ownerId){
-        restaurant.setId(dto.get);
+        restaurant.setName(dto.getName());
+        restaurant.setDescription(dto.getDescription());
+        restaurant.setAcceptingOrders(true);
+        restaurant.setMinOrderAmount(dto.getMinOrderAmount());
+        restaurant.setOpeningTime(dto.getOpeningTime());
+        restaurant.setClosingTime(dto.getClosingTime());
+        restaurant.setIsActive(true);
+
+        Restaurant newRestaurant=restaurantRepository.save(restaurant);
+
+        /*restaurantResponseDTO.setId(newRestaurant.getId());
+        restaurantResponseDTO.setName(newRestaurant.getName());
+        restaurantResponseDTO.setDescription(newRestaurant.getDescription());
+        restaurantResponseDTO.setAcceptingOrders(newRestaurant.getAcceptingOrders());
+        restaurantResponseDTO.setOpeningTime(newRestaurant.getOpeningTime());
+        restaurantResponseDTO.setClosingTime(newRestaurant.getClosingTime());
+        restaurantResponseDTO.setMinOrderAmount(newRestaurant.getMinOrderAmount());*/
+
+        return RestaurantResponseDTO.convertToDTO(newRestaurant);
     }
 
     public RestaurantResponseDTO toggleAcceptingOrders(Integer restaurantId, boolean status){}
