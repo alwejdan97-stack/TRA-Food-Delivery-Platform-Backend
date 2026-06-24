@@ -3,11 +3,15 @@ package FoodDeliveryPlatform.demo.Services;
 import FoodDeliveryPlatform.demo.DTOs.Request.RestaurantRequestDTO;
 import FoodDeliveryPlatform.demo.DTOs.Response.RestaurantResponseDTO;
 import FoodDeliveryPlatform.demo.Entities.Restaurant;
+import FoodDeliveryPlatform.demo.Entities.RestaurantOwner;
 import FoodDeliveryPlatform.demo.Entities.RestaurantOwnerRepository;
+import FoodDeliveryPlatform.demo.Exceptions.ErrorMessage;
+import FoodDeliveryPlatform.demo.Exceptions.ResourceNotFoundException;
 import FoodDeliveryPlatform.demo.Repositories.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -15,21 +19,20 @@ public class RestaurantService {
     RestaurantResponseDTO restaurantResponseDTO;
     RestaurantRequestDTO restaurantRequestDTO;
     RestaurantRepository restaurantRepository;
-    RestaurantOwnerRepository restaurantOwner;
+    RestaurantOwner restaurantOwner;
     Restaurant restaurant;
     public static List<Restaurant> restaurantList;
 
     @Autowired
-    public RestaurantService(RestaurantResponseDTO restaurantResponseDTO, RestaurantRequestDTO restaurantRequestDTO, RestaurantRepository restaurantRepository, RestaurantOwnerRepository restaurantOwner, Restaurant restaurant) {
+    public RestaurantService(RestaurantResponseDTO restaurantResponseDTO, RestaurantRequestDTO restaurantRequestDTO, RestaurantRepository restaurantRepository, RestaurantOwner restaurantOwner, Restaurant restaurant) {
         this.restaurantResponseDTO = restaurantResponseDTO;
         this.restaurantRequestDTO = restaurantRequestDTO;
         this.restaurantRepository = restaurantRepository;
-        this.restaurantOwner = restaurantOwner;
+        this.restaurantOwner=restaurantOwner;
         this.restaurant = restaurant;
     }
 
     public RestaurantResponseDTO createRestaurant(RestaurantRequestDTO dto, Integer ownerId){
-        if(restaurantOwner.){}
         restaurant.setName(dto.getName());
         restaurant.setDescription(dto.getDescription());
         restaurant.setAcceptingOrders(true);
@@ -37,6 +40,7 @@ public class RestaurantService {
         restaurant.setOpeningTime(dto.getOpeningTime());
         restaurant.setClosingTime(dto.getClosingTime());
         restaurant.setIsActive(true);
+        //restaurant.setRestaurantOwner(ownerId);
 
         Restaurant newRestaurant=restaurantRepository.save(restaurant);
 
@@ -51,9 +55,33 @@ public class RestaurantService {
         return RestaurantResponseDTO.convertToDTO(newRestaurant);
     }
 
-    public RestaurantResponseDTO toggleAcceptingOrders(Integer restaurantId, boolean status){}
+    public RestaurantResponseDTO toggleAcceptingOrders(Integer restaurantId, boolean status){
+        if(restaurantList.isEmpty() || !restaurantRepository.existsById(restaurantId)){
+            throw new ResourceNotFoundException(ErrorMessage.RESTAURANT_NOT_FOUND);
+        }
+        Restaurant restaurant1=restaurantList.get(restaurantId);
 
-    public RestaurantResponseDTO updateDeliveryFee(Integer restaurantId, double newFee){}
+        restaurant1.setAcceptingOrders(status);
+        restaurant1.setUpdatedDate(LocalDate.now());
+
+        Restaurant updatedRestaurant=restaurantRepository.save(restaurant1);
+
+        return RestaurantResponseDTO.convertToDTO(updatedRestaurant);
+    }
+
+    public RestaurantResponseDTO updateDeliveryFee(Integer restaurantId, double newFee){
+        if(restaurantList.isEmpty() || !restaurantRepository.existsById(restaurantId)){
+            throw new ResourceNotFoundException(ErrorMessage.RESTAURANT_NOT_FOUND);
+        }
+        Restaurant restaurant1=restaurantList.get(restaurantId);
+
+        restaurant1.setDeliveryFee(newFee);
+        restaurant1.setUpdatedDate(LocalDate.now());
+
+        Restaurant updatedRestaurant=restaurantRepository.save(restaurant1);
+
+        return RestaurantResponseDTO.convertToDTO(updatedRestaurant);
+    }
 
     public RestaurantResponseDTO getRestaurantsByCuisine(String cuisine){}
 

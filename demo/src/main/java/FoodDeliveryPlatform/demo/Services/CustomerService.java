@@ -94,9 +94,9 @@ public class CustomerService {
         customer1.getCustomerAddresses().add(customerAddress);
         customer1.setUpdatedDate(LocalDate.now());
 
-        Customer newCustomer=customerRepository.save(customer1);
+        Customer updatedCustomer=customerRepository.save(customer1);
 
-        return CustomerResponseDTO.convertToDTO(newCustomer);
+        return CustomerResponseDTO.convertToDTO(updatedCustomer);
     }
 
     public CustomerResponseDTO updateLoyaltyPoints(Integer customerId, int points){
@@ -108,9 +108,9 @@ public class CustomerService {
         customer1.setLoyaltyPoints(customer1.getLoyaltyPoints()+ points);
         customer1.setUpdatedDate(LocalDate.now());
 
-        Customer newCustomer=customerRepository.save(customer1);
+        Customer updatedCustomer=customerRepository.save(customer1);
 
-        return CustomerResponseDTO.convertToDTO(newCustomer);
+        return CustomerResponseDTO.convertToDTO(updatedCustomer);
     }
     public CustomerResponseDTO applyLoyaltyPenalty(Integer customerId, int pointsDeducted){
         if (customers.isEmpty() || !customerRepository.existsById(customerId)) {
@@ -122,12 +122,12 @@ public class CustomerService {
 
         customer.setUpdatedDate(LocalDate.now());
 
-        Customer newCustomer=customerRepository.save(customer);
+        Customer updatedCustomer=customerRepository.save(customer);
 
-        return CustomerResponseDTO.convertToDTO(newCustomer);
+        return CustomerResponseDTO.convertToDTO(updatedCustomer);
     }
 
-    public void deactivateCustomer(Integer customerId){
+    public CustomerResponseDTO deactivateCustomer(Integer customerId){
         if (customers.isEmpty() || !customerRepository.existsById(customerId)) {
             throw new ResourceNotFoundException(ErrorMessage.CUSTOMER_NOT_FOUND);
         }
@@ -137,6 +137,8 @@ public class CustomerService {
 
         customer1.setUpdatedDate(LocalDate.now());
 
-        Customer newCustomer=customerRepository.save(customer1);
+        Customer updatedCustomer=customerRepository.save(customer1);
+
+        return CustomerResponseDTO.convertToDTO(updatedCustomer);
     }
 }
