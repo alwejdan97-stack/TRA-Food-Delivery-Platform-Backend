@@ -91,7 +91,7 @@ public class CustomerService {
         for(Customer c:customers){
             if(!customerRepository.existsById(customerId)){
                 throw new ResourceNotFoundException(ErrorMessage.CUSTOMER_NOT_FOUND);
-            }else
+            }
                 customerAddress.setId(address.getId());
                 customerAddress.setStreet(address.getStreet());
                 customerAddress.setCity(address.getCity());
