@@ -88,43 +88,44 @@ public class CustomerService {
     }
 
     public CustomerResponseDTO addAddress(Integer customerId, CustomerAddressRequestDTO address){
-            if(!customerRepository.existsById(customerId)){
-                throw new ResourceNotFoundException(ErrorMessage.CUSTOMER_NOT_FOUND);
-            }
-                customerAddress.setId(address.getId());
-                customerAddress.setStreet(address.getStreet());
-                customerAddress.setCity(address.getCity());
-                customerAddress.setBuilding(address.getBuilding());
-                customerAddress.setCustomer(customer);
+        if(!customerRepository.existsById(customerId)){
+            throw new ResourceNotFoundException(ErrorMessage.CUSTOMER_NOT_FOUND);
+        }
+        customerAddress.setId(address.getId());
+        customerAddress.setStreet(address.getStreet());
+        customerAddress.setCity(address.getCity());
+        customerAddress.setBuilding(address.getBuilding());
+        customerAddress.setCustomer(customer);
 
-                customer.getCustomerAddresses().add(customerAddress);
-                customer.setUpdatedDate(LocalDate.now());
+        customer.getCustomerAddresses().add(customerAddress);
+        customer.setUpdatedDate(LocalDate.now());
 
-                Customer newCustomer=customerRepository.save(customer);
+        Customer newCustomer=customerRepository.save(customer);
 
-                customerDTOResponse.setId(newCustomer.getId());
-                customerDTOResponse.setFirstName(newCustomer.getFirstName());
-                customerDTOResponse.setLastName(newCustomer.getLastName());
-                customerDTOResponse.setPhone(newCustomer.getPhone());
-                customerDTOResponse.setEmail(newCustomer.getEmail());
-                customerDTOResponse.setPassword(newCustomer.getPasswordHash());
+        customerDTOResponse.setId(newCustomer.getId());
+        customerDTOResponse.setFirstName(newCustomer.getFirstName());
+        customerDTOResponse.setLastName(newCustomer.getLastName());
+        customerDTOResponse.setPhone(newCustomer.getPhone());
+        customerDTOResponse.setEmail(newCustomer.getEmail());
+        customerDTOResponse.setPassword(newCustomer.getPasswordHash());
         return customerDTOResponse;
     }
+
     public CustomerResponseDTO updateLoyaltyPoints(Integer customerId, int points){
-            if (!customerRepository.existsById(customerId)) {
-                throw new ResourceNotFoundException(ErrorMessage.CUSTOMER_NOT_FOUND);
-            }
-            customer.setLoyaltyPoints(customer.getLoyaltyPoints()+ points);
-            customer.setUpdatedDate(LocalDate.now());
+        if (!customerRepository.existsById(customerId)) {
+            throw new ResourceNotFoundException(ErrorMessage.CUSTOMER_NOT_FOUND);
+        }
+        customer.setLoyaltyPoints(customer.getLoyaltyPoints()+ points);
+        customer.setUpdatedDate(LocalDate.now());
 
-            Customer newCustomer=customerRepository.save(customer);
+        Customer newCustomer=customerRepository.save(customer);
 
-            customerDTOResponse.setId(newCustomer.getId());
-            customerDTOResponse.setFirstName(newCustomer.getFirstName());
-            customerDTOResponse.setLastName(newCustomer.getLastName());
-            customerDTOResponse.setPhone(newCustomer.getPhone());
-            customerDTOResponse.setEmail(newCustomer.getEmail());
-            customerDTOResponse.setPassword(newCustomer.getPasswordHash());
+        customerDTOResponse.setId(newCustomer.getId());
+        customerDTOResponse.setFirstName(newCustomer.getFirstName());
+        customerDTOResponse.setLastName(newCustomer.getLastName());
+        customerDTOResponse.setPhone(newCustomer.getPhone());
+        customerDTOResponse.setEmail(newCustomer.getEmail());
+        customerDTOResponse.setPassword(newCustomer.getPasswordHash());
         return customerDTOResponse;
     }
     applyLoyaltyPenalty(Integer customerId, int pointsDeducted){}
