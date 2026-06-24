@@ -103,7 +103,24 @@ public class RestaurantService {
         return responseDTOss;
     }
 
-    public List<RestaurantResponseDTO> getRestaurantsUnderDeliveryFee(double maxFee){}
+    public List<RestaurantResponseDTO> getRestaurantsUnderDeliveryFee(double maxFee){
+        List<Restaurant> foundRestaurant=restaurantRepository.findByDeliveryFeeLessThanEqual(maxFee);
+        if(foundRestaurant.isEmpty()){
+            throw new ResourceNotFoundException(ErrorMessage.RESTAURANT_NOT_FOUND);
+        }
+        List<RestaurantResponseDTO> responseDTOss=new ArrayList<>();
+        for(Restaurant r:foundRestaurant){
+            RestaurantResponseDTO dto=new RestaurantResponseDTO();
+            dto.setId(r.getId());
+            dto.setName(r.getName());
+            dto.setCuisineType(r.getCuisineType());
+            dto.setAcceptingOrders(r.getAcceptingOrders());
+            dto.setDeliveryFee(r.getDeliveryFee());
+
+            responseDTOss.add(dto);
+        }
+        return responseDTOss;
+    }
 
     public List<RestaurantResponseDTO> getMenuForRestaurant(Integer restaurantId){}
 
