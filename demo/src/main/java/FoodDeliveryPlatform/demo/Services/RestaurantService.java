@@ -6,9 +6,9 @@ import FoodDeliveryPlatform.demo.DTOs.Response.RestaurantResponseDTO;
 import FoodDeliveryPlatform.demo.Entities.MenuItem;
 import FoodDeliveryPlatform.demo.Entities.Restaurant;
 import FoodDeliveryPlatform.demo.Entities.RestaurantOwner;
-import FoodDeliveryPlatform.demo.Entities.RestaurantOwnerRepository;
 import FoodDeliveryPlatform.demo.Exceptions.ErrorMessage;
 import FoodDeliveryPlatform.demo.Exceptions.ResourceNotFoundException;
+import FoodDeliveryPlatform.demo.Repositories.MenuItemRepository;
 import FoodDeliveryPlatform.demo.Repositories.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,28 +16,28 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RestaurantService {
-    RestaurantResponseDTO restaurantResponseDTO;
-    RestaurantRequestDTO restaurantRequestDTO;
     RestaurantRepository restaurantRepository;
-    RestaurantOwner restaurantOwner;
-    MenuItemResponseDTO menuItemResponseDTO;
-    Restaurant restaurant;
-    public static List<Restaurant> restaurantList;
+    MenuItemRepository menuItemResponseDTO;
 
     @Autowired
-    public RestaurantService(RestaurantResponseDTO restaurantResponseDTO, RestaurantRequestDTO restaurantRequestDTO, RestaurantRepository restaurantRepository, RestaurantOwner restaurantOwner, MenuItemResponseDTO menuItemResponseDTO, Restaurant restaurant) {
-        this.restaurantResponseDTO = restaurantResponseDTO;
-        this.restaurantRequestDTO = restaurantRequestDTO;
+    public RestaurantService(RestaurantRepository restaurantRepository, MenuItemRepository menuItemResponseDTO) {
         this.restaurantRepository = restaurantRepository;
-        this.restaurantOwner=restaurantOwner;
-        this.menuItemResponseDTO=menuItemResponseDTO;
-        this.restaurant = restaurant;
+        this.menuItemResponseDTO = menuItemResponseDTO;
     }
 
-    public RestaurantResponseDTO createRestaurant(RestaurantRequestDTO dto, Integer ownerId){
+    public List<RestaurantResponseDTO> createRestaurant(RestaurantRequestDTO dto, Integer ownerId){
+        List<Restaurant> restaurants=restaurantRepository.findByRestaurantOwnerId(ownerId);
+
+        if(restaurants.isEmpty()){
+            throw new ResourceNotFoundException(ErrorMessage.OWNER_NOT_FOUND);
+        }
+        RestaurantOwner owner=restaurants.get(0).getRestaurantOwner();
+
+        Restaurant restaurant=new Restaurant();
         restaurant.setName(dto.getName());
         restaurant.setDescription(dto.getDescription());
         restaurant.setAcceptingOrders(true);
@@ -45,10 +45,11 @@ public class RestaurantService {
         restaurant.setOpeningTime(dto.getOpeningTime());
         restaurant.setClosingTime(dto.getClosingTime());
         restaurant.setIsActive(true);
-        //restaurant.setRestaurantOwner(ownerId);
+        restaurant.setRestaurantOwner(owner);
 
         Restaurant newRestaurant=restaurantRepository.save(restaurant);
-
+        List<RestaurantResponseDTO> restaurantResponseDTOList=new ArrayList<>();
+        restaurantResponseDTOList.add(RestaurantResponseDTO.convertToDTO(newRestaurant));
         /*restaurantResponseDTO.setId(newRestaurant.getId());
         restaurantResponseDTO.setName(newRestaurant.getName());
         restaurantResponseDTO.setDescription(newRestaurant.getDescription());
@@ -57,34 +58,37 @@ public class RestaurantService {
         restaurantResponseDTO.setClosingTime(newRestaurant.getClosingTime());
         restaurantResponseDTO.setMinOrderAmount(newRestaurant.getMinOrderAmount());*/
 
-        return RestaurantResponseDTO.convertToDTO(newRestaurant);
+        return restaurantResponseDTOList;
     }
 
-    public RestaurantResponseDTO toggleAcceptingOrders(Integer restaurantId, boolean status){
-        if(restaurantList.isEmpty() || !restaurantRepository.existsById(restaurantId)){
+    public List<RestaurantResponseDTO> toggleAcceptingOrders(Integer restaurantId, boolean status){
+        Optional<Restaurant> restaurants=restaurantRepository.findById(restaurantId);
+        if(restaurants.isEmpty() || !restaurantRepository.existsById(restaurantId)){
             throw new ResourceNotFoundException(ErrorMessage.RESTAURANT_NOT_FOUND);
         }
-        Restaurant restaurant1=restaurantList.get(restaurantId);
+        Restaurant restaurant1=restaurants.get();
 
         restaurant1.setAcceptingOrders(status);
         restaurant1.setUpdatedDate(LocalDate.now());
 
         Restaurant updatedRestaurant=restaurantRepository.save(restaurant1);
+        List<RestaurantResponseDTO> restaurantResponseDTOList=new ArrayList<>();
+        restaurantResponseDTOList.add(RestaurantResponseDTO.convertToDTO(updatedRestaurant));
 
-        return RestaurantResponseDTO.convertToDTO(updatedRestaurant);
+        return restaurantResponseDTOList;
     }
 
     public RestaurantResponseDTO updateDeliveryFee(Integer restaurantId, double newFee){
         Restaurant foundRestaurant=restaurantRepository.findById(restaurantId).get();
-        if(foundRestaurant==null || restaurantList.isEmpty() || !restaurantRepository.existsById(restaurantId)){
+        if(foundRestaurant==null || !restaurantRepository.existsById(restaurantId)){
             throw new ResourceNotFoundException(ErrorMessage.RESTAURANT_NOT_FOUND);
         }
-        Restaurant restaurant1=restaurantList.get(restaurantId);
+        Restaurant restaurant=new Restaurant();
 
-        restaurant1.setDeliveryFee(newFee);
-        restaurant1.setUpdatedDate(LocalDate.now());
+        restaurant.setDeliveryFee(newFee);
+        restaurant.setUpdatedDate(LocalDate.now());
 
-        Restaurant updatedRestaurant=restaurantRepository.save(restaurant1);
+        Restaurant updatedRestaurant=restaurantRepository.save(restaurant);
 
         return RestaurantResponseDTO.convertToDTO(updatedRestaurant);
     }
@@ -128,14 +132,15 @@ public class RestaurantService {
     }
 
     public List<MenuItemResponseDTO> getMenuForRestaurant(Integer restaurantId) {
-        Restaurant foundRestaurant = restaurantRepository.findById(restaurantId).get();
-        if (foundRestaurant == null || restaurantList.isEmpty() || !restaurantRepository.existsById(restaurantId)) {
+        Optional<Restaurant> restaurants = restaurantRepository.findById(restaurantId);
+        if (restaurants == null || restaurants.isEmpty() || !restaurantRepository.existsById(restaurantId) || !restaurants.get().getIsActive()) {
             throw new ResourceNotFoundException(ErrorMessage.RESTAURANT_NOT_FOUND);
         }
-        Restaurant restaurant1 = restaurantList.get(restaurantId);
+        Restaurant restaurant = restaurants.get();
         List<MenuItemResponseDTO> menuResponse = new ArrayList<>();
 
-        for (MenuItem mi : restaurant1.getMenuItems()) {
+        for (MenuItem mi : restaurant.getMenuItems()) {
+            MenuItemResponseDTO menuItemResponseDTO=new MenuItemResponseDTO();
             menuItemResponseDTO.setId(mi.getId());
             menuItemResponseDTO.setName(mi.getName());
             menuItemResponseDTO.setAvailable(mi.getIsAvailable());
@@ -147,11 +152,11 @@ public class RestaurantService {
     }
 
     public List<MenuItemResponseDTO> bulkUpdateMenuItemPrices(Integer restaurantId, double percentageIncrease){
-        Restaurant foundRestaurant = restaurantRepository.findById(restaurantId).get();
-        if (foundRestaurant == null || restaurantList.isEmpty() || !restaurantRepository.existsById(restaurantId)) {
+        Optional<Restaurant> restaurants = restaurantRepository.findById(restaurantId);
+        if (restaurants.isEmpty() || !restaurantRepository.existsById(restaurantId)) {
             throw new ResourceNotFoundException(ErrorMessage.RESTAURANT_NOT_FOUND);
         }
-        Restaurant restaurant1 = restaurantList.get(restaurantId);
+        Restaurant restaurant1 = restaurants.get();
         List<MenuItemResponseDTO> updatedMenu = new ArrayList<>();
 
         for (MenuItem mi : restaurant1.getMenuItems()){
@@ -159,6 +164,7 @@ public class RestaurantService {
             double newPrice=currentPrice+(currentPrice*(percentageIncrease / 100.0));
             mi.setPrice(newPrice);
 
+            MenuItemResponseDTO menuItemResponseDTO=new MenuItemResponseDTO();
             menuItemResponseDTO.setId(mi.getId());
             menuItemResponseDTO.setName(mi.getName());
             menuItemResponseDTO.setPrice(newPrice);

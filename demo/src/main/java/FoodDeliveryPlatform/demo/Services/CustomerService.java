@@ -2,39 +2,36 @@ package FoodDeliveryPlatform.demo.Services;
 
 import FoodDeliveryPlatform.demo.DTOs.Request.CustomerAddressRequestDTO;
 import FoodDeliveryPlatform.demo.DTOs.Request.CustomerRequestDTO;
+import FoodDeliveryPlatform.demo.DTOs.Response.CustomerAddressResponseDTO;
 import FoodDeliveryPlatform.demo.DTOs.Response.CustomerResponseDTO;
 import FoodDeliveryPlatform.demo.Entities.Customer;
 import FoodDeliveryPlatform.demo.Entities.CustomerAddress;
 import FoodDeliveryPlatform.demo.Exceptions.ErrorMessage;
 import FoodDeliveryPlatform.demo.Exceptions.ResourceNotFoundException;
+import FoodDeliveryPlatform.demo.Repositories.CustomerAddressRepository;
 import FoodDeliveryPlatform.demo.Repositories.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CustomerService {
     CustomerRepository customerRepository;
-    CustomerRequestDTO customerRequestDTO;
-    CustomerResponseDTO customerResponseDTO;
-    CustomerAddressRequestDTO customerAddressRequestDTO;
-    Customer customer;
-    CustomerAddress customerAddress;
-    public static List<Customer> customers;
+    CustomerAddressRepository customerAddressRepository;
 
     @Autowired
-    public CustomerService(CustomerRepository customerRepository, CustomerRequestDTO customerDTORequest, CustomerResponseDTO customerDTOResponse, CustomerAddressRequestDTO customerAddressRequest, Customer customer, CustomerAddress customerAddress) {
+    public CustomerService(CustomerRepository customerRepository, CustomerAddressRepository customerAddressRepository) {
         this.customerRepository = customerRepository;
-        this.customerRequestDTO = customerDTORequest;
-        this.customerResponseDTO = customerDTOResponse;
-        this.customerAddressRequestDTO = customerAddressRequest;
-        this.customer = customer;
-        this.customerAddress=customerAddress;
+        this.customerAddressRepository = customerAddressRepository;
     }
 
-    public CustomerResponseDTO createCustomer(CustomerRequestDTO dto){
+    public List<CustomerResponseDTO> createCustomer(CustomerRequestDTO dto){
+
+        Customer customer=new Customer();
         customer.setId(dto.getId());
         customer.setFirstName(dto.getFirstName());
         customer.setLastName(dto.getLastName());
@@ -44,6 +41,10 @@ public class CustomerService {
 
         Customer newCustomer=customerRepository.save(customer);
 
+        List<CustomerResponseDTO> customerResponseDTOList=new ArrayList<>();
+
+        customerResponseDTOList.add(CustomerResponseDTO.convertToDTO(newCustomer));
+
         //convert customer to CustomerResponseDTO
         /*customerResponseDTO.setId(newCustomer.getId());
         customerResponseDTO.setFirstName(newCustomer.getFirstName());
@@ -52,10 +53,12 @@ public class CustomerService {
         customerResponseDTO.setEmail(newCustomer.getEmail());
         customerResponseDTO.setPassword(newCustomer.getPasswordHash());*/
 
-        return CustomerResponseDTO.convertToDTO(newCustomer);
+        return customerResponseDTOList;
     }
 
-    public CustomerResponseDTO createCustomer(CustomerRequestDTO dto, CustomerAddressRequestDTO initialAddress){
+    public List<CustomerResponseDTO> createCustomer(CustomerRequestDTO dto, CustomerAddressRequestDTO initialAddress){
+        Customer customer=new Customer();
+
         //adding customer
         customer.setId(dto.getId());
         customer.setFirstName(dto.getFirstName());
@@ -64,6 +67,7 @@ public class CustomerService {
         customer.setEmail(dto.getEmail());
         customer.setPasswordHash(dto.getPassword());
 
+        CustomerAddress customerAddress=new CustomerAddress();
         //adding address
         customerAddress.setId(initialAddress.getId());
         customerAddress.setStreet(initialAddress.getStreet());
@@ -76,47 +80,67 @@ public class CustomerService {
 
         Customer newCustomer=customerRepository.save(customer);
 
-        return CustomerResponseDTO.convertToDTO(newCustomer);
+        List<CustomerResponseDTO> customerResponseDTOList=new ArrayList<>();
+        customerResponseDTOList.add(CustomerResponseDTO.convertToDTO(newCustomer));
+
+        return customerResponseDTOList;
     }
 
-    public CustomerResponseDTO addAddress(Integer customerId, CustomerAddressRequestDTO address){
-        if(customers.isEmpty() || !customerRepository.existsById(customerId)){
+    public List<CustomerAddressResponseDTO> addAddress(Integer customerId, CustomerAddressRequestDTO address){
+        Optional<Customer> customers=customerRepository.findById(customerId);
+        if(address==null || !customerRepository.existsById(customerId)){
             throw new ResourceNotFoundException(ErrorMessage.CUSTOMER_NOT_FOUND);
         }
-        Customer customer1=customers.get(customerId);
+        Customer customer=customers.get();
+        CustomerAddress customerAddress=new CustomerAddress();
 
         customerAddress.setId(address.getId());
         customerAddress.setStreet(address.getStreet());
         customerAddress.setCity(address.getCity());
         customerAddress.setBuilding(address.getBuilding());
-        customerAddress.setCustomer(customer1);
+        customerAddress.setCustomer(customer);
 
-        customer1.getCustomerAddresses().add(customerAddress);
-        customer1.setUpdatedDate(LocalDate.now());
+        customer.getCustomerAddresses().add(customerAddress);
+        customer.setUpdatedDate(LocalDate.now());
 
-        Customer updatedCustomer=customerRepository.save(customer1);
+        Customer updatedCustomer=customerRepository.save(customer);
 
-        return CustomerResponseDTO.convertToDTO(updatedCustomer);
+        List<CustomerAddressResponseDTO> dtoList=new ArrayList<>();
+
+        for(CustomerAddress cs:updatedCustomer.getCustomerAddresses()){
+            CustomerAddressResponseDTO customerAddressResponseDTO=new CustomerAddressResponseDTO();
+            customerAddressResponseDTO.setStreet(cs.getStreet());
+            customerAddressResponseDTO.setBuilding(cs.getBuilding());
+            customerAddressResponseDTO.setCity(cs.getCity());
+
+            dtoList.add(customerAddressResponseDTO);
+        }
+
+        return dtoList;
     }
 
     public CustomerResponseDTO updateLoyaltyPoints(Integer customerId, int points){
+        Optional<Customer> customers=customerRepository.findById(customerId);
+
         if (customers.isEmpty() || !customerRepository.existsById(customerId)) {
             throw new ResourceNotFoundException(ErrorMessage.CUSTOMER_NOT_FOUND);
         }
-        Customer customer1=customers.get(customerId);
+        Customer customer=customers.get();
 
-        customer1.setLoyaltyPoints(customer1.getLoyaltyPoints()+ points);
-        customer1.setUpdatedDate(LocalDate.now());
+        customer.setLoyaltyPoints(customer.getLoyaltyPoints()+ points);
+        customer.setUpdatedDate(LocalDate.now());
 
-        Customer updatedCustomer=customerRepository.save(customer1);
+        Customer updatedCustomer=customerRepository.save(customer);
 
         return CustomerResponseDTO.convertToDTO(updatedCustomer);
     }
+
     public CustomerResponseDTO applyLoyaltyPenalty(Integer customerId, int pointsDeducted){
+        Optional<Customer> customers=customerRepository.findById(customerId);
         if (customers.isEmpty() || !customerRepository.existsById(customerId)) {
             throw new ResourceNotFoundException(ErrorMessage.CUSTOMER_NOT_FOUND);
         }
-        Customer customer=customers.get(customerId);
+        Customer customer=customers.get();
         int existPoint=customer.getLoyaltyPoints();
         customer.setLoyaltyPoints(Math.max(0,existPoint-pointsDeducted));
 
@@ -128,16 +152,17 @@ public class CustomerService {
     }
 
     public CustomerResponseDTO deactivateCustomer(Integer customerId){
+        Optional<Customer> customers=customerRepository.findById(customerId);
         if (customers.isEmpty() || !customerRepository.existsById(customerId)) {
             throw new ResourceNotFoundException(ErrorMessage.CUSTOMER_NOT_FOUND);
         }
-        Customer customer1=customers.get(customerId);
+        Customer customer=customers.get();
 
-        customer1.setIsActive(false);
+        customer.setIsActive(false);
 
-        customer1.setUpdatedDate(LocalDate.now());
+        customer.setUpdatedDate(LocalDate.now());
 
-        Customer updatedCustomer=customerRepository.save(customer1);
+        Customer updatedCustomer=customerRepository.save(customer);
 
         return CustomerResponseDTO.convertToDTO(updatedCustomer);
     }
