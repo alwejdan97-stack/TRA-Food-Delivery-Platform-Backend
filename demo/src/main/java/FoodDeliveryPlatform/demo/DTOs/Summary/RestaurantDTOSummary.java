@@ -23,7 +23,7 @@ public class RestaurantDTOSummary {
     @Min(1)
     private double minOrderAmount;
     @Pattern(regexp = "YES|...| NO")
-    private boolean acceptingOrders;
+    private Boolean acceptingOrders;
 
     public static RestaurantDTOSummary fromEntity(Restaurant entity) {
         RestaurantDTOSummary dto = new RestaurantDTOSummary();

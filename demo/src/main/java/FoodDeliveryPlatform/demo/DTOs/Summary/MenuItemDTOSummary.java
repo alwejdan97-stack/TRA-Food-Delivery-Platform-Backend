@@ -20,7 +20,7 @@ public class MenuItemDTOSummary {
     @DecimalMin("0.0")
     private double price;
     @Pattern(regexp = "YES|...| NO")
-    private boolean isAvailable;
+    private Boolean isAvailable;
     @DecimalMin("0.0")
     private double calories;
 
