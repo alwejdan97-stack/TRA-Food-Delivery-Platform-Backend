@@ -19,7 +19,7 @@ public class Customer extends BaseEntity{
 
     private String phone;
     private String passwordHash;
-    private Integer loyaltyPoints;
+    private int loyaltyPoints;
     private String customerCode;
 
     @OneToMany()

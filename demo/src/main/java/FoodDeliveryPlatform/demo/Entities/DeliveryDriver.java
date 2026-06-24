@@ -21,9 +21,9 @@ public class DeliveryDriver extends BaseEntity{
     private String driverCode;
     private String vehicleType;
     private String vehiclePlate;
-    private Double currentLat;
-    private Double currentLng;
-    private Boolean isOnline;
+    private double currentLat;
+    private double currentLng;
+    private boolean isOnline;
 
     @OneToMany()
     private List<Delivery> deliveries;

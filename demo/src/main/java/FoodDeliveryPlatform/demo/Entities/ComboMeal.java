@@ -12,7 +12,7 @@ import java.util.List;
 public class ComboMeal extends BaseEntity{
     private String comboName;
     private String description;
-    private Double totalPrice;
+    private double totalPrice;
 
     @ManyToOne
     private Restaurant restaurant;

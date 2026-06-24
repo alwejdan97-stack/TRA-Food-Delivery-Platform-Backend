@@ -8,9 +8,9 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderItem extends BaseEntity{
-    private Integer quantity;
-    private Double unitPrice;
-    private Double totalPrice;
+    private int quantity;
+    private double unitPrice;
+    private double totalPrice;
     private String specialInstructions;
 
     @ManyToOne

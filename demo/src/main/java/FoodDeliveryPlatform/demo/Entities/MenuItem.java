@@ -12,10 +12,10 @@ import java.util.List;
 public class MenuItem extends BaseEntity{
     private String name;
     private String description;
-    private Double price;
-    private Boolean isAvailable;
-    private Boolean isVegetarian;
-    private Double calories;
+    private double price;
+    private boolean isAvailable;
+    private boolean isVegetarian;
+    private double calories;
 
     @ManyToOne
     @JoinColumn()

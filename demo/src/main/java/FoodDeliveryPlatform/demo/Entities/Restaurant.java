@@ -16,9 +16,9 @@ public class Restaurant extends BaseEntity{
     private String cuisineType;
     private LocalTime openingTime;
     private LocalTime closingTime;
-    private Double minOrderAmount;
-    private Double deliveryFee;
-    private Boolean acceptingOrders;
+    private double minOrderAmount;
+    private double deliveryFee;
+    private boolean acceptingOrders;
 
     @ManyToOne
     private RestaurantOwner restaurantOwner;

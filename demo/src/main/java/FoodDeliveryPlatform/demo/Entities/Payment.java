@@ -11,8 +11,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Payment extends BaseEntity{
     private String paymentMethod;
-    private Boolean status;
-    private Double amount;
+    private boolean status;
+    private double amount;
     private String transactionRef;
     private LocalDateTime processedAt;
 

@@ -13,10 +13,10 @@ import java.util.List;
 public class CorporateOrder extends BaseEntity{
     private String corporateCode;
     private String companyName;
-    private Double costCenter;
+    private double costCenter;
     private LocalDate orderDate;
-    private Boolean status;
-    private Double totalAmount;
+    private boolean status;
+    private double totalAmount;
 
     @ManyToOne
     private Restaurant restaurant;
