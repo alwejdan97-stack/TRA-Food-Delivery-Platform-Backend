@@ -83,18 +83,18 @@ public class CustomerService {
         if(customers.isEmpty() || !customerRepository.existsById(customerId)){
             throw new ResourceNotFoundException(ErrorMessage.CUSTOMER_NOT_FOUND);
         }
-        Customer customer=customers.get(customerId);
+        Customer customer1=customers.get(customerId);
 
         customerAddress.setId(address.getId());
         customerAddress.setStreet(address.getStreet());
         customerAddress.setCity(address.getCity());
         customerAddress.setBuilding(address.getBuilding());
-        customerAddress.setCustomer(customer);
+        customerAddress.setCustomer(customer1);
 
-        customer.getCustomerAddresses().add(customerAddress);
-        customer.setUpdatedDate(LocalDate.now());
+        customer1.getCustomerAddresses().add(customerAddress);
+        customer1.setUpdatedDate(LocalDate.now());
 
-        Customer newCustomer=customerRepository.save(customer);
+        Customer newCustomer=customerRepository.save(customer1);
 
         return CustomerResponseDTO.convertToDTO(newCustomer);
     }
@@ -103,12 +103,12 @@ public class CustomerService {
         if (customers.isEmpty() || !customerRepository.existsById(customerId)) {
             throw new ResourceNotFoundException(ErrorMessage.CUSTOMER_NOT_FOUND);
         }
-        Customer customer=customers.get(customerId);
+        Customer customer1=customers.get(customerId);
 
-        customer.setLoyaltyPoints(customer.getLoyaltyPoints()+ points);
-        customer.setUpdatedDate(LocalDate.now());
+        customer1.setLoyaltyPoints(customer1.getLoyaltyPoints()+ points);
+        customer1.setUpdatedDate(LocalDate.now());
 
-        Customer newCustomer=customerRepository.save(customer);
+        Customer newCustomer=customerRepository.save(customer1);
 
         return CustomerResponseDTO.convertToDTO(newCustomer);
     }
@@ -131,12 +131,12 @@ public class CustomerService {
         if (customers.isEmpty() || !customerRepository.existsById(customerId)) {
             throw new ResourceNotFoundException(ErrorMessage.CUSTOMER_NOT_FOUND);
         }
-        Customer customer=customers.get(customerId);
+        Customer customer1=customers.get(customerId);
 
-        customer.setIsActive(false);
+        customer1.setIsActive(false);
 
-        customer.setUpdatedDate(LocalDate.now());
+        customer1.setUpdatedDate(LocalDate.now());
 
-        Customer newCustomer=customerRepository.save(customer);
+        Customer newCustomer=customerRepository.save(customer1);
     }
 }

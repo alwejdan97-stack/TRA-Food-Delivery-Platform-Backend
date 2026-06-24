@@ -26,6 +26,7 @@ public class RestaurantService {
     }
 
     public RestaurantResponseDTO createRestaurant(RestaurantRequestDTO dto, Integer ownerId){
+        Restaurant r
         restaurant.setName(dto.getName());
         restaurant.setDescription(dto.getDescription());
         restaurant.setAcceptingOrders(true);
