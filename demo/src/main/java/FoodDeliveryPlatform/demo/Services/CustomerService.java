@@ -28,8 +28,21 @@ public class CustomerService {
         this.customer = customer;
     }
 
-    createCustomer(CustomerRequestDTO dto){
-cus
+    public CustomerResponseDTO createCustomer(CustomerRequestDTO dto){
+        customer.setFirstName(dto.getFirstName());
+        customer.setLastName(dto.getLastName());
+        customer.setPhone(dto.getPhone());
+        customer.setEmail(dto.getEmail());
+        customer.setPasswordHash(dto.getPassword());
+
+        Customer newCustomer=customerRepository.save(customer);
+        customerDTOResponse.setFirstName(newCustomer.getFirstName());
+        customerDTOResponse.setLastName(newCustomer.getLastName());
+        customerDTOResponse.setPhone(newCustomer.getPhone());
+        customerDTOResponse.setEmail(newCustomer.getEmail());
+        customerDTOResponse.setPassword(newCustomer.getPasswordHash());
+
+        return customerDTOResponse;
     }
     createCustomer(CustomerRequestDTO dto, CustomerAddressRequestDTO initialAddress){}
     addAddress(Integer customerId, CustomerAddressRequestDTO address){}
