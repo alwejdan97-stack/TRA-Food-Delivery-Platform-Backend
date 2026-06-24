@@ -1,10 +1,8 @@
 package FoodDeliveryPlatform.demo.DTOs.Summary;
 
 import FoodDeliveryPlatform.demo.Entities.Payment;
-import FoodDeliveryPlatform.demo.Entities.RestaurantOwner;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.NoArgsConstructor;

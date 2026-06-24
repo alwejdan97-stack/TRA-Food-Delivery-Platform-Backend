@@ -16,6 +16,8 @@ public class RestaurantResponseDTO {
     @NotNull
     private Integer id;
     @NotBlank(message = "Name Can't Be Empty")
+    @NotNull
+    private Integer ownerId;
     private String name;
     @NotBlank(message = "Description Can't Be Empty")
     private String description;
@@ -29,6 +31,7 @@ public class RestaurantResponseDTO {
     public static RestaurantResponseDTO convertToDTO(Restaurant entity) {
         RestaurantResponseDTO dto = new RestaurantResponseDTO();
         dto.setId(entity.getId());
+        dto.setOwnerId(entity.getRestaurantOwner().getId());
         dto.setName(dto.getName());
         dto.setDescription(entity.getDescription());
         dto.setOpeningTime(entity.getOpeningTime());

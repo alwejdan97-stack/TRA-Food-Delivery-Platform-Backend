@@ -1,8 +1,6 @@
 package FoodDeliveryPlatform.demo.Repositories;
 
 import FoodDeliveryPlatform.demo.Entities.Restaurant;
-import FoodDeliveryPlatform.demo.Entities.RestaurantOwner;
-import org.springframework.core.annotation.MergedAnnotations;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

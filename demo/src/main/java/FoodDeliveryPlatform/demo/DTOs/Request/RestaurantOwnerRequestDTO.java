@@ -2,13 +2,14 @@ package FoodDeliveryPlatform.demo.DTOs.Request;
 
 import FoodDeliveryPlatform.demo.DTOs.PersonDTO;
 import FoodDeliveryPlatform.demo.Entities.DeliveryDriver;
+import FoodDeliveryPlatform.demo.Entities.RestaurantOwner;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 public class RestaurantOwnerRequestDTO extends PersonDTO {
-    public void applyToEntity(DeliveryDriver entity){
+    public void applyToEntity(RestaurantOwner entity){
         entity.setId(this.getId());
         entity.setFirstName(this.getFirstName());
         entity.setLastName(this.getLastName());

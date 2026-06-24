@@ -23,11 +23,10 @@ public class RestaurantRequestDTO {
     private LocalTime closingTime;
     @Min(1)
     private double minOrderAmount;
-    @Pattern(regexp = "YES|...| NO")
     private Boolean acceptingOrders;
 
     public void applyToEntity(Restaurant entity){
-        entity.setId(this.getId());
+        entity.setId(this.id);
         entity.setName(this.name);
         entity.setDescription(this.description);
         entity.setOpeningTime(this.openingTime);

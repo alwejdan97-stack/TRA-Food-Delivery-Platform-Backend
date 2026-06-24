@@ -3,6 +3,7 @@ package FoodDeliveryPlatform.demo.Services;
 import FoodDeliveryPlatform.demo.DTOs.Request.RestaurantRequestDTO;
 import FoodDeliveryPlatform.demo.DTOs.Response.RestaurantResponseDTO;
 import FoodDeliveryPlatform.demo.Entities.Restaurant;
+import FoodDeliveryPlatform.demo.Entities.RestaurantOwnerRepository;
 import FoodDeliveryPlatform.demo.Repositories.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,19 +15,21 @@ public class RestaurantService {
     RestaurantResponseDTO restaurantResponseDTO;
     RestaurantRequestDTO restaurantRequestDTO;
     RestaurantRepository restaurantRepository;
+    RestaurantOwnerRepository restaurantOwner;
     Restaurant restaurant;
     public static List<Restaurant> restaurantList;
 
     @Autowired
-    public RestaurantService(RestaurantResponseDTO restaurantResponseDTO, RestaurantRequestDTO restaurantRequestDTO, RestaurantRepository restaurantRepository, Restaurant restaurant) {
+    public RestaurantService(RestaurantResponseDTO restaurantResponseDTO, RestaurantRequestDTO restaurantRequestDTO, RestaurantRepository restaurantRepository, RestaurantOwnerRepository restaurantOwner, Restaurant restaurant) {
         this.restaurantResponseDTO = restaurantResponseDTO;
         this.restaurantRequestDTO = restaurantRequestDTO;
         this.restaurantRepository = restaurantRepository;
+        this.restaurantOwner = restaurantOwner;
         this.restaurant = restaurant;
     }
 
     public RestaurantResponseDTO createRestaurant(RestaurantRequestDTO dto, Integer ownerId){
-        Restaurant r
+        if(restaurantOwner.){}
         restaurant.setName(dto.getName());
         restaurant.setDescription(dto.getDescription());
         restaurant.setAcceptingOrders(true);

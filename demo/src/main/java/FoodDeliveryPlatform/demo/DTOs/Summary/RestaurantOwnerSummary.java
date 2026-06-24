@@ -1,7 +1,6 @@
 package FoodDeliveryPlatform.demo.DTOs.Summary;
 
 import FoodDeliveryPlatform.demo.DTOs.PersonDTO;
-import FoodDeliveryPlatform.demo.Entities.Customer;
 import FoodDeliveryPlatform.demo.Entities.RestaurantOwner;
 import lombok.Data;
 import lombok.NoArgsConstructor;
