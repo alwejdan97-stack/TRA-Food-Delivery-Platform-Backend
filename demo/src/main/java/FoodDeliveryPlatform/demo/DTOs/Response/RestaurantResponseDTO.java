@@ -21,9 +21,13 @@ public class RestaurantResponseDTO {
     private String name;
     @NotBlank(message = "Description Can't Be Empty")
     private String description;
+    @NotBlank(message = "Cuisine Type Can't Be Empty")
+    private String cuisineType;
     private LocalTime openingTime;
     private LocalTime closingTime;
-    @Min(1)
+    @DecimalMin("0.0")
+    private double DeliveryFee;
+    @DecimalMin("0.0")
     private double minOrderAmount;
     @Pattern(regexp = "YES|...| NO")
     private boolean acceptingOrders;
@@ -35,7 +39,9 @@ public class RestaurantResponseDTO {
         dto.setName(dto.getName());
         dto.setDescription(entity.getDescription());
         dto.setOpeningTime(entity.getOpeningTime());
+        dto.setDeliveryFee(entity.getDeliveryFee());
         dto.setClosingTime(entity.getClosingTime());
+        dto.setCuisineType(entity.getCuisineType());
         dto.setMinOrderAmount(entity.getMinOrderAmount());
         dto.setAcceptingOrders(entity.getAcceptingOrders());
         return dto;

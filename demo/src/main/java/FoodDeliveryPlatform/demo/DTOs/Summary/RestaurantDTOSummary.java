@@ -18,6 +18,8 @@ public class RestaurantDTOSummary {
     private String name;
     @NotBlank(message = "Description Can't Be Empty")
     private String description;
+    @NotBlank(message = "Cuisine Type Can't Be Empty")
+    private String cuisineType;
     private LocalTime openingTime;
     private LocalTime closingTime;
     @Min(1)
@@ -30,6 +32,7 @@ public class RestaurantDTOSummary {
         dto.setName(dto.getName());
         dto.setDescription(entity.getDescription());
         dto.setOpeningTime(entity.getOpeningTime());
+        dto.setCuisineType(entity.getCuisineType());
         dto.setClosingTime(entity.getClosingTime());
         dto.setMinOrderAmount(entity.getMinOrderAmount());
         dto.setAcceptingOrders(entity.getAcceptingOrders());

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -83,11 +84,28 @@ public class RestaurantService {
         return RestaurantResponseDTO.convertToDTO(updatedRestaurant);
     }
 
-    public RestaurantResponseDTO getRestaurantsByCuisine(String cuisine){}
+    public List<RestaurantResponseDTO> getRestaurantsByCuisine(String cuisine){
+        List<Restaurant> foundRestaurant=restaurantRepository.findByCuisineTypeIgnoreCase(cuisine);
+        if(foundRestaurant.isEmpty()){
+            throw new ResourceNotFoundException(ErrorMessage.RESTAURANT_NOT_FOUND);
+        }
+        List<RestaurantResponseDTO> responseDTOss=new ArrayList<>();
+        for(Restaurant r:foundRestaurant){
+            RestaurantResponseDTO dto=new RestaurantResponseDTO();
+            dto.setId(r.getId());
+            dto.setName(r.getName());
+            dto.setCuisineType(r.getCuisineType());
+            dto.setAcceptingOrders(r.getAcceptingOrders());
+            dto.setDeliveryFee(r.getDeliveryFee());
 
-    public RestaurantResponseDTO getRestaurantsUnderDeliveryFee(double maxFee){}
+            responseDTOss.add(dto);
+        }
+        return responseDTOss;
+    }
 
-    public RestaurantResponseDTO getMenuForRestaurant(Integer restaurantId){}
+    public List<RestaurantResponseDTO> getRestaurantsUnderDeliveryFee(double maxFee){}
+
+    public List<RestaurantResponseDTO> getMenuForRestaurant(Integer restaurantId){}
 
     public RestaurantResponseDTO bulkUpdateMenuItemPrices(Integer restaurantId, double percentageIncrease){}
 }
