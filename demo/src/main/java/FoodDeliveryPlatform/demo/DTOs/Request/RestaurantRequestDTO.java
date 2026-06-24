@@ -21,7 +21,7 @@ public class RestaurantRequestDTO {
     @Min(1)
     private double minOrderAmount;
     @Pattern(regexp = "YES|...| NO")
-    private boolean acceptingOrders;
+    private Boolean acceptingOrders;
 
     public void applyToEntity(Restaurant entity){
         entity.setName(this.name);

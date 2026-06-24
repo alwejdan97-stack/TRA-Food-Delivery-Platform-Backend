@@ -15,14 +15,14 @@ public class MenuItemRequestDTO {
     @DecimalMin("0.0")
     private double price;
     @Pattern(regexp = "YES|...| NO")
-    private boolean isAvailable;
+    private Boolean isAvailable;
     @Pattern(regexp = "YES|...| NO")
-    private boolean isVegetarian;
+    private Boolean isVegetarian;
 
     public void applyToEntity(MenuItem entity){
         entity.setName(this.name);
         entity.setPrice(this.price);
-        entity.setAvailable(this.isAvailable);
-        entity.setVegetarian(this.isVegetarian);
+        entity.setIsAvailable(this.isAvailable);
+        entity.setIsVegetarian(this.isVegetarian);
     }
 }
