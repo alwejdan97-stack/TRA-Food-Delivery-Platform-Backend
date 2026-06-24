@@ -18,7 +18,13 @@ public class CustomerService {
     Customer customer;
     public static List<Customer> customers;
 
-
+    public CustomerService(CustomerRepository customerRepository, CustomerDTORequest customerDTORequest, CustomerDTOResponse customerDTOResponse, CustomerAddressRequest customerAddressRequest, Customer customer) {
+        this.customerRepository = customerRepository;
+        this.customerDTORequest = customerDTORequest;
+        this.customerDTOResponse = customerDTOResponse;
+        this.customerAddressRequest = customerAddressRequest;
+        this.customer = customer;
+    }
 
     createCustomer(CustomerRequestDTO dto){
 
