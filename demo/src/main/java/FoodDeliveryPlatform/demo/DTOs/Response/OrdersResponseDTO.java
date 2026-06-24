@@ -19,7 +19,7 @@ public class OrdersResponseDTO {
     private String orderCode;
     private LocalDate orderDate;
     @Pattern(regexp = "PENDING|...| CANCELLED")
-    private boolean status;
+    private String status;
     @DecimalMin("0.0")
     private double subtotal;
     @DecimalMin("0.0")

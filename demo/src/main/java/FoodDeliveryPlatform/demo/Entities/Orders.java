@@ -13,7 +13,7 @@ import java.util.List;
 public class Orders extends BaseEntity{
     private String orderCode;
     private LocalDate orderDate;
-    private Boolean status;
+    private String status;
     private double subtotal;
     private double deliveryFee;
     private double discountAmount;

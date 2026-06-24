@@ -17,7 +17,7 @@ public class OrdersDTOSummary {
     @NotBlank(message = "Note Can't Be Null")
     private String deliveryNotes;
     @Pattern(regexp = "PENDING|...| CANCELLED")
-    private Boolean status;
+    private String status;
 
     public static DeliveryDriverDTOSummary fromEntity(DeliveryDriver entity) {
         DeliveryDriverDTOSummary dto = new DeliveryDriverDTOSummary();
