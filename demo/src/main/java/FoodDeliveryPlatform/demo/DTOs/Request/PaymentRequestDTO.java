@@ -3,6 +3,7 @@ package FoodDeliveryPlatform.demo.DTOs.Request;
 import FoodDeliveryPlatform.demo.Entities.Payment;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,8 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 public class PaymentRequestDTO {
+    @NotNull
+    private Integer id;
     @NotBlank(message = "Payment Method Can't Be Empty")
     private String paymentMethod;
     @Pattern(regexp = "PENDING|...| CANCELLED")
@@ -21,6 +24,7 @@ public class PaymentRequestDTO {
     private LocalDateTime processedAt;
 
     public void applyToEntity(Payment entity){
+        entity.setId(this.getId());
         entity.setPaymentMethod(this.paymentMethod);
         entity.setStatus(this.status);
         entity.setAmount(this.amount);
