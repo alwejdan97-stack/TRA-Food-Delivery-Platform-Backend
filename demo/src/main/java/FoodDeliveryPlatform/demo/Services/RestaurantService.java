@@ -1,7 +1,9 @@
 package FoodDeliveryPlatform.demo.Services;
 
 import FoodDeliveryPlatform.demo.DTOs.Request.RestaurantRequestDTO;
+import FoodDeliveryPlatform.demo.DTOs.Response.MenuItemResponseDTO;
 import FoodDeliveryPlatform.demo.DTOs.Response.RestaurantResponseDTO;
+import FoodDeliveryPlatform.demo.Entities.MenuItem;
 import FoodDeliveryPlatform.demo.Entities.Restaurant;
 import FoodDeliveryPlatform.demo.Entities.RestaurantOwner;
 import FoodDeliveryPlatform.demo.Entities.RestaurantOwnerRepository;
@@ -21,15 +23,17 @@ public class RestaurantService {
     RestaurantRequestDTO restaurantRequestDTO;
     RestaurantRepository restaurantRepository;
     RestaurantOwner restaurantOwner;
+    MenuItemResponseDTO menuItemResponseDTO;
     Restaurant restaurant;
     public static List<Restaurant> restaurantList;
 
     @Autowired
-    public RestaurantService(RestaurantResponseDTO restaurantResponseDTO, RestaurantRequestDTO restaurantRequestDTO, RestaurantRepository restaurantRepository, RestaurantOwner restaurantOwner, Restaurant restaurant) {
+    public RestaurantService(RestaurantResponseDTO restaurantResponseDTO, RestaurantRequestDTO restaurantRequestDTO, RestaurantRepository restaurantRepository, RestaurantOwner restaurantOwner, MenuItemResponseDTO menuItemResponseDTO, Restaurant restaurant) {
         this.restaurantResponseDTO = restaurantResponseDTO;
         this.restaurantRequestDTO = restaurantRequestDTO;
         this.restaurantRepository = restaurantRepository;
         this.restaurantOwner=restaurantOwner;
+        this.menuItemResponseDTO=menuItemResponseDTO;
         this.restaurant = restaurant;
     }
 
@@ -71,7 +75,8 @@ public class RestaurantService {
     }
 
     public RestaurantResponseDTO updateDeliveryFee(Integer restaurantId, double newFee){
-        if(restaurantList.isEmpty() || !restaurantRepository.existsById(restaurantId)){
+        Restaurant foundRestaurant=restaurantRepository.findById(restaurantId).get();
+        if(foundRestaurant==null || restaurantList.isEmpty() || !restaurantRepository.existsById(restaurantId)){
             throw new ResourceNotFoundException(ErrorMessage.RESTAURANT_NOT_FOUND);
         }
         Restaurant restaurant1=restaurantList.get(restaurantId);
@@ -122,7 +127,44 @@ public class RestaurantService {
         return responseDTOss;
     }
 
-    public List<RestaurantResponseDTO> getMenuForRestaurant(Integer restaurantId){}
+    public List<MenuItemResponseDTO> getMenuForRestaurant(Integer restaurantId) {
+        Restaurant foundRestaurant = restaurantRepository.findById(restaurantId).get();
+        if (foundRestaurant == null || restaurantList.isEmpty() || !restaurantRepository.existsById(restaurantId)) {
+            throw new ResourceNotFoundException(ErrorMessage.RESTAURANT_NOT_FOUND);
+        }
+        Restaurant restaurant1 = restaurantList.get(restaurantId);
+        List<MenuItemResponseDTO> menuResponse = new ArrayList<>();
 
-    public RestaurantResponseDTO bulkUpdateMenuItemPrices(Integer restaurantId, double percentageIncrease){}
+        for (MenuItem mi : restaurant1.getMenuItems()) {
+            menuItemResponseDTO.setId(mi.getId());
+            menuItemResponseDTO.setName(mi.getName());
+            menuItemResponseDTO.setAvailable(mi.getIsAvailable());
+            menuItemResponseDTO.setPrice(mi.getPrice());
+
+            menuResponse.add(menuItemResponseDTO);
+        }
+        return menuResponse;
+    }
+
+    public List<MenuItemResponseDTO> bulkUpdateMenuItemPrices(Integer restaurantId, double percentageIncrease){
+        Restaurant foundRestaurant = restaurantRepository.findById(restaurantId).get();
+        if (foundRestaurant == null || restaurantList.isEmpty() || !restaurantRepository.existsById(restaurantId)) {
+            throw new ResourceNotFoundException(ErrorMessage.RESTAURANT_NOT_FOUND);
+        }
+        Restaurant restaurant1 = restaurantList.get(restaurantId);
+        List<MenuItemResponseDTO> updatedMenu = new ArrayList<>();
+
+        for (MenuItem mi : restaurant1.getMenuItems()){
+            double currentPrice=mi.getPrice();
+            double newPrice=currentPrice+(currentPrice*(percentageIncrease / 100.0));
+            mi.setPrice(newPrice);
+
+            menuItemResponseDTO.setId(mi.getId());
+            menuItemResponseDTO.setName(mi.getName());
+            menuItemResponseDTO.setPrice(newPrice);
+
+            updatedMenu.add(menuItemResponseDTO);
+        }
+        return updatedMenu;
+    }
 }
