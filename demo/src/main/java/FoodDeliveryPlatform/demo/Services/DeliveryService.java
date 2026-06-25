@@ -39,7 +39,7 @@ public class DeliveryService {
 
         if (orders==null || !orders.getIsActive()) {
             throw new ResourceNotFoundException(ErrorMessage.ORDER_NOT_FOUND);
-        } else if(driver==null || !driver.getIsActive()){
+        } else if(driver==null || !driver.getIsActive() || driver.getIsOnline()){
             throw new ResourceNotFoundException(ErrorMessage.DRIVER_NOT_FOUND);
         }
 
@@ -47,6 +47,7 @@ public class DeliveryService {
         delivery.setAssignedAt(LocalDateTime.now());
         delivery.setDeliveryDriver(driver);
         delivery.setStatus("DRIVER_ASSIGNED");
+        delivery.setOrders(orders);
         delivery.setTrackingCode(HelperUtils.generateCode("DEL-D"));
 
         DeliveryDriver newDriver = new DeliveryDriver();
@@ -83,18 +84,17 @@ public class DeliveryService {
 
     }*/
 
-    public DeliveryResponseDTO updateDriverLocation(Integer driverId, double lat, double lng){
-        Optional<DeliveryDriver> driver=deliveryRepository.findById(driverId);
-        if(driver.isEmpty() || !driver.get().getIsOnline()){
+    public DeliveryDriverResponseDTO updateDriverLocation(Integer driverId, double lat, double lng){
+        DeliveryDriver driver=deliveryRepository.findById(driverId).get();
+        if(driver==null || !driver.getIsOnline()){
             throw new ResourceNotFoundException(ErrorMessage.DRIVER_NOT_FOUND);
         }
-
         driver.setCurrentLat(lat);
         driver.setCurrentLng(lng);
+        DeliveryDriver updatedDriver=deliveryRepository.save(driver);
 
-        deliveryDriverRepository.save(driver);
+        return DeliveryDriverResponseDTO.convertToDTO(updatedDriver);
     }
-•
 
 
     markDeliveryPickedUp(Integer deliveryId)
