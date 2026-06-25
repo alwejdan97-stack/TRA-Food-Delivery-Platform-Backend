@@ -56,30 +56,33 @@ public class DeliveryService {
         return responseDTOS;
     }
 
-    /*public DeliveryResponseDTO autoAssignDriver(Integer orderId){
+    public DeliveryResponseDTO autoAssignDriver(Integer orderId){
         Orders orders=orderRepository.findById(orderId).get();
-        DeliveryDriver driver=deliveryRepository.findById(D)
         if (orders==null || !orders.getIsActive()) {
             throw new ResourceNotFoundException(ErrorMessage.ORDER_NOT_FOUND);
         }
-
-        DeliveryDriver closeDriver=null;
-        double shortDistance=Double.MAX_VALUE;
-
-        for (DeliveryDriver driver : onlineDrivers) {
-            double distance = HelperUtils.calculateDistance(
-                    order.getRestaurantLat(), order.getRestaurantLng(),
-                    driver.getCurrentLat(), driver.getCurrentLng()
-            );
-
-            if (distance < shortestDistance) {
-                shortestDistance = distance;
-                closestDriver = driver;
+        List<DeliveryDriver> availableDrivers=deliveryRepository.findAll();
+        DeliveryDriver onlineDrivers= null;
+        for(DeliveryDriver dd:availableDrivers){
+            if(dd.getIsOnline() && dd.getIsActive()){
+                onlineDrivers=dd;
             }
         }
+        if(onlineDrivers==null){
+            throw new ResourceNotFoundException(ErrorMessage.DRIVER_NOT_FOUND);
+        }
+        Delivery delivery=new Delivery();
+        delivery.setAssignedAt(LocalDateTime.now());
+        delivery.setStatus("DRIVER_ASSIGNED");
+        delivery.setDeliveryDriver(onlineDrivers);
+        delivery.setOrders(orders);
+        delivery.setTrackingCode(HelperUtils.generateCode("DEL-AS"));
 
+        orders.setDelivery(delivery);
+        orderRepository.save(orders);
 
-    }*/
+        return DeliveryResponseDTO.convertToDTO(delivery);
+    }
 
     public DeliveryDriverResponseDTO updateDriverLocation(Integer driverId, double lat, double lng){
         DeliveryDriver driver=deliveryRepository.findById(driverId).get();
@@ -94,50 +97,69 @@ public class DeliveryService {
     }
 
     public List<DeliveryResponseDTO> markDeliveryPickedUp(Integer deliveryId){
-        Optional<Delivery> deliveries= deliveryRepository.findById(deliveryId);
-        if (deliveries.isEmpty()) {
+        Orders orders=orderRepository.findById(deliveryId).get();
+        if (orders==null || !orders.getIsActive()) {
             throw new ResourceNotFoundException(ErrorMessage.DELIVERY_NOT_FOUND);
         }
-        Delivery delivery =deliveries.get();
-
+        Delivery delivery=orders.getDelivery();
+        if (delivery==null) {
+            throw new ResourceNotFoundException(ErrorMessage.DELIVERY_NOT_FOUND);
+        }
         if (!"ASSIGNED".equalsIgnoreCase(delivery.getStatus())) {
             throw new InvalidOrderStateException(ErrorMessage.MATCHING_DELIVERY_STATUS);
         }
         delivery.setStatus("PICKED_UP");
         delivery.setPickedUpAt(LocalDateTime.now());
-
-        Delivery updatedDelivery = deliveryRepository.save(delivery);
+        orderRepository.save(orders);
 
         List<DeliveryResponseDTO> responseList = new ArrayList<>();
-        responseList.add(DeliveryResponseDTO.convertToDTO(updatedDelivery));
+        responseList.add(DeliveryResponseDTO.convertToDTO(delivery));
         return responseList;
-        }
     }
 
     public List<DeliveryResponseDTO> markDeliveryDelivered(Integer deliveryId) {
-        Optional<Delivery> deliveries= deliveryRepository.findById(deliveryId);
-        if (deliveries.isEmpty()) {
+        Orders orders=orderRepository.findById(deliveryId).get();
+        if (orders==null || !orders.getIsActive()) {
             throw new ResourceNotFoundException(ErrorMessage.DELIVERY_NOT_FOUND);
         }
-        Delivery delivery =deliveries.get();
-
-        if (!"PICKED_UP".equalsIgnoreCase(delivery.getStatus())) {
-            throw new InvalidOrderStateException("Delivery cannot be marked delivered. Current status is: " + delivery.getStatus());
+        Delivery delivery=orders.getDelivery();
+        if (delivery==null || !"PICKED_UP".equalsIgnoreCase(delivery.getStatus())) {
+            throw new InvalidOrderStateException(ErrorMessage.MATCHING_DELIVERY_STATUS);
         }
 
         delivery.setStatus("DELIVERED");
         delivery.setDeliveredAt(LocalDateTime.now());
-
-        Delivery updatedDelivery = deliveryRepository.save(delivery);
+        orderRepository.save(orders);
 
         List<DeliveryResponseDTO> responseList = new ArrayList<>();
-        responseList.add(DeliveryResponseDTO.convertToDTO(updatedDelivery));
+        responseList.add(DeliveryResponseDTO.convertToDTO(delivery));
         return responseList;
+        }
+
+    public List<DeliveryResponseDTO> getDeliveriesForDriver(Integer driverId, String status){
+        List<DeliveryDriver> driveres= deliveryRepository.findByDeliveryDriverIdAndStatus(driverId,status);
+        if (driveres.isEmpty()) {
+            throw new InvalidOrderStateException(ErrorMessage.MATCHING_DELIVERY_STATUS);
+        }
+        List<DeliveryResponseDTO> responseDTOS = new ArrayList<>();
+        DeliveryDriver targetDriver=driveres.get(0);
+        if(targetDriver.getDeliveries()!=null){
+            for (Delivery d : targetDriver.getDeliveries()) {
+                if (d != null) {
+                    responseDTOS.add(DeliveryResponseDTO.convertToDTO(d));
+                }
+            }
+        }
+        return responseDTOS;
     }
 
-
-• getDeliveriesForDriver(Integer driverId, String status)
-• toggleDriverOnlineStatus(Integer driverId, boolean isOnline)
-
+    public void toggleDriverOnlineStatus(Integer driverId, boolean isOnline){
+        DeliveryDriver driver = deliveryRepository.findById(driverId).get();
+        if (driver==null) {
+            throw new InvalidOrderStateException(ErrorMessage.MATCHING_DELIVERY_STATUS);
+        }
+        driver.setIsOnline(isOnline);
+        deliveryRepository.save(driver);
+    }
 
 }
