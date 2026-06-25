@@ -14,8 +14,8 @@ import java.time.LocalDateTime;
 public class PaymentDTOSummary {
     @NotBlank(message = "Payment Method Can't Be Empty")
     private String paymentMethod;
-    @Pattern(regexp = "PENDING|...| CANCELLED")
-    private Boolean status;
+    @Pattern(regexp = "YES|...| NO")
+    private String status;
     @DecimalMin("0.0")
     private double amount;
     private LocalDateTime processedAt;

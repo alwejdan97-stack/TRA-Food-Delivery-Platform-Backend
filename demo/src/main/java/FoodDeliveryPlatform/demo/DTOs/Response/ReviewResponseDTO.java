@@ -1,5 +1,7 @@
 package FoodDeliveryPlatform.demo.DTOs.Response;
 
+import FoodDeliveryPlatform.demo.DTOs.Summary.RestaurantDTOSummary;
+import FoodDeliveryPlatform.demo.DTOs.Summary.ReviewDTOSummary;
 import FoodDeliveryPlatform.demo.Entities.Review;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -20,6 +22,7 @@ public class ReviewResponseDTO {
     private int rating;
     @NotBlank(message = "Comment Can't Be Empty")
     private String comment;
+    private ReviewDTOSummary reviewDTOSummary;
 
     public static ReviewResponseDTO convertToDTO(Review entity) {
         ReviewResponseDTO dto = new ReviewResponseDTO();
@@ -27,6 +30,13 @@ public class ReviewResponseDTO {
         dto.setComment(entity.getComment());
         dto.setTargetType(entity.getTargetType());
         dto.setRating(entity.getRating());
+
+        ReviewDTOSummary summary=new ReviewDTOSummary();
+        summary.setComment(entity.getComment());
+        summary.setRating(entity.getRating());
+        summary.setTargetType(entity.getTargetType());
+
+        dto.setReviewDTOSummary(summary);
         return dto;
     }
 

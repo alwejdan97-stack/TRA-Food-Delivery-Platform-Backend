@@ -1,5 +1,7 @@
 package FoodDeliveryPlatform.demo.DTOs.Response;
 
+import FoodDeliveryPlatform.demo.DTOs.Summary.ComboMealDTOSummary;
+import FoodDeliveryPlatform.demo.DTOs.Summary.CorporateOrderDTOSummary;
 import FoodDeliveryPlatform.demo.Entities.CorporateOrder;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -26,6 +28,7 @@ public class CorporateOrderResponseDTO {
     private String status;
     @DecimalMin("0.0")
     private double totalAmount;
+    private CorporateOrderDTOSummary corporateOrderDTOSummary;
 
     public static CorporateOrderResponseDTO convertToDTO(CorporateOrder entity) {
         CorporateOrderResponseDTO dto = new CorporateOrderResponseDTO();
@@ -36,6 +39,15 @@ public class CorporateOrderResponseDTO {
         dto.setOrderDate(entity.getOrderDate());
         dto.setStatus(entity.getStatus());
         dto.setTotalAmount(entity.getTotalAmount());
+
+        CorporateOrderDTOSummary summary=new CorporateOrderDTOSummary();
+        summary.setOrderDate(entity.getOrderDate());
+        summary.setCorporateCode(entity.getCorporateCode());
+        summary.setCostCenter(entity.getCostCenter());
+        summary.setCompanyName(entity.getCompanyName());
+        summary.setTotalAmount(entity.getTotalAmount());
+
+        dto.setCorporateOrderDTOSummary(summary);
         return dto;
     }
 

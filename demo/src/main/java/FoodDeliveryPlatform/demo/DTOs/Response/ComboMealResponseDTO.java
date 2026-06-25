@@ -1,5 +1,6 @@
 package FoodDeliveryPlatform.demo.DTOs.Response;
 
+import FoodDeliveryPlatform.demo.DTOs.Summary.ComboMealDTOSummary;
 import FoodDeliveryPlatform.demo.Entities.ComboMeal;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMin;
@@ -23,6 +24,7 @@ public class ComboMealResponseDTO {
     private String description;
     @DecimalMin("0.0")
     private double totalPrice;
+    private ComboMealDTOSummary comboMealDTOSummary;
 
     public static ComboMealResponseDTO convertToDTO(ComboMeal entity) {
         ComboMealResponseDTO dto = new ComboMealResponseDTO();
@@ -30,6 +32,14 @@ public class ComboMealResponseDTO {
         dto.setComboName(entity.getComboName());
         dto.setDescription(entity.getDescription());
         dto.setTotalPrice(entity.getTotalPrice());
+
+        ComboMealDTOSummary summary=new ComboMealDTOSummary();
+        summary.setComboName(entity.getComboName());
+        summary.setDescription(entity.getDescription());
+        summary.setTotalPrice(entity.getTotalPrice());
+
+        dto.setComboMealDTOSummary(summary);
+
         return dto;
     }
 

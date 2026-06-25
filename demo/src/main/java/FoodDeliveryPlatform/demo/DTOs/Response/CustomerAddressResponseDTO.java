@@ -1,5 +1,7 @@
 package FoodDeliveryPlatform.demo.DTOs.Response;
 
+import FoodDeliveryPlatform.demo.DTOs.Summary.CorporateOrderDTOSummary;
+import FoodDeliveryPlatform.demo.DTOs.Summary.CustomerAddressSummary;
 import FoodDeliveryPlatform.demo.Entities.CustomerAddress;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -22,6 +24,7 @@ public class CustomerAddressResponseDTO {
     private String city;
     @NotBlank(message = "Building Can't Be Null")
     private String building;
+    private CustomerAddressSummary customerAddressSummary;
 
     public static CustomerAddressResponseDTO convertToDTO(CustomerAddress entity) {
         CustomerAddressResponseDTO dto = new CustomerAddressResponseDTO();
@@ -29,6 +32,14 @@ public class CustomerAddressResponseDTO {
         dto.setCity(entity.getCity());
         dto.setStreet(entity.getStreet());
         dto.setBuilding(entity.getBuilding());
+
+        CustomerAddressSummary summary=new CustomerAddressSummary();
+        summary.setBuilding(entity.getBuilding());
+        summary.setCity(entity.getCity());
+        summary.setId(entity.getId());
+        summary.setStreet(entity.getStreet());
+
+        dto.setCustomerAddressSummary(summary);
         return dto;
     }
 

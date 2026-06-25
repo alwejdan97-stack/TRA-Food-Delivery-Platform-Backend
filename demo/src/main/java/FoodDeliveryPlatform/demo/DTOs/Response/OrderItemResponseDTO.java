@@ -1,5 +1,7 @@
 package FoodDeliveryPlatform.demo.DTOs.Response;
 
+import FoodDeliveryPlatform.demo.DTOs.Summary.DeliveryDriverDTOSummary;
+import FoodDeliveryPlatform.demo.DTOs.Summary.OrderItemDTOSummary;
 import FoodDeliveryPlatform.demo.Entities.OrderItem;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -22,6 +24,7 @@ public class OrderItemResponseDTO {
     private double totalPrice;
     @NotBlank(message = "Instructions Can't Be Empty")
     private String specialInstructions;
+    private OrderItemDTOSummary orderItemDTOSummary;
 
     public static OrderItemResponseDTO convertToDTO(OrderItem entity) {
         OrderItemResponseDTO dto = new OrderItemResponseDTO();
@@ -30,6 +33,14 @@ public class OrderItemResponseDTO {
         dto.setUnitPrice(entity.getUnitPrice());
         dto.setTotalPrice(entity.getTotalPrice());
         dto.setSpecialInstructions(entity.getSpecialInstructions());
+
+        OrderItemDTOSummary summary=new OrderItemDTOSummary();
+        summary.setTotalPrice(entity.getTotalPrice());
+        summary.setUnitPrice(entity.getUnitPrice());
+        summary.setSpecialInstructions(entity.getSpecialInstructions());
+        summary.setQuantity(entity.getQuantity());
+
+        dto.setOrderItemDTOSummary(summary);
         return dto;
     }
 

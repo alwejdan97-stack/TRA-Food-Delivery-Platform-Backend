@@ -1,5 +1,7 @@
 package FoodDeliveryPlatform.demo.DTOs.Response;
 
+import FoodDeliveryPlatform.demo.DTOs.Summary.PaymentDTOSummary;
+import FoodDeliveryPlatform.demo.DTOs.Summary.RestaurantDTOSummary;
 import FoodDeliveryPlatform.demo.Entities.Restaurant;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -31,6 +33,7 @@ public class RestaurantResponseDTO {
     private double minOrderAmount;
     @Pattern(regexp = "YES|...| NO")
     private boolean acceptingOrders;
+    private RestaurantDTOSummary restaurantDTOSummary;
 
     public static RestaurantResponseDTO convertToDTO(Restaurant entity) {
         RestaurantResponseDTO dto = new RestaurantResponseDTO();
@@ -44,6 +47,16 @@ public class RestaurantResponseDTO {
         dto.setCuisineType(entity.getCuisineType());
         dto.setMinOrderAmount(entity.getMinOrderAmount());
         dto.setAcceptingOrders(entity.getAcceptingOrders());
+
+        RestaurantDTOSummary summary=new RestaurantDTOSummary();
+        summary.setName(entity.getName());
+        summary.setDescription(entity.getDescription());
+        summary.setCuisineType(entity.getCuisineType());
+        summary.setOpeningTime(entity.getOpeningTime());
+        summary.setClosingTime(entity.getClosingTime());
+        summary.setMinOrderAmount(entity.getMinOrderAmount());
+
+        dto.setRestaurantDTOSummary(summary);
         return dto;
     }
 

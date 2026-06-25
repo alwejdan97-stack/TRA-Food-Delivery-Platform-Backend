@@ -15,8 +15,8 @@ import java.time.LocalDateTime;
 public class DeliveryDTOSummary {
     @NotBlank(message = "Code Can't Be Empty")
     private String trackingCode;
-    @Pattern(regexp = "PENDING|...| CANCELLED")
-    private Boolean status;
+    @Pattern(regexp = "PENDING|...| CANCELLED |...| DELIVERED")
+    private String status;
     private LocalDateTime assignedAt;
     private LocalDateTime pickedUpAt;
     private LocalDateTime deliveredAt;

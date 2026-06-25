@@ -1,5 +1,7 @@
 package FoodDeliveryPlatform.demo.DTOs.Response;
 
+import FoodDeliveryPlatform.demo.DTOs.Summary.DeliveryDriverDTOSummary;
+import FoodDeliveryPlatform.demo.DTOs.Summary.MenuItemDTOSummary;
 import FoodDeliveryPlatform.demo.Entities.MenuItem;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -26,6 +28,7 @@ public class MenuItemResponseDTO {
     private boolean isVegetarian;
     @DecimalMin("0.0")
     private double calories;
+    private MenuItemDTOSummary menuItemDTOSummary;
 
     public static MenuItemResponseDTO convertToDTO(MenuItem entity) {
         MenuItemResponseDTO dto = new MenuItemResponseDTO();
@@ -36,6 +39,15 @@ public class MenuItemResponseDTO {
         dto.setAvailable(entity.getIsAvailable());
         dto.setVegetarian(entity.getIsVegetarian());
         dto.setCalories(entity.getCalories());
+
+        MenuItemDTOSummary summary=new MenuItemDTOSummary();
+        summary.setName(entity.getName());
+        summary.setDescription(entity.getDescription());
+        summary.setIsAvailable(entity.getIsAvailable());
+        summary.setPrice(entity.getPrice());
+        summary.setCalories(entity.getCalories());
+
+        dto.setMenuItemDTOSummary(summary);
         return dto;
     }
 
