@@ -18,7 +18,7 @@ public class PaymentRequestDTO {
     @NotBlank(message = "Payment Method Can't Be Empty")
     private String paymentMethod;
     @Pattern(regexp = "PENDING|...| CANCELLED")
-    private Boolean status;
+    private String status;
     @DecimalMin("0.0")
     private double amount;
     private LocalDateTime processedAt;

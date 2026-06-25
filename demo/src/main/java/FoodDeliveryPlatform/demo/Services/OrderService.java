@@ -295,6 +295,21 @@ public class OrderService {
         return OrdersResponseDTO.convertToDTO(updatedOrder);
     }
 
-    public CorporateOrderResponseDTO placeCorporateOrder(CorporateOrderRequestDTO dto){}
+    public CorporateOrderResponseDTO placeCorporateOrder(CorporateOrderRequestDTO dto){
+        if(dto==null){
+            throw new InvalidOrderStateException(ErrorMessage.ORDER_REQUEST_EMPTY);
+        }
+
+        CorporateOrder corporateOrder=new CorporateOrder();
+
+        corporateOrder.setCorporateCode(HelperUtils.generateCode("CRP"));
+        corporateOrder.setOrderDate(LocalDate.now());
+        corporateOrder.setStatus("PENDING");
+        corporateOrder.setCompanyName(dto.getCompanyName());
+        corporateOrder.setCostCenter(dto.getCostCenter());
+        corporateOrder.setTotalAmount(dto.getTotalAmount());
+
+        return CorporateOrderResponseDTO.convertToDTO(corporateOrder);
+    }
 
 }

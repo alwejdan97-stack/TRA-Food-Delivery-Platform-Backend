@@ -12,5 +12,5 @@ public class ErrorMessage {
     public static String DISCOUNT_AMOUNT_GRATER_THAN_SUBTOTAL="Discount Amount Can't Be Grather Than Order Subtotal";
     public static String MATCHING_UPDATED_STATUS="Can't Update Statuse...";
     public static String CALCULATE_TOTAL_FOR_DELIVERED_CANCELLED_ITEM="Can't Calculate Total For NONE Avilable Item...";
-
+    public static String ORDER_REQUEST_EMPTY="Order Request Can't Be Empty...";
 }

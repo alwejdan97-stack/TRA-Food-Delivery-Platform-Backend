@@ -20,8 +20,8 @@ public class DeliveryResponseDTO {
     private Integer id;
     @NotBlank(message = "Code Can't Be Empty")
     private String trackingCode;
-    @Pattern(regexp = "PENDING|...| CANCELLED")
-    private boolean status;
+    @Pattern(regexp = "PENDING|...| CANCELLED |...| DELIVERED")
+    private String status;
     private LocalDateTime assignedAt;
 
     public static DeliveryResponseDTO convertToDTO(Delivery entity) {

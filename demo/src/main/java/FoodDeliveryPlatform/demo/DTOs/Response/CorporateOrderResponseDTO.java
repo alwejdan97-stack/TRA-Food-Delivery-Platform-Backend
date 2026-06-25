@@ -22,8 +22,8 @@ public class CorporateOrderResponseDTO {
     @DecimalMin("0.0")
     private double costCenter;
     private LocalDate orderDate;
-    @Pattern(regexp = "PENDING|...| CANCELLED")
-    private boolean status;
+    @Pattern(regexp = "PENDING|...| CANCELLED |...| DELIVERED")
+    private String status;
     @DecimalMin("0.0")
     private double totalAmount;
 

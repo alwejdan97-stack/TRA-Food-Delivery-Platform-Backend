@@ -18,7 +18,7 @@ public class OrdersResponseDTO {
     @NotBlank(message = "Code Can't Be Null")
     private String orderCode;
     private LocalDate orderDate;
-    @Pattern(regexp = "PENDING|...| CANCELLED")
+    @Pattern(regexp = "PENDING|...| CANCELLED |...| DELIVERED")
     private String status;
     @DecimalMin("0.0")
     private double subtotal;

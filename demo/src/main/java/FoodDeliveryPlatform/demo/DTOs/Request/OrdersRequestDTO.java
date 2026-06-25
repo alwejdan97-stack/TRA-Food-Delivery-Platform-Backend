@@ -16,7 +16,7 @@ public class OrdersRequestDTO {
     private String orderCode;
     @NotBlank(message = "Note Can't Be Null")
     private String deliveryNotes;
-    @Pattern(regexp = "PENDING|...| CANCELLED")
+    @Pattern(regexp = "PENDING|...| CANCELLED |...| DELIVERED")
     private String status;
 
     public void applyToEntity(Orders entity){

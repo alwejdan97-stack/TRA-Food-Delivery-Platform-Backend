@@ -15,7 +15,7 @@ public class CorporateOrder extends BaseEntity{
     private String companyName;
     private double costCenter;
     private LocalDate orderDate;
-    private Boolean status;
+    private String status;
     private double totalAmount;
 
     @ManyToOne
