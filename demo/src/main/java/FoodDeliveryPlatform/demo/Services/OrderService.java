@@ -3,6 +3,7 @@ package FoodDeliveryPlatform.demo.Services;
 import FoodDeliveryPlatform.demo.DTOs.Request.CorporateOrderRequestDTO;
 import FoodDeliveryPlatform.demo.DTOs.Request.OrderItemRequestDTO;
 import FoodDeliveryPlatform.demo.DTOs.Request.OrdersRequestDTO;
+import FoodDeliveryPlatform.demo.DTOs.Response.CorporateOrderResponseDTO;
 import FoodDeliveryPlatform.demo.DTOs.Response.MenuItemResponseDTO;
 import FoodDeliveryPlatform.demo.DTOs.Response.OrdersResponseDTO;
 import FoodDeliveryPlatform.demo.Entities.*;
@@ -12,6 +13,7 @@ import FoodDeliveryPlatform.demo.Repositories.CustomerRepository;
 import FoodDeliveryPlatform.demo.Repositories.MenuItemRepository;
 import FoodDeliveryPlatform.demo.Repositories.OrderRepository;
 import FoodDeliveryPlatform.demo.Repositories.RestaurantRepository;
+import FoodDeliveryPlatform.demo.Utilities.HelperUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -117,7 +119,8 @@ public class OrderService {
 
             orderItems.add(orderItem);
         }
-        totalAmount=totalAmount+restaurant.getDeliveryFee();
+        totalAmount= HelperUtils.calculateTotal(totalAmount,order.getRestaurant().getDeliveryFee());
+        //totalAmount=totalAmount+restaurant.getDeliveryFee();
         order.setTotalAmount(totalAmount);
         order.setOrderItems(orderItems);
 
@@ -166,7 +169,8 @@ public class OrderService {
         for (OrderItem item : order.getOrderItems()) {
             currentTotal = currentTotal+ item.getUnitPrice() * item.getQuantity();
         }
-        currentTotal += order.getRestaurant().getDeliveryFee();
+        currentTotal= HelperUtils.calculateTotal(currentTotal,order.getRestaurant().getDeliveryFee());
+        //currentTotal += order.getRestaurant().getDeliveryFee();
         order.setTotalAmount(currentTotal);
         order.setUpdatedDate(LocalDate.now());
 
@@ -178,16 +182,49 @@ public class OrderService {
         return menuItemResponseDTOS;
     }
 
-    public List<MenuItemResponseDTO> removeMenuItemFromOrder(Integer orderId, Integer orderItemId)
+    public List<MenuItemResponseDTO> removeMenuItemFromOrder(Integer orderId, Integer orderItemId){
+        Optional<Orders> orders = orderRepository.findById(orderId);
+        if(orders.isEmpty() || !orders.get().getIsActive()){
+            throw new ResourceNotFoundException(ErrorMessage.ORDER_NOT_FOUND);
+        }
+        Orders order=orders.get();
+        OrderItem orderToRemove=null;
+        for(OrderItem or:order.getOrderItems()){
+            if(or.getId().equals(orderItemId)){
+                orderToRemove=or;
+                break;
+            }
+        }
+        order.getOrderItems().remove(orderToRemove);
+        Orders updatedOrder=orderRepository.save(order);
 
-    public applyDiscount(Integer orderId, double discountAmount)
+        List<MenuItemResponseDTO> menuItemResponseDTOS=new ArrayList<>();
+        for(OrderItem oi:updatedOrder.getOrderItems()){
+            MenuItem menuItem=oi.getMenuItem();
+            MenuItemResponseDTO menuItemResponse=new MenuItemResponseDTO();
+            menuItemResponse.setId(menuItem.getId());
+            menuItemResponse.setName(menuItem.getName());
+            menuItemResponse.setPrice(menuItem.getPrice());
+            menuItemResponse.setDescription(menuItem.getDescription());
 
-    updateOrderStatus(Integer orderId, String newStatus)
+            menuItemResponseDTOS.add(menuItemResponse);
+        }
 
-    cancelOrder(Integer orderId){}
+        if(orderToRemove==null){
+            throw new ResourceNotFoundException(ErrorMessage.ORDER_NOT_FOUND);
+        }
 
-    calculateOrderTotals(Integer orderId)
+        return menuItemResponseDTOS;
+    }
 
-    placeCorporateOrder(CorporateOrderRequestDTO dto)
+    public List<MenuItemResponseDTO> applyDiscount(Integer orderId, double discountAmount)
+
+    public OrdersResponseDTO updateOrderStatus(Integer orderId, String newStatus){}
+
+    public OrdersResponseDTO cancelOrder(Integer orderId){}
+
+    public OrdersResponseDTO calculateOrderTotals(Integer orderId){}
+
+    public CorporateOrderResponseDTO placeCorporateOrder(CorporateOrderRequestDTO dto){}
 
 }
