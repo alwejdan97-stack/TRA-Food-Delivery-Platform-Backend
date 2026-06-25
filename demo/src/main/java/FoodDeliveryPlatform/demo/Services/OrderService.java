@@ -271,7 +271,29 @@ public class OrderService {
         return OrdersResponseDTO.convertToDTO(updatedOrder);
     }
 
-    public OrdersResponseDTO calculateOrderTotals(Integer orderId){}
+    public OrdersResponseDTO calculateOrderTotals(Integer orderId){
+        Orders orders = orderRepository.findById(orderId).get();
+        if(orders==null || !orders.getIsActive()){
+            throw new ResourceNotFoundException(ErrorMessage.ORDER_NOT_FOUND);
+        } else if("DELIVERED".equalsIgnoreCase(orders.getStatus()) || "CANCELLED".equalsIgnoreCase(orders.getStatus())){
+            throw new InvalidOrderStateException(ErrorMessage.CALCULATE_TOTAL_FOR_DELIVERED_CANCELLED_ITEM);
+        }
+
+        double subTotal=0.0;
+        if(orders.getOrderItems()!=null){
+            for (OrderItem or: orders.getOrderItems()){
+                subTotal=subTotal+or.getTotalPrice();
+            }
+        }
+        orders.setSubtotal(subTotal);
+
+        double calculateTotal=HelperUtils.calculateTotal(orders.getSubtotal(),orders.getDeliveryFee(),orders.getDiscountAmount());
+        orders.setTotalAmount(calculateTotal);
+
+        Orders updatedOrder=orderRepository.save(orders);
+
+        return OrdersResponseDTO.convertToDTO(updatedOrder);
+    }
 
     public CorporateOrderResponseDTO placeCorporateOrder(CorporateOrderRequestDTO dto){}
 
