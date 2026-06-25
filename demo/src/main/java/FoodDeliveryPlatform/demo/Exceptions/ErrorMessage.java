@@ -6,6 +6,7 @@ public class ErrorMessage {
     public static String OWNER_NOT_FOUND="Owner Restaurant NOT Found...";
     public static String ITEM_NOT_FOUND="Item NOT Found...";
     public static String ORDER_NOT_FOUND="Order NOT Found...";
+    public static String DRIVER_NOT_FOUND="Driver NOT Found...";
     public static String INVALID_QUANTITY="Quantity Can't Be Gratehr Than Zero...";
     public static String ORDER_STATUS="Can't Modify PENDING Order...";
     public static String DELIVERED_CANCELLED_ITEM="Can't Apply Discount For NONE Avilable Item...";
