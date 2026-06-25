@@ -259,7 +259,17 @@ public class OrderService {
         return OrdersResponseDTO.convertToDTO(updatedOrder);
     }
 
-    public OrdersResponseDTO cancelOrder(Integer orderId){}
+    public OrdersResponseDTO cancelOrder(Integer orderId){
+        Orders orders = orderRepository.findById(orderId).get();
+        if(orders==null || !orders.getIsActive()){
+            throw new ResourceNotFoundException(ErrorMessage.ORDER_NOT_FOUND);
+        } else if("DELIVERED".equalsIgnoreCase(orders.getStatus()) || "CANCELLED".equalsIgnoreCase(orders.getStatus())){
+            throw new InvalidOrderStateException(ErrorMessage.MATCHING_UPDATED_STATUS);
+        }
+        orders.setStatus("CANCELLED");
+        Orders updatedOrder=orderRepository.save(orders);
+        return OrdersResponseDTO.convertToDTO(updatedOrder);
+    }
 
     public OrdersResponseDTO calculateOrderTotals(Integer orderId){}
 
