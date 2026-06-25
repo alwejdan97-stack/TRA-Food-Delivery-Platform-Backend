@@ -18,5 +18,5 @@ public class ErrorMessage {
     public static String CALCULATE_TOTAL_FOR_DELIVERED_CANCELLED_ITEM="Can't Calculate Total For NONE Avilable Item...";
     public static String ORDER_REQUEST_EMPTY="Order Request Can't Be Empty...";
     public static String MATCHING_DELIVERY_STATUS="Delivery Cannot Be Picked Up....";
-
+    public static String INVALID_RATING="Rating must be between 1 and 5.";
 }
