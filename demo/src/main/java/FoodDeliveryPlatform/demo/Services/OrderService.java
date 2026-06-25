@@ -247,7 +247,17 @@ public class OrderService {
         return menuItemResponseDTOS;
     }
 
-    public OrdersResponseDTO updateOrderStatus(Integer orderId, String newStatus){}
+    public OrdersResponseDTO updateOrderStatus(Integer orderId, String newStatus){
+        Orders orders = orderRepository.findById(orderId).get();
+        if(orders==null || !orders.getIsActive()){
+            throw new ResourceNotFoundException(ErrorMessage.ORDER_NOT_FOUND);
+        } else if("DELIVERED".equalsIgnoreCase(newStatus) || "CANCELLED".equalsIgnoreCase(newStatus)){
+            throw new InvalidOrderStateException(ErrorMessage.MATCHING_UPDATED_STATUS);
+        }
+        orders.setStatus(newStatus);
+        Orders updatedOrder=orderRepository.save(orders);
+        return OrdersResponseDTO.convertToDTO(updatedOrder);
+    }
 
     public OrdersResponseDTO cancelOrder(Integer orderId){}
 

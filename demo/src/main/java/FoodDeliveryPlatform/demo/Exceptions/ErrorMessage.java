@@ -10,4 +10,5 @@ public class ErrorMessage {
     public static String ORDER_STATUS="Can't Modify PENDING Order...";
     public static String DELIVERED_CANCELLED_ITEM="Can't Apply Discount For NONE Avilable Item...";
     public static String DISCOUNT_AMOUNT_GRATER_THAN_SUBTOTAL="Discount Amount Can't Be Grather Than Order Subtotal";
+    public static String MATCHING_UPDATED_STATUS="Can't Update Statuse...";
 }
