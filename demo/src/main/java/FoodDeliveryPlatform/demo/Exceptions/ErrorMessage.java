@@ -7,6 +7,7 @@ public class ErrorMessage {
     public static String ITEM_NOT_FOUND="Item NOT Found...";
     public static String ORDER_NOT_FOUND="Order NOT Found...";
     public static String DRIVER_NOT_FOUND="Driver NOT Found...";
+    public static String DELIVERY_NOT_FOUND="Delivery NOT Found...";
     public static String INVALID_QUANTITY="Quantity Can't Be Gratehr Than Zero...";
     public static String ORDER_STATUS="Can't Modify PENDING Order...";
     public static String DELIVERED_CANCELLED_ITEM="Can't Apply Discount For NONE Avilable Item...";
@@ -14,4 +15,6 @@ public class ErrorMessage {
     public static String MATCHING_UPDATED_STATUS="Can't Update Statuse...";
     public static String CALCULATE_TOTAL_FOR_DELIVERED_CANCELLED_ITEM="Can't Calculate Total For NONE Avilable Item...";
     public static String ORDER_REQUEST_EMPTY="Order Request Can't Be Empty...";
+    public static String MATCHING_DELIVERY_STATUS="Delivery Cannot Be Picked Up....";
+
 }
