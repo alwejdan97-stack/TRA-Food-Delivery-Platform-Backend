@@ -161,5 +161,4 @@ public class DeliveryService {
         driver.setIsOnline(isOnline);
         deliveryRepository.save(driver);
     }
-
 }
