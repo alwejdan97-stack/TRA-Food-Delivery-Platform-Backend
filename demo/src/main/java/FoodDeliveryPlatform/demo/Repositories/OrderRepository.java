@@ -26,6 +26,15 @@ public interface OrderRepository extends JpaRepository<Orders,Integer> {
     @Query("SELECT COALESCE(SUM(O.totalAmount),0.0) FROM Orders O WHERE O.orderDate= :date AND O.status= 'DELIVERED' AND O.isActive=TRUE")
     Double sumTotalAmountDeliveredOrdersOnSpecifyDate(@Param("date") LocalDate date);
 
+    @Query("SELECT COALESCE(SUM(O.totalAmount), 0.0) FROM Orders O WHERE O.restaurant.id = :restaurantId AND O.orderDate = :date AND O.status = 'DELIVERED' AND O.isActive = TRUE")
+    Double sumRevenueByRestaurantIdAndDate(@Param("restaurantId") Integer restaurantId, @Param("date") LocalDate date);
+
+    @Query("SELECT COALESCE(SUM(O.deliveryFee), 0.0) FROM Orders O WHERE O.orderDate = :date AND O.status = 'DELIVERED' AND O.isActive = TRUE")
+    Double sumDeliveryFeesByDate(@Param("date") LocalDate date);
+
+    @Query("SELECT COUNT(O) FROM Orders O WHERE O.orderDate = :date AND O.isActive = TRUE")
+    Integer countByCreatedDate(@Param("date") LocalDate date);
+
     /*@Query("SELECT D FROM Delivery D WHERE D.DeliveryDriver.id=:driverId AND D.status=: status AND D.DeliveryDriver.isActive=TRUE")
     List<Delivery> findByDeliveryDriverIdAndStatus(@Param("driverId") Integer driverId, @Param("status") String status);*/
 }
