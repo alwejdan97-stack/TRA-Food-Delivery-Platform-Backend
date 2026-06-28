@@ -46,4 +46,16 @@ public class DeliveryDriverService {
 
         return DeliveryDriverResponseDTO.convertToDTO(updatedDriver);
     }
+
+    public DeliveryDriverResponseDTO updateLocation(Integer id, Double lat, Double lng) {
+        DeliveryDriver driver = driverRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Driver not found"));
+
+        driver.setCurrentLat(lat);
+        driver.setCurrentLng(lng);
+        driver.setUpdatedDate(LocalDate.now());
+        DeliveryDriver updatedDriver= driverRepository.save(driver);
+
+        return DeliveryDriverResponseDTO.convertToDTO(updatedDriver);
+    }
 }
