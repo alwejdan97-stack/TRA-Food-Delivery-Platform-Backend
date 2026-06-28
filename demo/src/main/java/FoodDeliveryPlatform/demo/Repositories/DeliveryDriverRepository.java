@@ -9,7 +9,7 @@ import java.util.List;
 public interface DeliveryDriverRepository extends JpaRepository<DeliveryDriver, Integer> {
     DeliveryDriver registerDriver(DeliveryDriverRequestDTO request);
     List<DeliveryDriver> getAllDrivers();
-    List<DeliveryDriver> getOnlineDrivers();
+    List<DeliveryDriver> getOnlineDrivers(boolean status);
     DeliveryDriver toggleOnlineStatus(Integer id, boolean isOnline);
     DeliveryDriver updateLocation(Integer id, Double lat, Double lng);
     List<DeliveryDriver> getDeliveryHistory(Integer id);

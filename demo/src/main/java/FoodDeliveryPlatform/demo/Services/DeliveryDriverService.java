@@ -28,4 +28,9 @@ public class DeliveryDriverService {
     public List<DeliveryDriverResponseDTO> getAllDrivers() {
         return DeliveryDriverResponseDTO.convertToDTO(driverRepository.findAll());
     }
+
+    public List<DeliveryDriverResponseDTO> getOnlineDrivers() {
+        List<DeliveryDriver> onlineDrivers=driverRepository.getOnlineDrivers(true);
+        return DeliveryDriverResponseDTO.convertToDTO(onlineDrivers);
+    }
 }
