@@ -23,15 +23,14 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @PostMapping("/customer/{customerId}/restaurant/{restaurantId}")
+    @PostMapping("/createOrder/customer/{customerId}/restaurant/{restaurantId}")
     public ResponseEntity<OrdersResponseDTO> createOrder(@PathVariable Integer customerId, @PathVariable Integer restaurantId, @RequestBody List<OrderItemRequestDTO> items) {
         List<OrdersResponseDTO> responseList = orderService.createOrder(customerId, restaurantId, items);
         return new ResponseEntity<>(responseList.get(0), HttpStatus.CREATED);
     }
 
-    @PostMapping("/{id}/items")
-    public ResponseEntity<List<MenuItemResponseDTO>> addMenuItemToOrder(
-            @PathVariable Integer id, @Valid @RequestBody OrderItemRequestDTO orderItemRequestDto) {
+    @PostMapping("/addMenuItemToOrder/{id}/items")
+    public ResponseEntity<List<MenuItemResponseDTO>> addMenuItemToOrder(@PathVariable Integer id, @Valid @RequestBody OrderItemRequestDTO orderItemRequestDto) {
         List<MenuItemResponseDTO> response = orderService.addMenuItemToOrder(id, orderItemRequestDto.getId(), orderItemRequestDto.getQuantity());
         return ResponseEntity.ok(response);
     }
