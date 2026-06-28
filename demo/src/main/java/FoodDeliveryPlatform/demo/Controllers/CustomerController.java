@@ -22,55 +22,55 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-    @PostMapping("/createCustomer")
-    public ResponseEntity<List<CustomerResponseDTO>> createCustomer(@Valid @RequestBody CustomerRequestDTO dto) {
+    @PostMapping("/createCustomer/createCustomer")
+    public ResponseEntity<CustomerResponseDTO> createCustomer(@Valid @RequestBody CustomerRequestDTO dto) {
         List<CustomerResponseDTO> responseList = customerService.createCustomer(dto);
         return new ResponseEntity<>(responseList.get(0), HttpStatus.CREATED);
     }
 
-    @PostMapping("addAddress/{id}/addresses ")
+    @PostMapping("/addAddress/addAddress/{id}/addresses ")
     public ResponseEntity<List<CustomerAddressResponseDTO>> addAddress(@PathVariable Integer id, @Valid @RequestBody CustomerAddressRequestDTO addressDto) {
         List<CustomerAddressResponseDTO> response = customerService.addAddress(id, addressDto);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/getCustomerById/{id}")
     public ResponseEntity<CustomerResponseDTO> getCustomerById(@PathVariable Integer id) {
         CustomerResponseDTO response = customerService.getCustomerById(id);
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/email/{email}")
+    @GetMapping("/getCustomerByEmail/email/{email}")
     public ResponseEntity<CustomerResponseDTO> getCustomerByEmail(@PathVariable String email) {
         CustomerResponseDTO response = customerService.getCustomerByEmail(email);
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/{id}/orders")
-    public ResponseEntity<List<Object>> getCustomerOrders(@PathVariable Integer id) {
-        List<Object> orders = customerService.getCustomerOrders(id);
+    @GetMapping("/getCustomerOrders/{id}/orders")
+    public ResponseEntity<List<CustomerResponseDTO>> getCustomerOrders(@PathVariable Integer id) {
+        List<CustomerResponseDTO> orders = customerService.getCustomerOrders(id);
         return ResponseEntity.ok(orders);
     }
 
-    @GetMapping
+    @GetMapping("/getAllCustomers")
     public ResponseEntity<List<CustomerResponseDTO>> getAllCustomers() {
         List<CustomerResponseDTO> response = customerService.getAllCustomers();
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/{id}/addresses")
+    @GetMapping("/getCustomerAddresses/{id}/addresses")
     public ResponseEntity<List<CustomerAddressResponseDTO>> getCustomerAddresses(@PathVariable Integer id) {
         List<CustomerAddressResponseDTO> response = customerService.getCustomerAddresses(id);
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/addresses/{addressId}/default")
+    @PutMapping("/setDefaultAddress/addresses/{addressId}/default")
     public ResponseEntity<CustomerAddressResponseDTO> setDefaultAddress(@PathVariable Integer addressId) {
         CustomerAddressResponseDTO response = customerService.setDefaultAddress(addressId);
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/{id}/loyalty/deduct/{points}")
+    @PutMapping("/deductLoyaltyPoints/{id}/loyalty/deduct/{points}")
     public ResponseEntity<CustomerResponseDTO> deductLoyaltyPoints(
             @PathVariable Integer id,
             @PathVariable int points) {
@@ -78,7 +78,7 @@ public class CustomerController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/{id}/loyalty/add/{points}")
+    @PutMapping("/addLoyaltyPoints/{id}/loyalty/add/{points}")
     public ResponseEntity<CustomerResponseDTO> addLoyaltyPoints(
             @PathVariable Integer id,
             @PathVariable int points) {
@@ -86,13 +86,13 @@ public class CustomerController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/{id}/deactivate")
+    @PutMapping("/deactivateCustomer/{id}/deactivate")
     public ResponseEntity<CustomerResponseDTO> deactivateCustomer(@PathVariable Integer id) {
         CustomerResponseDTO response = customerService.deactivateCustomer(id);
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/addresses/{addressId}")
+    @DeleteMapping("/deleteAddress/addresses/{addressId}")
     public ResponseEntity<Void> deleteAddress(@PathVariable Integer addressId) {
         customerService.deleteAddress(addressId);
         return ResponseEntity.noContent().build();

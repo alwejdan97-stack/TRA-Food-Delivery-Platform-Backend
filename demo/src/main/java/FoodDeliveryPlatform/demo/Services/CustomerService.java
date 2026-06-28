@@ -166,4 +166,88 @@ public class CustomerService {
 
         return CustomerResponseDTO.convertToDTO(updatedCustomer);
     }
+
+    public void deleteAddress(Integer addressId) {
+        if (!customerAddressRepository.existsById(addressId)) {
+            throw new ResourceNotFoundException("Address not found");
+        }
+        customerAddressRepository.deleteById(addressId);
+    }
+
+    public CustomerResponseDTO getCustomerByEmail(String email) {
+        Customer customer = customerRepository.findByEmail(email);
+
+        if (customer == null) {
+            throw new ResourceNotFoundException(ErrorMessage.CUSTOMER_NOT_FOUND);
+        }
+        return CustomerResponseDTO.convertToDTO(customer);
+    }
+
+    public List<CustomerResponseDTO> getCustomerOrders(Integer id) {
+        if (!customerRepository.existsById(id)) {
+            throw new ResourceNotFoundException(ErrorMessage.CUSTOMER_NOT_FOUND);
+        }
+        List<CustomerResponseDTO> ordersList = new ArrayList<>();
+        return ordersList;
+    }
+
+    public List<CustomerResponseDTO> getAllCustomers() {
+        List<Customer> customers = customerRepository.findAll();
+        List<CustomerResponseDTO> dtoList = new ArrayList<>();
+        for (Customer c : customers) {
+            CustomerResponseDTO dto = CustomerResponseDTO.convertToDTO(c);
+            dtoList.add(dto);
+        }
+        return dtoList;
+    }
+
+    public List<CustomerAddressResponseDTO> getCustomerAddresses(Integer id) {
+        Optional<Customer> customerOpt = customerRepository.findById(id);
+        if (customerOpt.isEmpty()) {
+            throw new ResourceNotFoundException(ErrorMessage.CUSTOMER_NOT_FOUND);
+        }
+        Customer customer = customerOpt.get();
+        List<CustomerAddressResponseDTO> dtoList = new ArrayList<>();
+        for (CustomerAddress addr : customer.getCustomerAddresses()) {
+            CustomerAddressResponseDTO dto = new CustomerAddressResponseDTO();
+            dto.setStreet(addr.getStreet());
+            dto.setBuilding(addr.getBuilding());
+            dto.setCity(addr.getCity());
+
+            dtoList.add(dto);
+        }
+        return dtoList;
+    }
+
+    public CustomerAddressResponseDTO setDefaultAddress(Integer addressId) {
+        Optional<CustomerAddress> addressOpt = customerAddressRepository.findById(addressId);
+        if (addressOpt.isEmpty()) {
+            throw new ResourceNotFoundException("Address not found with id: " + addressId);
+        }
+        CustomerAddress targetAddress = addressOpt.get();
+        Customer customer = targetAddress.getCustomer();
+        for (CustomerAddress addr : customer.getCustomerAddresses()) {
+            if (addr.getId().equals(addressId)) {
+                addr.setIsDefault(true);
+            } else {
+                addr.setIsDefault(false);
+            }
+            customerAddressRepository.save(addr);
+        }
+        CustomerAddressResponseDTO responseDto = new CustomerAddressResponseDTO();
+        responseDto.setStreet(targetAddress.getStreet());
+        responseDto.setBuilding(targetAddress.getBuilding());
+        responseDto.setCity(targetAddress.getCity());
+
+        return responseDto;
+    }
+
+    public CustomerResponseDTO getCustomerById(Integer id) {
+        Optional<Customer> customerOpt = customerRepository.findById(id);
+        if (customerOpt.isEmpty()) {
+            throw new ResourceNotFoundException(ErrorMessage.CUSTOMER_NOT_FOUND);
+        }
+        Customer customer = customerOpt.get();
+        return CustomerResponseDTO.convertToDTO(customer);
+    }
 }

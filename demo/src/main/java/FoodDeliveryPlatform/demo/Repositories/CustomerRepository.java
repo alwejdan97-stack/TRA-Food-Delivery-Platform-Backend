@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface CustomerRepository extends JpaRepository<Customer,Integer> {
     @Query("SELECT C FROM Customer C WHERE C.email=:email AND C.isActive=TRUE")
-    List<Customer> findByEmail(@Param("email") String email);
+    Customer findByEmail(@Param("email") String email);
 
     @Query("SELECT C FROM Customer C WHERE C.loyaltyPoints>=:loyaltyPoints AND C.isActive=TRUE")
     List<Customer> findByLoyaltyPointsGreaterThanEqual(@Param("loyaltyPoints") int points);
