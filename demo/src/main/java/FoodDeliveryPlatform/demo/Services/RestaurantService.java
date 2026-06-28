@@ -1,8 +1,12 @@
 package FoodDeliveryPlatform.demo.Services;
 
+import FoodDeliveryPlatform.demo.DTOs.Request.ComboMealRequestDTO;
+import FoodDeliveryPlatform.demo.DTOs.Request.MenuItemRequestDTO;
 import FoodDeliveryPlatform.demo.DTOs.Request.RestaurantRequestDTO;
+import FoodDeliveryPlatform.demo.DTOs.Response.ComboMealResponseDTO;
 import FoodDeliveryPlatform.demo.DTOs.Response.MenuItemResponseDTO;
 import FoodDeliveryPlatform.demo.DTOs.Response.RestaurantResponseDTO;
+import FoodDeliveryPlatform.demo.Entities.ComboMeal;
 import FoodDeliveryPlatform.demo.Entities.MenuItem;
 import FoodDeliveryPlatform.demo.Entities.Restaurant;
 import FoodDeliveryPlatform.demo.Entities.RestaurantOwner;
@@ -21,12 +25,12 @@ import java.util.Optional;
 @Service
 public class RestaurantService {
     RestaurantRepository restaurantRepository;
-    MenuItemRepository menuItemResponseDTO;
+    MenuItemRepository menuItemRepository;
 
     @Autowired
     public RestaurantService(RestaurantRepository restaurantRepository, MenuItemRepository menuItemResponseDTO) {
         this.restaurantRepository = restaurantRepository;
-        this.menuItemResponseDTO = menuItemResponseDTO;
+        this.menuItemRepository = menuItemResponseDTO;
     }
 
     public List<RestaurantResponseDTO> createRestaurant(RestaurantRequestDTO dto, Integer ownerId){
@@ -152,16 +156,15 @@ public class RestaurantService {
     }
 
     public List<MenuItemResponseDTO> bulkUpdateMenuItemPrices(Integer restaurantId, double percentageIncrease){
-        Optional<Restaurant> restaurants = restaurantRepository.findById(restaurantId);
-        if (restaurants.isEmpty() || !restaurantRepository.existsById(restaurantId)) {
+        Restaurant restaurant = restaurantRepository.findById(restaurantId).get();
+        if (restaurant==null || !restaurantRepository.existsById(restaurantId)) {
             throw new ResourceNotFoundException(ErrorMessage.RESTAURANT_NOT_FOUND);
         }
-        Restaurant restaurant1 = restaurants.get();
         List<MenuItemResponseDTO> updatedMenu = new ArrayList<>();
 
-        for (MenuItem mi : restaurant1.getMenuItems()){
+        for (MenuItem mi : restaurant.getMenuItems()){
             double currentPrice=mi.getPrice();
-            double newPrice=currentPrice+(currentPrice*(percentageIncrease / 100.0));
+            double newPrice=currentPrice*(1*(percentageIncrease / 100.0));
             mi.setPrice(newPrice);
 
             MenuItemResponseDTO menuItemResponseDTO=new MenuItemResponseDTO();
@@ -172,5 +175,110 @@ public class RestaurantService {
             updatedMenu.add(menuItemResponseDTO);
         }
         return updatedMenu;
+    }
+
+    public ComboMealResponseDTO createCombo(Integer restaurantId, ComboMealRequestDTO dto) {
+        Restaurant restaurant = restaurantRepository.findById(restaurantId).get();
+        if (restaurant==null || !restaurantRepository.existsById(restaurantId)) {
+            throw new ResourceNotFoundException(ErrorMessage.RESTAURANT_NOT_FOUND);
+        }
+        ComboMeal combo = new ComboMeal();
+        combo.setComboName(dto.getComboName());
+        combo.setTotalPrice(dto.getTotalPrice());
+        combo.setDescription(dto.getDescription());
+        combo.setRestaurant(restaurant);
+
+        restaurant.getComboMeals().add(combo);
+
+        Restaurant savedRestaurant = restaurantRepository.save(restaurant);
+
+        ComboMeal savedCombo = savedRestaurant.getComboMeals().get(savedRestaurant.getComboMeals().size() - 1);
+
+        ComboMealResponseDTO response = new ComboMealResponseDTO();
+        response.setId(savedCombo.getId());
+        response.setComboName(savedCombo.getComboName());
+        response.setTotalPrice(savedCombo.getTotalPrice());
+        response.setDescription(savedCombo.getDescription());
+
+        return response;
+    }
+
+    public MenuItemResponseDTO addMenuItem(Integer restaurantId, MenuItemRequestDTO dto) {
+        Restaurant restaurant = restaurantRepository.findById(restaurantId).get();
+        if (restaurant==null || !restaurantRepository.existsById(restaurantId)) {
+            throw new ResourceNotFoundException(ErrorMessage.RESTAURANT_NOT_FOUND);
+        }
+        MenuItem item = new MenuItem();
+        item.setName(dto.getName());
+        item.setPrice(dto.getPrice());
+        item.setIsAvailable(true);
+        item.setRestaurant(restaurant);
+
+        restaurant.getMenuItems().add(item);
+
+        Restaurant savedRestaurant = restaurantRepository.save(restaurant);
+
+        MenuItem savedItem = savedRestaurant.getMenuItems().get(savedRestaurant.getMenuItems().size() - 1);
+
+        MenuItemResponseDTO response = new MenuItemResponseDTO();
+        response.setId(savedItem.getId());
+        response.setName(savedItem.getName());
+        response.setPrice(savedItem.getPrice());
+        response.setAvailable(savedItem.getIsAvailable());
+
+        return response;
+    }
+
+    public RestaurantResponseDTO getRestaurantById(Integer id) {
+        Restaurant restaurant = restaurantRepository.findById(id).get();
+        if(restaurant==null || !restaurant.getIsActive()){
+            throw new ResourceNotFoundException(ErrorMessage.RESTAURANT_NOT_FOUND);
+        }
+        return RestaurantResponseDTO.convertToDTO(restaurant);
+    }
+
+    public MenuItemResponseDTO toggleItemAvailability(Integer itemId, boolean status) {
+        MenuItem item = menuItemRepository.findById(itemId).get();
+        if (item==null || !item.getIsActive()) {
+            throw new ResourceNotFoundException(ErrorMessage.ITEM_NOT_FOUND);
+        }
+        item.setIsAvailable(status);
+        MenuItem updatedItem = menuItemRepository.save(item);
+
+        MenuItemResponseDTO response = new MenuItemResponseDTO();
+        response.setId(updatedItem.getId());
+        response.setName(updatedItem.getName());
+        response.setPrice(updatedItem.getPrice());
+        response.setAvailable(updatedItem.getIsAvailable());
+        return response;
+    }
+
+    public List<ComboMealResponseDTO> getCombosForRestaurant(Integer restaurantId) {
+        Restaurant restaurant = restaurantRepository.findById(restaurantId).get();
+
+        if(restaurant==null || !restaurant.getIsActive()){
+            throw new ResourceNotFoundException(ErrorMessage.RESTAURANT_NOT_FOUND);
+        }
+
+        List<ComboMealResponseDTO> dtoList = new ArrayList<>();
+        for (ComboMeal combo : restaurant.getComboMeals()) {
+            ComboMealResponseDTO dto = new ComboMealResponseDTO();
+            dto.setId(combo.getId());
+            dto.setComboName(combo.getComboName());
+            dto.setTotalPrice(combo.getTotalPrice());
+            dto.setDescription(combo.getDescription());
+            dtoList.add(dto);
+        }
+        return dtoList;
+    }
+
+    public List<RestaurantResponseDTO> getAllRestaurants() {
+        List<Restaurant> restaurants = restaurantRepository.findAll();
+        List<RestaurantResponseDTO> dtoList = new ArrayList<>();
+
+        for (Restaurant r : restaurants) {
+            dtoList.add(RestaurantResponseDTO.convertToDTO(r));
+        }
+        return dtoList;
     }
 }
