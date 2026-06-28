@@ -2,6 +2,8 @@ package FoodDeliveryPlatform.demo.Services;
 
 import FoodDeliveryPlatform.demo.DTOs.Request.DeliveryDriverRequestDTO;
 import FoodDeliveryPlatform.demo.DTOs.Response.DeliveryDriverResponseDTO;
+import FoodDeliveryPlatform.demo.DTOs.Response.DeliveryResponseDTO;
+import FoodDeliveryPlatform.demo.Entities.Delivery;
 import FoodDeliveryPlatform.demo.Entities.DeliveryDriver;
 import FoodDeliveryPlatform.demo.Repositories.DeliveryDriverRepository;
 import FoodDeliveryPlatform.demo.Repositories.DeliveryRepository;
@@ -9,6 +11,7 @@ import FoodDeliveryPlatform.demo.Utilities.HelperUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -57,5 +60,22 @@ public class DeliveryDriverService {
         DeliveryDriver updatedDriver= driverRepository.save(driver);
 
         return DeliveryDriverResponseDTO.convertToDTO(updatedDriver);
+    }
+
+    public DeliveryDriverResponseDTO getDeliveryHistory(Integer id) {
+        DeliveryDriver driver= deliveryRepository.findById(id).get();
+
+        return DeliveryDriverResponseDTO.convertToDTO(driver);
+    }
+
+    public List<DeliveryDriverResponseDTO> getActiveDelivery(Integer id) {
+        List<DeliveryDriver> drivers=deliveryRepository.findByDeliveryDriverIdAndStatus(id,"IN_PROGRESS");
+        List<DeliveryDriverResponseDTO> responseDTOS=new ArrayList<>();
+
+        for(DeliveryDriver dd:drivers){
+            DeliveryDriverResponseDTO dto=DeliveryDriverResponseDTO.convertToDTO(dd);
+            responseDTOS.add(dto);
+        }
+        return responseDTOS;
     }
 }
