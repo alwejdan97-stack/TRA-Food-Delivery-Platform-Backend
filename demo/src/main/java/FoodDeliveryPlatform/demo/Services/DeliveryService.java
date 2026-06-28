@@ -8,12 +8,14 @@ import FoodDeliveryPlatform.demo.Entities.Orders;
 import FoodDeliveryPlatform.demo.Exceptions.ErrorMessage;
 import FoodDeliveryPlatform.demo.Exceptions.InvalidOrderStateException;
 import FoodDeliveryPlatform.demo.Exceptions.ResourceNotFoundException;
+import FoodDeliveryPlatform.demo.Repositories.DeliveryDriverRepository;
 import FoodDeliveryPlatform.demo.Repositories.DeliveryRepository;
 import FoodDeliveryPlatform.demo.Repositories.OrderRepository;
 import FoodDeliveryPlatform.demo.Utilities.HelperUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Driver;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,7 @@ import java.util.Optional;
 public class DeliveryService {
     DeliveryRepository deliveryRepository;
     OrderRepository orderRepository;
+    DeliveryDriverRepository driverRepository;
 
     @Autowired
     public DeliveryService(DeliveryRepository deliveryRepository, OrderRepository orderRepository) {
@@ -32,7 +35,7 @@ public class DeliveryService {
 
     public List<DeliveryDriverResponseDTO> assignDriverToOrder(Integer orderId, Integer driverId){
         Orders orders=orderRepository.findById(orderId).get();
-        DeliveryDriver driver=deliveryRepository.findById(driverId).get();
+        DeliveryDriver driver=driverRepository.findById(driverId).get();
 
         if (orders==null || !orders.getIsActive()) {
             throw new ResourceNotFoundException(ErrorMessage.ORDER_NOT_FOUND);
@@ -61,7 +64,7 @@ public class DeliveryService {
         if (orders==null || !orders.getIsActive()) {
             throw new ResourceNotFoundException(ErrorMessage.ORDER_NOT_FOUND);
         }
-        List<DeliveryDriver> availableDrivers=deliveryRepository.findAll();
+        List<DeliveryDriver> availableDrivers=driverRepository.findAll();
         DeliveryDriver onlineDrivers= null;
         for(DeliveryDriver dd:availableDrivers){
             if(dd.getIsOnline() && dd.getIsActive()){
@@ -85,13 +88,13 @@ public class DeliveryService {
     }
 
     public DeliveryDriverResponseDTO updateDriverLocation(Integer driverId, double lat, double lng){
-        DeliveryDriver driver=deliveryRepository.findById(driverId).get();
+        DeliveryDriver driver=driverRepository.findById(driverId).get();
         if(driver==null || !driver.getIsOnline()){
             throw new ResourceNotFoundException(ErrorMessage.DRIVER_NOT_FOUND);
         }
         driver.setCurrentLat(lat);
         driver.setCurrentLng(lng);
-        DeliveryDriver updatedDriver=deliveryRepository.save(driver);
+        DeliveryDriver updatedDriver=driverRepository.save(driver);
 
         return DeliveryDriverResponseDTO.convertToDTO(updatedDriver);
     }
@@ -136,8 +139,8 @@ public class DeliveryService {
         return responseList;
         }
 
-    public List<DeliveryResponseDTO> getDeliveriesForDriver(Integer driverId, String status){
-        List<DeliveryDriver> driveres= deliveryRepository.findByDeliveryDriverIdAndStatus(driverId,status);
+    public List<DeliveryResponseDTO> getDeliveriesForDriver(Integer driverId, Boolean status){
+        List<DeliveryDriver> driveres= driverRepository.findByIdAndIsOnline(driverId,status);
         if (driveres.isEmpty()) {
             throw new InvalidOrderStateException(ErrorMessage.MATCHING_DELIVERY_STATUS);
         }
@@ -154,11 +157,11 @@ public class DeliveryService {
     }
 
     public void toggleDriverOnlineStatus(Integer driverId, boolean isOnline){
-        DeliveryDriver driver = deliveryRepository.findById(driverId).get();
+        DeliveryDriver driver = driverRepository.findById(driverId).get();
         if (driver==null) {
             throw new InvalidOrderStateException(ErrorMessage.MATCHING_DELIVERY_STATUS);
         }
         driver.setIsOnline(isOnline);
-        deliveryRepository.save(driver);
+        driverRepository.save(driver);
     }
 }

@@ -4,6 +4,7 @@ import FoodDeliveryPlatform.demo.DTOs.Response.ReviewResponseDTO;
 import FoodDeliveryPlatform.demo.Entities.DeliveryDriver;
 import FoodDeliveryPlatform.demo.Exceptions.ErrorMessage;
 import FoodDeliveryPlatform.demo.Exceptions.ResourceNotFoundException;
+import FoodDeliveryPlatform.demo.Repositories.DeliveryDriverRepository;
 import FoodDeliveryPlatform.demo.Repositories.DeliveryRepository;
 import FoodDeliveryPlatform.demo.Repositories.ReviewRepository;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 public class ReviewService {
     ReviewRepository reviewRepository;
     DeliveryRepository deliveryRepository;
+    DeliveryDriverRepository driverRepository;
 
     public ReviewService(ReviewRepository reviewRepository, DeliveryRepository deliveryRepository) {
         this.reviewRepository = reviewRepository;
@@ -34,7 +36,7 @@ public class ReviewService {
         if (rating < 1 || rating > 5) {
             throw new IllegalArgumentException(ErrorMessage.INVALID_RATING);
         }
-        DeliveryDriver driver = deliveryRepository.findById(driverId).get();
+        DeliveryDriver driver = driverRepository.findById(driverId).get();
         if(!driver.getIsActive()||driver==null){
             throw new ResourceNotFoundException(ErrorMessage.DRIVER_NOT_FOUND);
         }
@@ -43,7 +45,7 @@ public class ReviewService {
         responseDTO.setComment(comment);
         responseDTO.setComment("Customer " + customerId + " successfully reviewed driver " + driver.getId());
 
-        deliveryRepository.save(driver);
+        driverRepository.save(driver);
         return responseDTO;
     }
 }

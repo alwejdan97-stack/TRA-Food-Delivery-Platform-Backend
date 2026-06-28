@@ -2,8 +2,6 @@ package FoodDeliveryPlatform.demo.Services;
 
 import FoodDeliveryPlatform.demo.DTOs.Request.DeliveryDriverRequestDTO;
 import FoodDeliveryPlatform.demo.DTOs.Response.DeliveryDriverResponseDTO;
-import FoodDeliveryPlatform.demo.DTOs.Response.DeliveryResponseDTO;
-import FoodDeliveryPlatform.demo.Entities.Delivery;
 import FoodDeliveryPlatform.demo.Entities.DeliveryDriver;
 import FoodDeliveryPlatform.demo.Repositories.DeliveryDriverRepository;
 import FoodDeliveryPlatform.demo.Repositories.DeliveryRepository;
@@ -17,7 +15,6 @@ import java.util.List;
 @Service
 public class DeliveryDriverService {
     DeliveryDriverRepository driverRepository;
-    DeliveryRepository deliveryRepository;
 
     public DeliveryDriverResponseDTO registerDriver(DeliveryDriverRequestDTO request) {
         DeliveryDriver newDriver = new DeliveryDriver();
@@ -40,9 +37,7 @@ public class DeliveryDriverService {
 
     public DeliveryDriverResponseDTO toggleOnlineStatus(Integer id, boolean isOnline) {
 
-        DeliveryDriver driver = driverRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Driver not found"));
-
+        DeliveryDriver driver = driverRepository.findById(id).get();
         driver.setIsOnline(isOnline);
         driver.setUpdatedDate(LocalDate.now());
         DeliveryDriver updatedDriver=driverRepository.save(driver);
@@ -63,13 +58,13 @@ public class DeliveryDriverService {
     }
 
     public DeliveryDriverResponseDTO getDeliveryHistory(Integer id) {
-        DeliveryDriver driver= deliveryRepository.findById(id).get();
+        DeliveryDriver driver= driverRepository.findById(id).get();
 
         return DeliveryDriverResponseDTO.convertToDTO(driver);
     }
 
     public List<DeliveryDriverResponseDTO> getActiveDelivery(Integer id) {
-        List<DeliveryDriver> drivers=deliveryRepository.findByDeliveryDriverIdAndStatus(id,"IN_PROGRESS");
+        List<DeliveryDriver> drivers=driverRepository.findByIdAndIsOnline(id,true);
         List<DeliveryDriverResponseDTO> responseDTOS=new ArrayList<>();
 
         for(DeliveryDriver dd:drivers){
