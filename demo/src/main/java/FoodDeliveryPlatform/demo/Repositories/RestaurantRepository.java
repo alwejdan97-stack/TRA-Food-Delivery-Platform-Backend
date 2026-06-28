@@ -22,4 +22,6 @@ public interface RestaurantRepository extends JpaRepository<Restaurant,Integer> 
 
     @Query("SELECT R FROM Restaurant R WHERE R.name LIKE CONCAT('%',:keyword,'%') AND R.isActive=TRUE")
     List<Restaurant> findRestaurantsByNameKeyword(@Param("keyword") String keyWord);
+
+    List<Restaurant> findByIsActiveTrue();
 }

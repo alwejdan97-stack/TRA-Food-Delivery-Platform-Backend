@@ -6,31 +6,32 @@ import FoodDeliveryPlatform.demo.DTOs.Request.RestaurantRequestDTO;
 import FoodDeliveryPlatform.demo.DTOs.Response.ComboMealResponseDTO;
 import FoodDeliveryPlatform.demo.DTOs.Response.MenuItemResponseDTO;
 import FoodDeliveryPlatform.demo.DTOs.Response.RestaurantResponseDTO;
-import FoodDeliveryPlatform.demo.Entities.ComboMeal;
-import FoodDeliveryPlatform.demo.Entities.MenuItem;
-import FoodDeliveryPlatform.demo.Entities.Restaurant;
-import FoodDeliveryPlatform.demo.Entities.RestaurantOwner;
+import FoodDeliveryPlatform.demo.Entities.*;
 import FoodDeliveryPlatform.demo.Exceptions.ErrorMessage;
 import FoodDeliveryPlatform.demo.Exceptions.ResourceNotFoundException;
-import FoodDeliveryPlatform.demo.Repositories.MenuItemRepository;
-import FoodDeliveryPlatform.demo.Repositories.RestaurantRepository;
+import FoodDeliveryPlatform.demo.Repositories.*;
+import FoodDeliveryPlatform.demo.Utilities.HelperUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class RestaurantService {
     RestaurantRepository restaurantRepository;
     MenuItemRepository menuItemRepository;
+    DeliveryDriverRepository driverRepository;
+    DeliveryRepository deliveryRepository;
+    ReviewRepository reviewRepository;
+    OrderRepository orderRepository;
 
     @Autowired
-    public RestaurantService(RestaurantRepository restaurantRepository, MenuItemRepository menuItemResponseDTO) {
+    public RestaurantService(RestaurantRepository restaurantRepository, MenuItemRepository menuItemResponseDTO, DeliveryDriverRepository driverRepository,DeliveryRepository deliveryRepository) {
         this.restaurantRepository = restaurantRepository;
         this.menuItemRepository = menuItemResponseDTO;
+        this.driverRepository=driverRepository;
+        this.deliveryRepository=deliveryRepository;
     }
 
     public List<RestaurantResponseDTO> createRestaurant(RestaurantRequestDTO dto, Integer ownerId){
@@ -280,5 +281,66 @@ public class RestaurantService {
             dtoList.add(RestaurantResponseDTO.convertToDTO(r));
         }
         return dtoList;
+    }
+
+    /*public List<Restaurant> getNearbyRestaurants(double lat, double lng, double radiusKm) {
+        List<Restaurant> restaurants = restaurantRepository.findByIsActiveTrue();
+        List<Restaurant> nearbyRestaurants = new ArrayList<>();
+        List<DeliveryDriver> driver=driverRepository.findAll();
+
+        for (Restaurant restaurant : restaurants) {
+            double distance = HelperUtils.calculateDistance(
+                    lat,
+                    lng,
+                    restaurant.getLatitude(),
+                    restaurant.getLongitude());
+
+            if (distance <= radiusKm) {
+                nearbyRestaurants.add(restaurant);
+            }
+        }
+        return nearbyRestaurants;
+    }*/
+
+    public Map<String, Object> getRestaurantAnalytics(Integer restaurantId) {
+        if (!restaurantRepository.existsById(restaurantId)) {
+            throw new ResourceNotFoundException(ErrorMessage.RESTAURANT_NOT_FOUND);
+        }
+        Double averageRating = reviewRepository.getAverageRatingByRestaurantId(restaurantId);
+        if (averageRating == null) {
+            averageRating = 0.0;
+        }
+        List<Orders> orders = orderRepository.findAll();
+        List<Orders> completedOrders = orders.stream().filter(o -> o.getRestaurant() != null && restaurantId.equals(o.getRestaurant().getId())).filter(o -> "DELIVERED".equalsIgnoreCase(o.getStatus())).toList();
+
+        long totalCompletedOrders = completedOrders.size();
+        double total = orders.stream().filter(o -> o.getRestaurant() != null && o.getRestaurant().getId().equals(restaurantId)).mapToDouble(Orders::getTotalAmount).findFirst().orElse(0.0);
+
+
+        Map<String, Object> analytics = new HashMap<>();
+        analytics.put("restaurantId", restaurantId);
+        analytics.put("averageRating", averageRating);
+        analytics.put("totalRevenue", total);
+        analytics.put("totalCompletedOrders", totalCompletedOrders);
+        return analytics;
+    }
+
+    public List<MenuItem> getTopSellers(Integer restaurantId) {
+        List<MenuItem> menuItems = menuItemRepository.findAll();
+        List<MenuItem> topSellers = new ArrayList<>();
+
+        for (MenuItem item : menuItems) {
+            if (item.getRestaurant() != null && item.getRestaurant().getId().equals(restaurantId) && item.getIsActive()) {
+                topSellers.add(item);
+                if (topSellers.size() == 5) {
+                    break;
+                }
+            }
+        }
+        return topSellers;
+    }
+
+    public List<MenuItem> searchMenuItems(String keyword, Integer minCalories, Integer maxCalories) {
+        return menuItemRepository.searchCrossRestaurantMenu(keyword, minCalories, maxCalories);
     }
 }

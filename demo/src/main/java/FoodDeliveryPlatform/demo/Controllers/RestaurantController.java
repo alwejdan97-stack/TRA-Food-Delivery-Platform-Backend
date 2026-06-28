@@ -6,6 +6,7 @@ import FoodDeliveryPlatform.demo.DTOs.Request.RestaurantRequestDTO;
 import FoodDeliveryPlatform.demo.DTOs.Response.ComboMealResponseDTO;
 import FoodDeliveryPlatform.demo.DTOs.Response.MenuItemResponseDTO;
 import FoodDeliveryPlatform.demo.DTOs.Response.RestaurantResponseDTO;
+import FoodDeliveryPlatform.demo.Entities.MenuItem;
 import FoodDeliveryPlatform.demo.Services.RestaurantService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/restaurants")
@@ -99,5 +101,31 @@ public class RestaurantController {
     public ResponseEntity<List<RestaurantResponseDTO>> getAllRestaurants() {
         List<RestaurantResponseDTO> responses = restaurantService.getAllRestaurants();
         return ResponseEntity.ok(responses);
+    }
+
+    /*@GetMapping("/near")
+    public ResponseEntity<List<RestaurantResponseDTO>> getNearRestaurants(
+            @RequestParam(name = "lat") double lat,
+            @RequestParam(name = "lng") double lng,
+            @RequestParam(name = "radiusKm") double radiusKm) {
+        return ResponseEntity.ok(restaurantService.getNearbyRestaurants(lat, lng, radiusKm));
+    }*/
+
+    @GetMapping("/{id}/analytics")
+    public ResponseEntity<Map<String, Object>> getRestaurantAnalytics(@PathVariable Integer id) {
+        return ResponseEntity.ok(restaurantService.getRestaurantAnalytics(id));
+    }
+
+    @GetMapping("/{id}/menu/top-sellers")
+    public ResponseEntity<List<MenuItem>> getTopSellers(@PathVariable Integer id) {
+        return ResponseEntity.ok(restaurantService.getTopSellers(id));
+    }
+
+    @GetMapping("/menu/search")
+    public ResponseEntity<List<MenuItem>> searchMenu(
+            @RequestParam(name = "keyword") String keyword,
+            @RequestParam(name = "minCalories", required = false) Integer minCalories,
+            @RequestParam(name = "maxCalories", required = false) Integer maxCalories) {
+        return ResponseEntity.ok(restaurantService.searchMenuItems(keyword, minCalories, maxCalories));
     }
 }

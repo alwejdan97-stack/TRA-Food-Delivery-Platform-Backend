@@ -22,4 +22,7 @@ public interface MenuItemRepository extends JpaRepository<MenuItem,Integer> {
 
     @Query("SELECT M FROM MenuItem M WHERE M.id= :menuItemId AND M.isActive=TRUE")
     List<MenuItem> findByMenuItemId(@Param("menuItemId") Integer menuItemId);
+
+    @Query("SELECT M FROM MenuItem M WHERE LOWER(M.name) LIKE LOWER(CONCAT('%', :keyword, '%')) AND (:minCal IS NULL OR M.calories >= :minCal) AND (:maxCal IS NULL OR M.calories <= :maxCal) " + "AND M.isActive = TRUE")
+    List<MenuItem> searchCrossRestaurantMenu(@Param("keyword") String keyword, @Param("minCal") Integer minCal, @Param("maxCal") Integer maxCal);
 }
