@@ -20,7 +20,7 @@ public class ReviewController {
         this.reviewService = reviewService;
     }
 
-    @PostMapping("/restaurant/{restaurantId}/customer/{cus tomerId}")
+    @PostMapping("/restaurant/{restaurantId}/customer/{customerId}")
     public ResponseEntity<ReviewResponseDTO> leaveRestaurantReview(@PathVariable Integer restaurantId, @PathVariable Integer customerId, @RequestParam int rating, @RequestParam(required = false, defaultValue = "") String comment) {
         ReviewResponseDTO response = reviewService.leaveRestaurantReview(customerId, restaurantId, rating, comment);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
