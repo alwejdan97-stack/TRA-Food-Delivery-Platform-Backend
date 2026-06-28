@@ -17,17 +17,29 @@ public class PaymentController {
         this.paymentService = paymentService;
     }
 
-    @PostMapping("/order/{orderId}?method=CASH")
+    @PostMapping("/processPayment/order/{orderId}?method=CASH")
     public ResponseEntity<PaymentResponseDTO> processPayment(@PathVariable Integer orderId, @RequestParam(name = "method", defaultValue = "CASH") String method) {
 
         PaymentResponseDTO response = paymentService.processPayment(orderId, method);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @GetMapping("/order/{orderId}")
+    @GetMapping("/getPaymentInfoByOrder/order/{orderId}")
+    public ResponseEntity<PaymentResponseDTO> getPaymentInfoByOrder(@PathVariable Integer orderId) {
+        PaymentResponseDTO response = paymentService.processPayment(orderId, "CASH");
+        return ResponseEntity.ok(response);
+    }
 
-    @PutMapping("/{paymentId}/refund")
+    @PutMapping("refundPayment/{paymentId}/refund")
+    public ResponseEntity<PaymentResponseDTO> refundPayment(@PathVariable Integer paymentId) {
+        PaymentResponseDTO response = paymentService.refundPayment(paymentId);
+        return ResponseEntity.ok(response);
+    }
 
-    @PutMapping("/{paymentId}/complete")
+    @PutMapping("completePayment/{paymentId}/complete")
+    public ResponseEntity<PaymentResponseDTO> completePayment(@PathVariable Integer paymentId) {
+        PaymentResponseDTO response = paymentService.processPayment(paymentId, "CASH");
+        return ResponseEntity.ok(response);
+    }
 
 }
