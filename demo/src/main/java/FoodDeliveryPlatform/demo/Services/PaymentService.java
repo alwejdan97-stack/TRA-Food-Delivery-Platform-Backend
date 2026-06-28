@@ -8,10 +8,14 @@ import FoodDeliveryPlatform.demo.Exceptions.ResourceNotFoundException;
 import FoodDeliveryPlatform.demo.Repositories.OrderRepository;
 import FoodDeliveryPlatform.demo.Repositories.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class PaymentService {
@@ -41,7 +45,7 @@ public class PaymentService {
 
         orders.setStatus("PAID");
         orders.setPayment(newPayment);
-        Orders updatedOrder=orderRepository.save(orders);
+        orderRepository.save(orders);
 
         return PaymentResponseDTO.convertToDTO(newPayment);
     }
@@ -62,8 +66,30 @@ public class PaymentService {
         Payment updatedPayment=paymentRepository.save(payment);
 
         orders.setStatus("REFUNDED");
-        Orders updatedOrder=orderRepository.save(orders);
+        orderRepository.save(orders);
 
         return PaymentResponseDTO.convertToDTO(updatedPayment);
+    }
+
+    public org.springframework.data.domain.Page<Payment> getFilteredPayments(String method, String status, LocalDate from, LocalDate to, int page, int size) {
+        Pageable pageable = org.springframework.data.domain.PageRequest.of(page, size);
+        return paymentRepository.findFilteredPayments(method, status, from, to, pageable);
+    }
+
+    public Map<String, Double> getAmountProcessedGroupedByMethod() {
+        List<Payment> payments = paymentRepository.findAll();
+        Map<String, Double> result = new HashMap<>();
+
+        for (Payment payment : payments) {
+            if (payment.getStatus().equalsIgnoreCase("SUCCESS")) {
+                String method = payment.getPaymentMethod();
+                if (result.containsKey(method)) {
+                    result.put(method, result.get(method) + payment.getAmount());
+                } else {
+                    result.put(method, payment.getAmount());
+                }
+            }
+        }
+        return result;
     }
 }
