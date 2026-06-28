@@ -8,6 +8,7 @@ import FoodDeliveryPlatform.demo.Repositories.DeliveryRepository;
 import FoodDeliveryPlatform.demo.Utilities.HelperUtils;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -32,5 +33,17 @@ public class DeliveryDriverService {
     public List<DeliveryDriverResponseDTO> getOnlineDrivers() {
         List<DeliveryDriver> onlineDrivers=driverRepository.getOnlineDrivers(true);
         return DeliveryDriverResponseDTO.convertToDTO(onlineDrivers);
+    }
+
+    public DeliveryDriverResponseDTO toggleOnlineStatus(Integer id, boolean isOnline) {
+
+        DeliveryDriver driver = driverRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Driver not found"));
+
+        driver.setIsOnline(isOnline);
+        driver.setUpdatedDate(LocalDate.now());
+        DeliveryDriver updatedDriver=driverRepository.save(driver);
+
+        return DeliveryDriverResponseDTO.convertToDTO(updatedDriver);
     }
 }
