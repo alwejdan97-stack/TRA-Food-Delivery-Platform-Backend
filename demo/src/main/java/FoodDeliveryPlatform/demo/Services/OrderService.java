@@ -16,11 +16,15 @@ import FoodDeliveryPlatform.demo.Repositories.OrderRepository;
 import FoodDeliveryPlatform.demo.Repositories.RestaurantRepository;
 import FoodDeliveryPlatform.demo.Utilities.HelperUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -299,9 +303,7 @@ public class OrderService {
         if(dto==null){
             throw new InvalidOrderStateException(ErrorMessage.ORDER_REQUEST_EMPTY);
         }
-
         CorporateOrder corporateOrder=new CorporateOrder();
-
         corporateOrder.setCorporateCode(HelperUtils.generateCode("CRP"));
         corporateOrder.setOrderDate(LocalDate.now());
         corporateOrder.setStatus("PENDING");
@@ -312,4 +314,48 @@ public class OrderService {
         return CorporateOrderResponseDTO.convertToDTO(corporateOrder);
     }
 
+    public List<Map<String, Object>> getOrderTimeline(Integer orderId) {
+        Orders order = orderRepository.findById(orderId).get();
+        if(order==null || !order.getIsActive()) {
+            throw new ResourceNotFoundException(ErrorMessage.ORDER_NOT_FOUND);
+        }
+        List<Map<String, Object>> timeline = new ArrayList<>();
+        timeline.add(Map.of("status", "PENDING", "timestamp", order.getOrderDate().atStartOfDay()));
+        if (order.getStatus().equals("DELIVERED")) {timeline.add(Map.of("status", "DELIVERED", "timestamp", order.getOrderDate().atTime(18, 0)));}
+        return timeline;
+    }
+
+    public Orders reorderPastOrder(Integer orderId) {
+        Orders pastOrder = orderRepository.findById(orderId).get();
+        if(pastOrder==null || !pastOrder.getIsActive()) {
+            throw new ResourceNotFoundException(ErrorMessage.ORDER_NOT_FOUND);
+        }
+        Orders newOrder = new Orders();
+        newOrder.setCustomer(pastOrder.getCustomer());
+        newOrder.setRestaurant(pastOrder.getRestaurant());
+        newOrder.setTotalAmount(pastOrder.getTotalAmount());
+        newOrder.setDeliveryFee(pastOrder.getDeliveryFee());
+        newOrder.setOrderDate(LocalDate.now());
+        newOrder.setStatus("PENDING");
+        newOrder.setIsActive(true);
+
+        return orderRepository.save(newOrder);
+    }
+
+    public Page<Orders> getCustomerOrdersFiltered(Integer customerId, String status, LocalDate from, LocalDate to, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return orderRepository.findFilteredOrdersByCustomer(customerId, status, from, to, pageable);
+    }
+
+    public Map<String, Object> getOrderETA(Integer orderId) {
+        Orders order = orderRepository.findById(orderId).get();
+        if(order==null || !order.getIsActive()) {
+            throw new ResourceNotFoundException(ErrorMessage.ORDER_NOT_FOUND);
+        }
+        int estimatedMinutesRemaining = 25;
+        if ("DELIVERED".equalsIgnoreCase(order.getStatus())) {
+            estimatedMinutesRemaining = 0;
+        }
+        return Map.of("orderId", orderId, "status", order.getStatus(), "estimatedMinutesRemaining", estimatedMinutesRemaining, "calculatedAt", java.time.LocalDateTime.now());
+    }
 }

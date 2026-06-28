@@ -5,14 +5,17 @@ import FoodDeliveryPlatform.demo.DTOs.Request.OrderItemRequestDTO;
 import FoodDeliveryPlatform.demo.DTOs.Response.CorporateOrderResponseDTO;
 import FoodDeliveryPlatform.demo.DTOs.Response.MenuItemResponseDTO;
 import FoodDeliveryPlatform.demo.DTOs.Response.OrdersResponseDTO;
+import FoodDeliveryPlatform.demo.Entities.Orders;
 import FoodDeliveryPlatform.demo.Services.OrderService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -83,4 +86,29 @@ public class OrderController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/{id}/eta")
+    public ResponseEntity<Map<String, Object>> getOrderETA(@PathVariable Integer id) {
+        return ResponseEntity.ok(orderService.getOrderETA(id));
+    }
+
+    @GetMapping("/{id}/timeline")
+    public ResponseEntity<List<Map<String, Object>>> getOrderTimeline(@PathVariable Integer id) {
+        return ResponseEntity.ok(orderService.getOrderTimeline(id));
+    }
+
+    @PostMapping("/{id}/reorder")
+    public ResponseEntity<Orders> reorder(@PathVariable Integer id) {
+        return ResponseEntity.status(org.springframework.http.HttpStatus.CREATED).body(orderService.reorderPastOrder(id));
+    }
+
+    @GetMapping("/customer/{customerId}")
+    public ResponseEntity<Page<Orders>> getCustomerOrders(
+            @PathVariable Integer customerId,
+            @RequestParam(name = "status", required = false) String status,
+            @RequestParam(name = "from", required = false) @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE) LocalDate from,
+            @RequestParam(name = "to", required = false) @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE) LocalDate to,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "10") int size) {
+        return ResponseEntity.ok(orderService.getCustomerOrdersFiltered(customerId, status, from, to, page, size));
+    }
 }
