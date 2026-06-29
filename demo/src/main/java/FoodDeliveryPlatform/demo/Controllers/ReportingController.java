@@ -3,6 +3,9 @@ package FoodDeliveryPlatform.demo.Controllers;
 import FoodDeliveryPlatform.demo.DTOs.Response.CustomerResponseDTO;
 import FoodDeliveryPlatform.demo.DTOs.Response.DeliveryDriverResponseDTO;
 
+import FoodDeliveryPlatform.demo.DTOs.Response.OrdersResponseDTO;
+import FoodDeliveryPlatform.demo.Services.OrderService;
+import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +20,8 @@ import java.util.Map;
 @RequestMapping("/api/reports")
 public class ReportingController {
 
+    OrderService orderService;
+
     @GetMapping("/getRestaurantRevenueByDay/revenue/restaurant/{restaurantId}")
     public ResponseEntity<Map<String, Object>> getRestaurantRevenueByDay(@PathVariable Integer restaurantId, @RequestParam(name = "date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         Map<String, Object> response = new HashMap<>();
@@ -27,11 +32,12 @@ public class ReportingController {
     }
 
     @GetMapping("/getLifetimeOrdersCount/orders/count/restaurant/{restaurantId}")
-    public ResponseEntity<Map<String, Object>> getLifetimeOrdersCount(@PathVariable Integer restaurantId) {
-        Map<String, Object> response = new HashMap<>();
-        response.put("restaurantId", restaurantId);
-        response.put("lifetimeOrders", 0);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<List<String>> getLifetimeOrdersCount(@PathVariable Integer restaurantId) {
+       List<String> response = new ArrayList<>();
+       response.add(restaurantId,"restaurantId");
+       response.add(0,"lifetimeOrders");
+
+       return ResponseEntity.ok(response);
     }
 
     @GetMapping("/getTopLoyaltyCustomers/customers/top-loyalty")
@@ -46,13 +52,16 @@ public class ReportingController {
         return ResponseEntity.ok(topDrivers);
     }
 
-    @GetMapping("/getPlatformDailySummary/platform/daily-summary")
-    public ResponseEntity<Map<String, Object>> getPlatformDailySummary(@RequestParam(name = "date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-        Map<String, Object> response = new HashMap<>();
-        response.put("date", date);
-        response.put("totalOrdersCount", 0);
-        response.put("totalDeliveryFeesCollected", 0.0);
-        response.put("totalPlatformRevenue", 0.0);
+    /*@GetMapping("/getPlatformDailySummary/platform/daily-summary")
+    public ResponseEntity<List<String>> getPlatformDailySummary(@RequestParam(name = "date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        List<String> response = new ArrayList<>();
+
+        response.add("date"+ date);
+        response.add("totalOrdersCount"+ 0);
+        response.add("totalDeliveryFeesCollected"+ 0.0);
+        response.add("totalPlatformRevenue"+ 0.0);
         return ResponseEntity.ok(response);
-    }
+
+
+    }*/
 }

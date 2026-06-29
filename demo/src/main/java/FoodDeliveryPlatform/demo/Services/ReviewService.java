@@ -9,8 +9,13 @@ import FoodDeliveryPlatform.demo.Repositories.DeliveryDriverRepository;
 import FoodDeliveryPlatform.demo.Repositories.DeliveryRepository;
 import FoodDeliveryPlatform.demo.Repositories.ReviewRepository;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ReviewService {
@@ -60,16 +65,14 @@ public class ReviewService {
         return reviewRepository.getAverageRatingByDriverId(driverId);
     }
 
-    public org.springframework.data.domain.Page<ReviewResponseDTO> getPaginatedRestaurantReviews(Integer restaurantId, int page, int size) {
-        Pageable pageable = org.springframework.data.domain.PageRequest.of(page, size);
+    public Page<ReviewResponseDTO> getPaginatedRestaurantReviews(Integer restaurantId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
         Page<Review> reviewPage = reviewRepository.findByRestaurantIdAndIsActiveTrue(restaurantId, pageable);
 
-        return reviewPage.map(r -> {
-            ReviewResponseDTO dto = new ReviewResponseDTO();
-            dto.setId(r.getId());
-            dto.setRating(r.getRating());
-            dto.setComment(r.getComment());
-            return dto;
-        });
+        List<ReviewResponseDTO> dtos = new ArrayList<>();
+        for (Review r : reviewPage.getContent()) {
+            dtos.add(ReviewResponseDTO.convertToDTO(r));
+        }
+        return new PageImpl<>(dtos, pageable, reviewPage.getTotalElements());
     }
 }

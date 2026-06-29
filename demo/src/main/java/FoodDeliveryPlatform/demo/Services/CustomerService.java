@@ -3,14 +3,23 @@ package FoodDeliveryPlatform.demo.Services;
 import FoodDeliveryPlatform.demo.DTOs.Request.CustomerAddressRequestDTO;
 import FoodDeliveryPlatform.demo.DTOs.Request.CustomerRequestDTO;
 import FoodDeliveryPlatform.demo.DTOs.Response.CustomerAddressResponseDTO;
+import FoodDeliveryPlatform.demo.DTOs.Response.CustomerPatchDTO;
 import FoodDeliveryPlatform.demo.DTOs.Response.CustomerResponseDTO;
+import FoodDeliveryPlatform.demo.DTOs.Response.OrdersResponseDTO;
 import FoodDeliveryPlatform.demo.Entities.Customer;
 import FoodDeliveryPlatform.demo.Entities.CustomerAddress;
+import FoodDeliveryPlatform.demo.Entities.Orders;
 import FoodDeliveryPlatform.demo.Exceptions.ErrorMessage;
 import FoodDeliveryPlatform.demo.Exceptions.ResourceNotFoundException;
 import FoodDeliveryPlatform.demo.Repositories.CustomerAddressRepository;
 import FoodDeliveryPlatform.demo.Repositories.CustomerRepository;
+import FoodDeliveryPlatform.demo.Repositories.OrderRepository;
+import FoodDeliveryPlatform.demo.Repositories.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -22,6 +31,8 @@ import java.util.Optional;
 public class CustomerService {
     CustomerRepository customerRepository;
     CustomerAddressRepository customerAddressRepository;
+    OrderRepository orderRepository;
+    RestaurantRepository restaurantRepository;
 
     @Autowired
     public CustomerService(CustomerRepository customerRepository, CustomerAddressRepository customerAddressRepository) {
@@ -250,4 +261,59 @@ public class CustomerService {
         Customer customer = customerOpt.get();
         return CustomerResponseDTO.convertToDTO(customer);
     }
+
+    public CustomerResponseDTO partialUpdateCustomer(Integer id, CustomerPatchDTO patchDTO) {
+        Customer customer = customerRepository.findById(id).get();
+        if (customer==null || !customer.getIsActive()) {
+            throw new ResourceNotFoundException(ErrorMessage.CUSTOMER_NOT_FOUND);
+        }
+        if (patchDTO.getPhone() != null) {
+            customer.setPhone(patchDTO.getPhone());
+        }
+        if (patchDTO.getAddress() != null && !customer.getCustomerAddresses().isEmpty()) {
+            customer.getCustomerAddresses().get(0).setStreet(patchDTO.getAddress());
+            customer.getCustomerAddresses().get(0).setCity(patchDTO.getAddress());
+            customer.getCustomerAddresses().get(0).setBuilding(patchDTO.getAddress());
+        }
+
+        Customer updatedCustomer = customerRepository.save(customer);
+        return CustomerResponseDTO.convertToDTO(updatedCustomer);
+    }
+
+    public Page<OrdersResponseDTO> getCustomerOrderHistory(Integer customerId, String status, LocalDate from, LocalDate to, int page, int size) {
+        if (!customerRepository.existsById(customerId)) {
+            throw new ResourceNotFoundException(ErrorMessage.CUSTOMER_NOT_FOUND);
+        }
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Orders> ordersPage = orderRepository.findFilteredOrdersByCustomer(customerId, status, from, to, pageable);
+
+        List<OrdersResponseDTO> dtoList = new ArrayList<>();
+        for (Orders order : ordersPage.getContent()) {
+            OrdersResponseDTO dto = new OrdersResponseDTO();
+            dto.setId(order.getId());
+            dto.setOrderDate(order.getOrderDate());
+            dto.setTotalAmount(order.getTotalAmount());
+            dto.setStatus(order.getStatus());
+            if (order.getRestaurant() != null) {
+                dto.setId(order.getRestaurant().getId());
+            }
+            dtoList.add(dto);
+        }
+
+        return new PageImpl<>(dtoList, pageable, ordersPage.getTotalElements());
+    }
+
+    public Page<CustomerResponseDTO> searchCustomersByName(String name, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Customer> customersPage = customerRepository.searchByFirstOrLastName(name, pageable);
+
+        List<CustomerResponseDTO> dtoList = new ArrayList<>();
+        for (Customer customer : customersPage.getContent()) {
+            dtoList.add(CustomerResponseDTO.convertToDTO(customer));
+        }
+
+        return new PageImpl<>(dtoList, pageable, customersPage.getTotalElements());
+    }
+
 }

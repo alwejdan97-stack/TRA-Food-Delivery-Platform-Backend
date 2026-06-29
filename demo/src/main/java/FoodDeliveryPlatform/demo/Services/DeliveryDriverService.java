@@ -3,8 +3,8 @@ package FoodDeliveryPlatform.demo.Services;
 import FoodDeliveryPlatform.demo.DTOs.Request.DeliveryDriverRequestDTO;
 import FoodDeliveryPlatform.demo.DTOs.Response.DeliveryDriverResponseDTO;
 import FoodDeliveryPlatform.demo.Entities.DeliveryDriver;
+import FoodDeliveryPlatform.demo.Exceptions.ResourceNotFoundException;
 import FoodDeliveryPlatform.demo.Repositories.DeliveryDriverRepository;
-import FoodDeliveryPlatform.demo.Repositories.DeliveryRepository;
 import FoodDeliveryPlatform.demo.Utilities.HelperUtils;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +36,6 @@ public class DeliveryDriverService {
     }
 
     public DeliveryDriverResponseDTO toggleOnlineStatus(Integer id, boolean isOnline) {
-
         DeliveryDriver driver = driverRepository.findById(id).get();
         driver.setIsOnline(isOnline);
         driver.setUpdatedDate(LocalDate.now());
@@ -46,8 +45,10 @@ public class DeliveryDriverService {
     }
 
     public DeliveryDriverResponseDTO updateLocation(Integer id, Double lat, Double lng) {
-        DeliveryDriver driver = driverRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Driver not found"));
+        DeliveryDriver driver = driverRepository.findById(id).get();
+       if(driver==null || !driver.getIsOnline()){
+           throw new ResourceNotFoundException("Driver NOT Found");
+       }
 
         driver.setCurrentLat(lat);
         driver.setCurrentLng(lng);

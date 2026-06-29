@@ -17,11 +17,13 @@ import FoodDeliveryPlatform.demo.Repositories.RestaurantRepository;
 import FoodDeliveryPlatform.demo.Utilities.HelperUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -314,18 +316,27 @@ public class OrderService {
         return CorporateOrderResponseDTO.convertToDTO(corporateOrder);
     }
 
-    public List<Map<String, Object>> getOrderTimeline(Integer orderId) {
+    public List<OrdersResponseDTO> getOrderTimeline(Integer orderId) {
         Orders order = orderRepository.findById(orderId).get();
         if(order==null || !order.getIsActive()) {
             throw new ResourceNotFoundException(ErrorMessage.ORDER_NOT_FOUND);
         }
-        List<Map<String, Object>> timeline = new ArrayList<>();
-        timeline.add(Map.of("status", "PENDING", "timestamp", order.getOrderDate().atStartOfDay()));
-        if (order.getStatus().equals("DELIVERED")) {timeline.add(Map.of("status", "DELIVERED", "timestamp", order.getOrderDate().atTime(18, 0)));}
+        List<OrdersResponseDTO> timeline = new ArrayList<>();
+        OrdersResponseDTO pendingOrder=new OrdersResponseDTO();
+        pendingOrder.setStatus("PENDING");
+        pendingOrder.setOrderDate(order.getOrderDate().atStartOfDay().toLocalDate());
+        timeline.add(pendingOrder);
+
+        if (order.getStatus().equalsIgnoreCase("DELIVERED")) {
+            OrdersResponseDTO deliveredEvent = new OrdersResponseDTO();
+            deliveredEvent.setStatus("DELIVERED");
+            deliveredEvent.setOrderDate(order.getOrderDate());
+            timeline.add(deliveredEvent);
+        }
         return timeline;
     }
 
-    public Orders reorderPastOrder(Integer orderId) {
+    public OrdersResponseDTO reorderPastOrder(Integer orderId) {
         Orders pastOrder = orderRepository.findById(orderId).get();
         if(pastOrder==null || !pastOrder.getIsActive()) {
             throw new ResourceNotFoundException(ErrorMessage.ORDER_NOT_FOUND);
@@ -339,23 +350,46 @@ public class OrderService {
         newOrder.setStatus("PENDING");
         newOrder.setIsActive(true);
 
-        return orderRepository.save(newOrder);
+        return OrdersResponseDTO.convertToDTO(orderRepository.save(newOrder));
     }
 
-    public Page<Orders> getCustomerOrdersFiltered(Integer customerId, String status, LocalDate from, LocalDate to, int page, int size) {
+    public Page<OrdersResponseDTO> getCustomerOrdersFiltered(Integer customerId, String status, LocalDate from, LocalDate to, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return orderRepository.findFilteredOrdersByCustomer(customerId, status, from, to, pageable);
+        Page<Orders> ordersPage = orderRepository.findFilteredOrdersByCustomer(customerId, status, from, to, pageable);
+
+        List<OrdersResponseDTO> dtoList = new ArrayList<>();
+        for (Orders order : ordersPage.getContent()) {
+            OrdersResponseDTO dto = new OrdersResponseDTO();
+            dto.setId(order.getId());
+            dto.setStatus(order.getStatus());
+            dto.setOrderDate(order.getOrderDate());
+            dto.setTotalAmount(order.getTotalAmount());
+
+            if (order.getRestaurant() != null) {
+                dto.setId(order.getRestaurant().getId());
+            }
+            dtoList.add(dto);
+        }
+        return new PageImpl<>(dtoList, pageable, ordersPage.getTotalElements());
     }
 
-    public Map<String, Object> getOrderETA(Integer orderId) {
+    public OrdersResponseDTO getOrderETA(Integer orderId) {
         Orders order = orderRepository.findById(orderId).get();
-        if(order==null || !order.getIsActive()) {
+        if(order == null || !order.getIsActive()) {
             throw new ResourceNotFoundException(ErrorMessage.ORDER_NOT_FOUND);
         }
+
         int estimatedMinutesRemaining = 25;
         if ("DELIVERED".equalsIgnoreCase(order.getStatus())) {
             estimatedMinutesRemaining = 0;
         }
-        return Map.of("orderId", orderId, "status", order.getStatus(), "estimatedMinutesRemaining", estimatedMinutesRemaining, "calculatedAt", java.time.LocalDateTime.now());
+
+        OrdersResponseDTO response = new OrdersResponseDTO();
+        response.setId(orderId);
+        response.setStatus(order.getStatus());
+        response.setOrderDate(LocalDate.now());
+        response.setEstimatedMinutesRemaining(estimatedMinutesRemaining);
+
+        return response;
     }
 }

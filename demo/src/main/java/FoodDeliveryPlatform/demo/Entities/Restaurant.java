@@ -19,6 +19,8 @@ public class Restaurant extends BaseEntity{
     private double minOrderAmount;
     private double deliveryFee;
     private Boolean acceptingOrders;
+    private double currentLatitude;
+    private double currentLongitude;
 
     @ManyToOne
     private RestaurantOwner restaurantOwner;

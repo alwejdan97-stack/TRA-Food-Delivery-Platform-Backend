@@ -1,6 +1,8 @@
 package FoodDeliveryPlatform.demo.Repositories;
 
 import FoodDeliveryPlatform.demo.Entities.Customer;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,4 +19,8 @@ public interface CustomerRepository extends JpaRepository<Customer,Integer> {
 
     @Query("SELECT C FROM Customer C WHERE C.createdDate BETWEEN :startDate AND :endDate AND C.isActive=TRUE")
     List<Customer> findByRegistrationDateBetween(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
+
+    @Query("SELECT c FROM Customer c WHERE (LOWER(c.firstName) LIKE LOWER(CONCAT('%', :name, '%')) OR LOWER(c.lastName) LIKE LOWER(CONCAT('%', :name, '%'))) AND c.isActive = true")
+    Page<Customer> searchByFirstOrLastName(@Param("name") String name, Pageable pageable);
+
 }

@@ -82,28 +82,28 @@ public class OrderController {
     }
 
     @DeleteMapping("/removeMenuItemFromOrder/{id}/items/{itemId}")
-    public ResponseEntity<Void> removeMenuItemFromOrder(@PathVariable Integer id, @PathVariable Integer itemId) {
+    public ResponseEntity<OrdersResponseDTO> removeMenuItemFromOrder(@PathVariable Integer id, @PathVariable Integer itemId) {
         orderService.removeMenuItemFromOrder(id, itemId);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}/eta")
-    public ResponseEntity<Map<String, Object>> getOrderETA(@PathVariable Integer id) {
+    public ResponseEntity<OrdersResponseDTO> getOrderETA(@PathVariable Integer id) {
         return ResponseEntity.ok(orderService.getOrderETA(id));
     }
 
     @GetMapping("/{id}/timeline")
-    public ResponseEntity<List<Map<String, Object>>> getOrderTimeline(@PathVariable Integer id) {
+    public ResponseEntity<List<OrdersResponseDTO>> getOrderTimeline(@PathVariable Integer id) {
         return ResponseEntity.ok(orderService.getOrderTimeline(id));
     }
 
     @PostMapping("/{id}/reorder")
-    public ResponseEntity<Orders> reorder(@PathVariable Integer id) {
+    public ResponseEntity<OrdersResponseDTO> reorder(@PathVariable Integer id) {
         return ResponseEntity.status(org.springframework.http.HttpStatus.CREATED).body(orderService.reorderPastOrder(id));
     }
 
     @GetMapping("/customer/{customerId}")
-    public ResponseEntity<Page<Orders>> getCustomerOrders(
+    public ResponseEntity<Page<OrdersResponseDTO>> getCustomerOrders(
             @PathVariable Integer customerId,
             @RequestParam(name = "status", required = false) String status,
             @RequestParam(name = "from", required = false) @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE) LocalDate from,

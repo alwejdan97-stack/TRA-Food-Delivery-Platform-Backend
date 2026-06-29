@@ -283,24 +283,19 @@ public class RestaurantService {
         return dtoList;
     }
 
-    /*public List<Restaurant> getNearbyRestaurants(double lat, double lng, double radiusKm) {
+    public List<Restaurant> getNearbyRestaurants(double lat, double lng, double radiusKm) {
         List<Restaurant> restaurants = restaurantRepository.findByIsActiveTrue();
         List<Restaurant> nearbyRestaurants = new ArrayList<>();
         List<DeliveryDriver> driver=driverRepository.findAll();
 
-        for (Restaurant restaurant : restaurants) {
-            double distance = HelperUtils.calculateDistance(
-                    lat,
-                    lng,
-                    restaurant.getLatitude(),
-                    restaurant.getLongitude());
-
+        for (Restaurant r : restaurants) {
+            double distance = HelperUtils.calculateDistance(lat, lng, r.getCurrentLatitude(), r.getCurrentLongitude());
             if (distance <= radiusKm) {
-                nearbyRestaurants.add(restaurant);
+                nearbyRestaurants.add(r);
             }
         }
         return nearbyRestaurants;
-    }*/
+    }
 
     public Map<String, Object> getRestaurantAnalytics(Integer restaurantId) {
         if (!restaurantRepository.existsById(restaurantId)) {

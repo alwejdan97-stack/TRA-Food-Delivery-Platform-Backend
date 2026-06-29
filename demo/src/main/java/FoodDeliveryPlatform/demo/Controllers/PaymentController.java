@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -49,7 +50,7 @@ public class PaymentController {
     }
 
     @GetMapping("/getFilteredPayments")
-    public ResponseEntity<Page<Payment>> getFilteredPayments(
+    public ResponseEntity<Page<PaymentResponseDTO>> getFilteredPayments(
             @RequestParam(name = "method", required = false) String method,
             @RequestParam(name = "status", required = false) String status,
             @RequestParam(name = "from", required = false) @DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE) LocalDate from,
@@ -60,7 +61,7 @@ public class PaymentController {
     }
 
     @GetMapping("/getAnalyticsByMethod/analytics/by-method")
-    public ResponseEntity<Map<String, Double>> getAnalyticsByMethod() {
+    public ResponseEntity<List<PaymentResponseDTO>> getAnalyticsByMethod() {
         return ResponseEntity.ok(paymentService.getAmountProcessedGroupedByMethod());
     }
 }

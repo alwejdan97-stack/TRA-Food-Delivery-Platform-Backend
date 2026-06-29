@@ -165,4 +165,25 @@ public class DeliveryService {
         driverRepository.save(driver);
     }
 
+    public List<DeliveryDriverResponseDTO> getNearbyOnlineDrivers(double lat, double lng, double radiusKm) {
+        List<DeliveryDriver> nearbyDrivers = new ArrayList<>();
+        for (DeliveryDriver dd : driverRepository.findAll()) {
+            if (dd.getIsOnline()) {
+                double distance = HelperUtils.calculateDistance(lat, lng, dd.getCurrentLat(), dd.getCurrentLng());
+                if (distance <= radiusKm) {
+                    nearbyDrivers.add(dd);
+                }
+            }
+        }
+        return DeliveryDriverResponseDTO.convertToDTO(nearbyDrivers);
+    }
+
+    public DeliveryDriverResponseDTO getDriverPerformance(Integer driverId) {
+        DeliveryDriver driver = driverRepository.findById(driverId).orElse(null);
+        if (driver == null) {
+            throw new ResourceNotFoundException(ErrorMessage.DRIVER_NOT_FOUND);
+        }
+        return DeliveryDriverResponseDTO.convertToDTO(driver);
+    }
+
 }

@@ -3,6 +3,7 @@ package FoodDeliveryPlatform.demo.Controllers;
 import FoodDeliveryPlatform.demo.DTOs.Request.CustomerAddressRequestDTO;
 import FoodDeliveryPlatform.demo.DTOs.Request.CustomerRequestDTO;
 import FoodDeliveryPlatform.demo.DTOs.Response.CustomerAddressResponseDTO;
+import FoodDeliveryPlatform.demo.DTOs.Response.CustomerPatchDTO;
 import FoodDeliveryPlatform.demo.DTOs.Response.CustomerResponseDTO;
 import FoodDeliveryPlatform.demo.Services.CustomerService;
 import jakarta.validation.Valid;

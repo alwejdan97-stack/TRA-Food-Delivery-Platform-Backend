@@ -19,6 +19,7 @@ public class Orders extends BaseEntity{
     private double discountAmount;
     private double totalAmount;
     private String deliveryNotes;
+    private Integer estimatedMinutesRemaining;
 
     @ManyToOne
     private Customer customer;

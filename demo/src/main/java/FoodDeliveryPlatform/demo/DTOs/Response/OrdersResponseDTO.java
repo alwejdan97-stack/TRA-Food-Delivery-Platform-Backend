@@ -30,6 +30,8 @@ public class OrdersResponseDTO {
     private double discountAmount;
     @DecimalMin("0.0")
     private double totalAmount;
+    @DecimalMin("0.0")
+    private Integer estimatedMinutesRemaining;
     private OrdersDTOSummary ordersDTOSummary;
 
     public static OrdersResponseDTO convertToDTO(Orders entity) {
