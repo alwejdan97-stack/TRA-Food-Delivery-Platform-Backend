@@ -52,7 +52,7 @@ public class ReportingController {
         return ResponseEntity.ok(topDrivers);
     }
 
-    /*@GetMapping("/getPlatformDailySummary/platform/daily-summary")
+    @GetMapping("/getPlatformDailySummary/platform/daily-summary")
     public ResponseEntity<List<String>> getPlatformDailySummary(@RequestParam(name = "date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         List<String> response = new ArrayList<>();
 
@@ -61,7 +61,62 @@ public class ReportingController {
         response.add("totalDeliveryFeesCollected"+ 0.0);
         response.add("totalPlatformRevenue"+ 0.0);
         return ResponseEntity.ok(response);
+    }
 
+    @GetMapping("/revenue/restaurant/{restaurantId}")
+    public ResponseEntity<Map<String, Object>> getCustomRestaurantRevenue(
+            @PathVariable Integer restaurantId,
+            @RequestParam(name = "from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+            @RequestParam(name = "to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {
 
-    }*/
+        Map<String, Object> response = new HashMap<>();
+        response.put("restaurantId", restaurantId);
+        response.put("from", from);
+        response.put("to", to);
+        response.put("totalRevenue", 0.0); // Replace with your repository calculation logic
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/drivers/{driverId}/earnings")
+    public ResponseEntity<Map<String, Object>> getDriverEarnings(
+            @PathVariable Integer driverId,
+            @RequestParam(name = "from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+            @RequestParam(name = "to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("driverId", driverId);
+        response.put("from", from);
+        response.put("to", to);
+        response.put("totalEarnings", 0.0); // Replace with your repository calculation logic
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/orders/cancellation-rate")
+    public ResponseEntity<Map<String, Object>> getCancellationRate(
+            @RequestParam(name = "from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+            @RequestParam(name = "to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("from", from);
+        response.put("to", to);
+        response.put("cancellationRate", 0.0); // e.g., (cancelledOrders / totalOrders) * 100
+        response.put("completedCount", 0);
+        response.put("cancelledCount", 0);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/platform/busiest-hours")
+    public ResponseEntity<List<Map<String, Object>>> getBusiestHours() {
+        List<Map<String, Object>> hourlyVolumeReport = new ArrayList<>();
+
+        Map<String, Object> sampleRow = new HashMap<>();
+        sampleRow.put("hour", 0);
+        sampleRow.put("orderCount", 0);
+        hourlyVolumeReport.add(sampleRow);
+
+        return ResponseEntity.ok(hourlyVolumeReport);
+    }
 }

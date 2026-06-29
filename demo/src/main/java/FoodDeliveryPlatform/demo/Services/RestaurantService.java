@@ -283,7 +283,7 @@ public class RestaurantService {
         return dtoList;
     }
 
-    public List<Restaurant> getNearbyRestaurants(double lat, double lng, double radiusKm) {
+    public List<RestaurantResponseDTO> getNearbyRestaurants(double lat, double lng, double radiusKm) {
         List<Restaurant> restaurants = restaurantRepository.findByIsActiveTrue();
         List<Restaurant> nearbyRestaurants = new ArrayList<>();
         List<DeliveryDriver> driver=driverRepository.findAll();
@@ -294,7 +294,7 @@ public class RestaurantService {
                 nearbyRestaurants.add(r);
             }
         }
-        return nearbyRestaurants;
+        return RestaurantResponseDTO.convertToDTO(nearbyRestaurants);
     }
 
     public Map<String, Object> getRestaurantAnalytics(Integer restaurantId) {
