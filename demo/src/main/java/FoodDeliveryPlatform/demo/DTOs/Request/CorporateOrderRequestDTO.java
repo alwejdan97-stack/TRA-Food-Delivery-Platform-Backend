@@ -31,8 +31,8 @@ public class CorporateOrderRequestDTO {
     private double totalAmount;
 
     public void applyToEntity(CorporateOrder entity){
-        entity.setCorporateCode(this.corporateCode);
         entity.setId(this.id);
+        entity.setCorporateCode(this.corporateCode);
         entity.setCompanyName(this.companyName);
         entity.setCostCenter(this.costCenter);
         entity.setStatus(this.status);
