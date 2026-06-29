@@ -24,8 +24,8 @@ public class OrderItemDTOSummary {
     private double unitPrice;
     @DecimalMin("0.0")
     private double totalPrice;
-    @NotBlank(message = "Instructions Can't Be Empty")
-    private String specialInstructions;
+    /*@NotBlank(message = "Instructions Can't Be Empty")
+    private String specialInstructions;*/
 
     public static OrderItemDTOSummary fromEntity(OrderItem entity) {
         OrderItemDTOSummary dto = new OrderItemDTOSummary();
@@ -33,7 +33,7 @@ public class OrderItemDTOSummary {
         dto.setQuantity(entity.getQuantity());
         dto.setTotalPrice(entity.getTotalPrice());
         dto.setUnitPrice(entity.getUnitPrice());
-        dto.setSpecialInstructions(entity.getSpecialInstructions());
+        //dto.setSpecialInstructions(entity.getSpecialInstructions());
         return dto;
     }
 }
