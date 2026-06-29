@@ -1,6 +1,9 @@
 package FoodDeliveryPlatform.demo.DTOs.Request;
 
 import FoodDeliveryPlatform.demo.Entities.Payment;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -14,6 +17,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class PaymentRequestDTO {
     @NotNull
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @NotBlank(message = "Payment Method Can't Be Empty")
     private String paymentMethod;

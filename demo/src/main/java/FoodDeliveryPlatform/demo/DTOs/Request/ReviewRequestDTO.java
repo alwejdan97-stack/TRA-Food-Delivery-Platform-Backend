@@ -1,6 +1,9 @@
 package FoodDeliveryPlatform.demo.DTOs.Request;
 
 import FoodDeliveryPlatform.demo.Entities.Review;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -12,6 +15,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ReviewRequestDTO {
     @NotNull
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @NotBlank(message = "Target Can't Be Empty")
     private String targetType;

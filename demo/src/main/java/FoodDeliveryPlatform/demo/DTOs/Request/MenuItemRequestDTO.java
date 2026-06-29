@@ -1,6 +1,9 @@
 package FoodDeliveryPlatform.demo.DTOs.Request;
 
 import FoodDeliveryPlatform.demo.Entities.MenuItem;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -12,6 +15,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MenuItemRequestDTO {
     @NotNull
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @NotBlank(message = "Name Can't Be Empty")
     private String name;

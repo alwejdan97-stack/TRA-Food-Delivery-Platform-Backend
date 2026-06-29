@@ -2,6 +2,9 @@ package FoodDeliveryPlatform.demo.DTOs.Request;
 
 import FoodDeliveryPlatform.demo.DTOs.Response.RestaurantResponseDTO;
 import FoodDeliveryPlatform.demo.Entities.Restaurant;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +15,8 @@ import java.time.LocalTime;
 @NoArgsConstructor
 public class RestaurantRequestDTO {
     @NotNull
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @NotNull
     private Integer ownerId;
