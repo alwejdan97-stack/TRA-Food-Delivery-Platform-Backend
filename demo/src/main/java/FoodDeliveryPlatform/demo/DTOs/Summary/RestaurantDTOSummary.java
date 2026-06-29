@@ -2,6 +2,9 @@ package FoodDeliveryPlatform.demo.DTOs.Summary;
 
 import FoodDeliveryPlatform.demo.Entities.Payment;
 import FoodDeliveryPlatform.demo.Entities.Restaurant;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -14,6 +17,9 @@ import java.time.LocalTime;
 @Data
 @NoArgsConstructor
 public class RestaurantDTOSummary {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
     @NotBlank(message = "Name Can't Be Empty")
     private String name;
     @NotBlank(message = "Description Can't Be Empty")
@@ -30,6 +36,7 @@ public class RestaurantDTOSummary {
     public static RestaurantDTOSummary fromEntity(Restaurant entity) {
         RestaurantDTOSummary dto = new RestaurantDTOSummary();
         dto.setName(dto.getName());
+        dto.setId(entity.getId());
         dto.setDescription(entity.getDescription());
         dto.setOpeningTime(entity.getOpeningTime());
         dto.setCuisineType(entity.getCuisineType());

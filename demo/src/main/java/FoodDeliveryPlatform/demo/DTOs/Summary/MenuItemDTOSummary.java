@@ -2,6 +2,9 @@ package FoodDeliveryPlatform.demo.DTOs.Summary;
 
 import FoodDeliveryPlatform.demo.Entities.MenuItem;
 import FoodDeliveryPlatform.demo.Entities.OrderItem;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -12,7 +15,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class MenuItemDTOSummary {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
     @NotBlank(message = "Name Can't Be Empty")
     private String name;
     @NotBlank(message = "Name Can't Be Empty")
@@ -26,6 +31,7 @@ public class MenuItemDTOSummary {
 
     public static MenuItemDTOSummary fromEntity(MenuItem entity) {
         MenuItemDTOSummary dto = new MenuItemDTOSummary();
+        dto.setId(entity.getId());
         dto.setName(entity.getName());
         dto.setDescription(entity.getDescription());
         dto.setPrice(entity.getPrice());
