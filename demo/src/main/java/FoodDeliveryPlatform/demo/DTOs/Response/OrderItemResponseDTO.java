@@ -40,11 +40,11 @@ public class OrderItemResponseDTO {
         dto.setSpecialInstructions(entity.getSpecialInstructions());
 
         OrderItemDTOSummary summary=new OrderItemDTOSummary();
-        summary.setId(entity.getId());
+        /*summary.setId(entity.getId());
         summary.setTotalPrice(entity.getTotalPrice());
         summary.setUnitPrice(entity.getUnitPrice());
-        summary.setSpecialInstructions(entity.getSpecialInstructions());
-        summary.setQuantity(entity.getQuantity());
+        //summary.setSpecialInstructions(entity.getSpecialInstructions());
+        summary.setQuantity(entity.getQuantity());*/
 
         dto.setOrderItemDTOSummary(summary);
         return dto;
