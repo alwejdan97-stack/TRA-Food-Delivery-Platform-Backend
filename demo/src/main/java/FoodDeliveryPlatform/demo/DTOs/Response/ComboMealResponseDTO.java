@@ -39,6 +39,7 @@ public class ComboMealResponseDTO {
         dto.setTotalPrice(entity.getTotalPrice());
 
         ComboMealDTOSummary summary=new ComboMealDTOSummary();
+        summary.setId(entity.getId());
         summary.setComboName(entity.getComboName());
         summary.setDescription(entity.getDescription());
         summary.setTotalPrice(entity.getTotalPrice());

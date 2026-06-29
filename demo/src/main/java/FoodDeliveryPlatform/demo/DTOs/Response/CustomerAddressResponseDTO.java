@@ -39,6 +39,7 @@ public class CustomerAddressResponseDTO {
         dto.setBuilding(entity.getBuilding());
 
         CustomerAddressSummary summary=new CustomerAddressSummary();
+        summary.setId(entity.getId());
         summary.setBuilding(entity.getBuilding());
         summary.setCity(entity.getCity());
         summary.setId(entity.getId());

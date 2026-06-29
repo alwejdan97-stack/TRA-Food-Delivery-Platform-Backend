@@ -46,6 +46,7 @@ public class MenuItemResponseDTO {
         dto.setCalories(entity.getCalories());
 
         MenuItemDTOSummary summary=new MenuItemDTOSummary();
+        summary.setId(entity.getId());
         summary.setName(entity.getName());
         summary.setDescription(entity.getDescription());
         summary.setIsAvailable(entity.getIsAvailable());

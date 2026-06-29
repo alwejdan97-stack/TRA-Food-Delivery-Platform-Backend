@@ -46,6 +46,7 @@ public class CorporateOrderResponseDTO {
         dto.setTotalAmount(entity.getTotalAmount());
 
         CorporateOrderDTOSummary summary=new CorporateOrderDTOSummary();
+        summary.setId(entity.getId());
         summary.setOrderDate(entity.getOrderDate());
         summary.setCorporateCode(entity.getCorporateCode());
         summary.setCostCenter(entity.getCostCenter());

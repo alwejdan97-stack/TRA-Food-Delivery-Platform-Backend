@@ -37,6 +37,7 @@ public class ReviewResponseDTO {
         dto.setRating(entity.getRating());
 
         ReviewDTOSummary summary=new ReviewDTOSummary();
+        summary.setId(entity.getId());
         summary.setComment(entity.getComment());
         summary.setRating(entity.getRating());
         summary.setTargetType(entity.getTargetType());

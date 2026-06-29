@@ -40,6 +40,7 @@ public class PaymentResponseDTO {
         dto.setProcessedAt(entity.getProcessedAt());
 
         PaymentDTOSummary summary=new PaymentDTOSummary();
+        summary.setId(entity.getId());
         summary.setAmount(entity.getAmount());
         summary.setPaymentMethod(entity.getPaymentMethod());
         summary.setProcessedAt(entity.getProcessedAt());

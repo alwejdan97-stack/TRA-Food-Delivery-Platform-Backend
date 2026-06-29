@@ -54,6 +54,7 @@ public class RestaurantResponseDTO {
         dto.setAcceptingOrders(entity.getAcceptingOrders());
 
         RestaurantDTOSummary summary=new RestaurantDTOSummary();
+        summary.setId(entity.getId());
         summary.setName(entity.getName());
         summary.setDescription(entity.getDescription());
         summary.setCuisineType(entity.getCuisineType());

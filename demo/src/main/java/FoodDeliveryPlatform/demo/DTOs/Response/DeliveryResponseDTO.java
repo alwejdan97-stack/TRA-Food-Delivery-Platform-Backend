@@ -40,6 +40,7 @@ public class DeliveryResponseDTO {
         dto.setAssignedAt(entity.getAssignedAt());
 
         DeliveryDTOSummary summary=new DeliveryDTOSummary();
+        summary.setId(entity.getId());
         summary.setDeliveredAt(entity.getDeliveredAt());
         summary.setPickedUpAt(entity.getPickedUpAt());
         summary.setStatus(entity.getStatus());
