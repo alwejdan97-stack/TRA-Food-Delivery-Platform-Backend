@@ -25,8 +25,8 @@ public class ReviewDTOSummary {
 
     public static ReviewDTOSummary fromEntity(Review entity) {
         ReviewDTOSummary dto = new ReviewDTOSummary();
-        dto.setComment(entity.getComment());
         dto.setId(entity.getId());
+        dto.setComment(entity.getComment());
         dto.setTargetType(entity.getTargetType());
         dto.setRating(entity.getRating());
         return dto;

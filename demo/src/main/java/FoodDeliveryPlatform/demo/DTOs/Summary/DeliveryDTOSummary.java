@@ -2,6 +2,9 @@ package FoodDeliveryPlatform.demo.DTOs.Summary;
 
 import FoodDeliveryPlatform.demo.Entities.Delivery;
 import FoodDeliveryPlatform.demo.Entities.DeliveryDriver;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -13,6 +16,9 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 public class DeliveryDTOSummary {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
     @NotBlank(message = "Code Can't Be Empty")
     private String trackingCode;
     @Pattern(regexp = "PENDING|...| CANCELLED |...| DELIVERED")
@@ -23,6 +29,7 @@ public class DeliveryDTOSummary {
 
     public static DeliveryDTOSummary fromEntity(Delivery entity) {
         DeliveryDTOSummary dto = new DeliveryDTOSummary();
+        dto.setId(entity.getId());
         dto.setTrackingCode(entity.getTrackingCode());
         dto.setStatus(entity.getStatus());
         dto.setAssignedAt(entity.getAssignedAt());

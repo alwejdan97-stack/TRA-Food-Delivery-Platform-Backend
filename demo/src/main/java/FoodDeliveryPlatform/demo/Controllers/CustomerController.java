@@ -23,13 +23,13 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-    @PostMapping("/createCustomer/createCustomer")
+    @PostMapping("/createCustomer")
     public ResponseEntity<CustomerResponseDTO> createCustomer(@Valid @RequestBody CustomerRequestDTO dto) {
         List<CustomerResponseDTO> responseList = customerService.createCustomer(dto);
         return new ResponseEntity<>(responseList.get(0), HttpStatus.CREATED);
     }
 
-    @PostMapping("/addAddress/addAddress/{id}/addresses ")
+    @PostMapping("/addAddress/{id}/addresses ")
     public ResponseEntity<List<CustomerAddressResponseDTO>> addAddress(@PathVariable Integer id, @Valid @RequestBody CustomerAddressRequestDTO addressDto) {
         List<CustomerAddressResponseDTO> response = customerService.addAddress(id, addressDto);
         return new ResponseEntity<>(response, HttpStatus.CREATED);

@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public abstract class PersonDTO {
-    @NotNull
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
