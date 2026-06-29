@@ -3,6 +3,9 @@ package FoodDeliveryPlatform.demo.DTOs.Response;
 import FoodDeliveryPlatform.demo.DTOs.Summary.CorporateOrderDTOSummary;
 import FoodDeliveryPlatform.demo.DTOs.Summary.CustomerAddressSummary;
 import FoodDeliveryPlatform.demo.Entities.CustomerAddress;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -17,6 +20,8 @@ import java.util.List;
 @NoArgsConstructor
 public class CustomerAddressResponseDTO {
     @NotNull
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @NotBlank(message = "Street Can't Be Null")
     private String street;

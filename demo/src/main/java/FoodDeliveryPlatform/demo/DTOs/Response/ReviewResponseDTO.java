@@ -3,6 +3,9 @@ package FoodDeliveryPlatform.demo.DTOs.Response;
 import FoodDeliveryPlatform.demo.DTOs.Summary.RestaurantDTOSummary;
 import FoodDeliveryPlatform.demo.DTOs.Summary.ReviewDTOSummary;
 import FoodDeliveryPlatform.demo.Entities.Review;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.Data;
@@ -15,6 +18,8 @@ import java.util.List;
 @NoArgsConstructor
 public class ReviewResponseDTO {
     @NotNull
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @NotBlank(message = "Target Can't Be Empty")
     private String targetType;

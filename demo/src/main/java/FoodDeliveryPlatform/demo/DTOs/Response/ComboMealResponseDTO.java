@@ -2,6 +2,9 @@ package FoodDeliveryPlatform.demo.DTOs.Response;
 
 import FoodDeliveryPlatform.demo.DTOs.Summary.ComboMealDTOSummary;
 import FoodDeliveryPlatform.demo.Entities.ComboMeal;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
@@ -17,6 +20,8 @@ import java.util.List;
 @NoArgsConstructor
 public class ComboMealResponseDTO {
     @NotNull
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @NotBlank(message = "Name Can't Be Empty")
     private String comboName;

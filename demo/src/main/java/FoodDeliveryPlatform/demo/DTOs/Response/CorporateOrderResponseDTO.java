@@ -3,6 +3,9 @@ package FoodDeliveryPlatform.demo.DTOs.Response;
 import FoodDeliveryPlatform.demo.DTOs.Summary.ComboMealDTOSummary;
 import FoodDeliveryPlatform.demo.DTOs.Summary.CorporateOrderDTOSummary;
 import FoodDeliveryPlatform.demo.Entities.CorporateOrder;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.Data;
@@ -16,6 +19,8 @@ import java.util.List;
 @NoArgsConstructor
 public class CorporateOrderResponseDTO {
     @NotNull
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @NotBlank(message = "Code Can't Be Empty")
     private String corporateCode;

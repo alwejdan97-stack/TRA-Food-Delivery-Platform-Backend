@@ -3,6 +3,9 @@ package FoodDeliveryPlatform.demo.DTOs.Response;
 import FoodDeliveryPlatform.demo.DTOs.Summary.DeliveryDTOSummary;
 import FoodDeliveryPlatform.demo.DTOs.Summary.DeliveryDriverDTOSummary;
 import FoodDeliveryPlatform.demo.Entities.Delivery;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -19,6 +22,8 @@ import java.util.List;
 @NoArgsConstructor
 public class DeliveryResponseDTO {
     @NotNull
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @NotBlank(message = "Code Can't Be Empty")
     private String trackingCode;
